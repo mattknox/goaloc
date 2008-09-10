@@ -53,25 +53,23 @@ end
     assocs = { }
     if arg.is_a? Symbol
       name = arg
-      singular_name = name.to_s.singularize
     elsif arg.is_a? Array
       name = arg.first
-      singular_name = name.to_s.singularize
       arg[1..-1].each do |a|
         am = build_model(a)
         if am
-          assocs[am.name] = { :classname => am.singular_name, :type => :has_many}
-          key = (singular_name + "_id").to_sym
+          assocs[am.name] = { :classname => am.name, :type => :has_many}
+          key = (name.to_s.singularize + "_id").to_sym
           am.fields[key] = :int
         end
       end
     end
-    m = (self.models[singular_name] || Model.new(name))
+    m = (self.models[name] || Model.new(name))
     assocs.each do |k, v|
       m.has_many(self.models[k])
       self.models[k].belongs_to(m)
     end
-    self.models[singular_name] = m
+    self.models[name] = m
     m
   end
 end
@@ -85,11 +83,8 @@ class Model
     self.fields = { }
   end
 
-  def singular_name
-    self.name.to_s.singularize
-  end
   def classname
-    self.singular_name.capitalize
+    self.name.to_s.singularize.capitalize
   end
 
   def belongs_to(m)
