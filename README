@@ -1,0 +1,13 @@
+This is Generate on a Lot of Crack, which started its life as a more powerful script/generate for rails.
+It was motivated by the fact that to make a nested resource (ie, to get  /posts/1/comments to resolve), one must specify the relation between post and comment in 4 places:  the routes, the migration, and in both models.  That's silly, and not so DRY.  Enter GoaLoC, and the "blog in 15 minutes" talk essentially reduces to:
+
+goaloc myblog
+>> route [:posts, :comments]
+>> Post.attrs "body:text", "title:string"
+>> Comment.attrs "body:text"
+>> generate
+
+
+TODO:
+actually support adding fields to models
+actually support generation
