@@ -320,10 +320,34 @@ TEMPLATE
     view_dir = "#{app_name}/app/views/#{p}/"
     Dir.mkdir view_dir
     f = File.new("#{view_dir}index.html.erb", "w")
-    f.write "index page"
+    f.write "<h1>Listing #{p}</h1>
+
+<table>
+  <tr>" + model.fields.map { |k, v| "<th>#{k.capitalize}</th>"}.join("\n") + 
+"  </tr>
+
+<% for #{s} in @#{p} %>
+  <tr>" + model.fields.map { |k, v| "<td><%=h #{s}.#{k} %></td>"}.join("\n") + 
+"    <td><%= link_to 'Show', #{s} %></td>
+    <td><%= link_to 'Edit', edit_#{s}_path(#{s}) %></td>
+    <td><%= link_to 'Destroy', #{s}, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New #{s}', new_#{s}_path %>"
     f.close
     f = File.new("#{view_dir}show.html.erb", "w") 
-    f.write "show page"
+    model.fields.each do |k, v|
+      f.write "
+  <p>
+    <b>#{k}:</b>
+    <%=h @#{s}.#{k} %>
+  </p>\n"
+    end
+    f.write "<%= link_to 'Edit', edit_#{s}_path(@#{s}) %> |\n <%= link_to 'Back', #{p}_path %>"
     f.close
     f = File.new("#{view_dir}new.html.erb", "w")
     f.write "<%= render :partial => '#{p}/form', :object => @#{s} %>"
@@ -332,7 +356,19 @@ TEMPLATE
     f.write "<%= render :partial => '#{p}/form', :object => @#{s} %>"
     f.close
     f = File.new("#{view_dir}_form.html.erb", "w")
-    f.write "form text"
+    f.write "<% form_for(@#{s}) do |f| %>\n  <%= f.error_messages %>"
+    model.fields.each do |k, v|
+      f.write "
+  <p>
+    <%= f.label :#{k} %><br />
+    <%= f.text_field :#{k} %>
+  </p>\n"
+    end
+    f.write "
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>"
     f.close
   end
 
