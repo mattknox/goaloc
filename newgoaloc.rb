@@ -144,6 +144,9 @@ class Generator
 end
 
 class Rails < Generator
+  # TODO:  make fields get into _form.
+  # TODO:  make views happen at all.
+  # TODO:  make model associations happen.
   def app_name(opts = { })
     name = app.name
     name << "_rails" if opts[:prefix]
@@ -180,9 +183,10 @@ class Rails < Generator
     Dir.mkdir "#{app_name}/db/migrate" unless File.exists? "#{app_name}/db/migrate"
     f = File.new("#{app_name}/db/migrate/#{ Time.now.strftime("%Y%m%d%H%M%S") }_create_#{p}.rb", "w") 
     f.write """
-class Create#{cs} < ActiveRecord::Migration
+class Create#{cp} < ActiveRecord::Migration
   def self.up
     create_table :#{p} do |t|
+#{ model.fields.map do |k, v| "    t." + v + " :" + k + "\n"; end }
     
       t.timestamps
   end
@@ -306,7 +310,8 @@ TEMPLATE
     f.close
     f = File.new("#{view_dir}show.html.erb", "w") 
     f.close
-    f = File.new("#{view_dir}new.html.erb", "w") 
+    f = File.new("#{view_dir}new.html.erb", "w")
+    f.write "<%= render partial => \"\", :object => @ "
     f.close
     f = File.new("#{view_dir}edit.html.erb", "w") 
     f.close
