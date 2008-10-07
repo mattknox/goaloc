@@ -72,24 +72,27 @@ class App
 end
 
 class Model # should I perhaps subclass Model, rather than making an instance?
-  cattr_accessor :associations, :fields, :options, :routes  # routes is the set of urls by which you can get to an instance of a class
-  
-  self.associations = { }
-  self.fields = { }
-  self.options = { }
-  self.routes = [] # of the form [:classname, [:otherclass, :classname], ...]
-
   def Model.build_and_route(name, route)
     x = Model.make_model_class(name)
-    x.routes << (route.to_a << x)
+#    x.routes << (route.to_a << x)
     x
   end
   
   def Model.make_model_class(name)
-    Object.class_eval "class #{name.to_s.singularize.camelize} < Model;  end"
+    # routes is the set of urls by which you can get to an instance of a class
+    Object.class_eval "
+    class #{ name.to_s.singularize.camelize} < Model
+      cattr_accessor :associations, :fields, :options, :routes, :foreign_keys
+      self.associations = { }
+      self.fields = { }
+      self.foreign_keys = []
+      self.options = { }
+      self.routes = [] # of the form [:classname, [:otherclass, :classname], ...]
+
+    end"
     name.to_s.singularize.camelize.constantize
   end
-
+  
   class << self
     def nice_name
       self.to_s.underscore
@@ -108,7 +111,8 @@ class Model # should I perhaps subclass Model, rather than making an instance?
     def has_one(m, o = { })    associate(:has_one, m, o)    end
 
     def associate(meth, model, options = { })
-      assoc_name = options[:assoc_name] || default_assoc_name(meth)
+      assoc_name = options[:assoc_name] || model.default_assoc_name(meth)
+      self.foreign_keys << ( assoc_name.to_s + "_id" ) if meth == :belongs_to  #FIXME: might be something other than assoc_name_id
       self.associations[assoc_name] = { :model => model, :name => assoc_name, :type => meth}.merge(options)
     end
 
@@ -146,7 +150,6 @@ end
 class Rails < Generator
   # TODO:  make fields get into _form.
   # TODO:  make views happen at all.
-  # TODO:  make model associations happen.
   def app_name(opts = { })
     name = app.name
     name << "_rails" if opts[:prefix]
@@ -181,12 +184,14 @@ class Rails < Generator
     p  = model.to_s.underscore.pluralize # plural lowercase
 
     Dir.mkdir "#{app_name}/db/migrate" unless File.exists? "#{app_name}/db/migrate"
-    f = File.new("#{app_name}/db/migrate/#{ Time.now.strftime("%Y%m%d%H%M%S") }_create_#{p}.rb", "w") 
+    f = File.new("#{app_name}/db/migrate/#{ Time.now.strftime("%Y%m%d%H%M%S") }_create_#{p}.rb", "w")
+    Kernel.sleep(1)  # FIXME: get rid of this nasty hack.
     f.write """
 class Create#{cp} < ActiveRecord::Migration
   def self.up
     create_table :#{p} do |t|
-#{ model.fields.map do |k, v| "    t." + v + " :" + k + "\n"; end }
+#{ model.fields.map do |k, v| "      t." + v + " :" + k + "\n"; end }
+#{ model.foreign_keys.map do |k| "      t.references :" + k + "\n"; end }
     
       t.timestamps
   end
@@ -203,6 +208,9 @@ end
   def gen_model(model)
     f = File.new("#{app_name}/app/models/#{model.nice_name}.rb", "w") 
     f.write "class #{model.to_s} < ActiveRecord::Base\n"
+    model.associations.each do |k, v|
+      f.write "  #{v[:type]} :#{k}\n"
+    end
     f.write "end"
     f.close
   end
@@ -304,18 +312,27 @@ TEMPLATE
   end
   
   def gen_view(model)
-    view_dir = "#{app_name}/app/views/#{model.nice_name.pluralize}/"
+    cs = model.to_s                      # singular capitalized
+    cp = model.to_s.pluralize            # singular capitalized
+    s  = model.to_s.underscore           # singular lowercase
+    p  = model.to_s.underscore.pluralize # plural lowercase
+
+    view_dir = "#{app_name}/app/views/#{p}/"
     Dir.mkdir view_dir
-    f = File.new("#{view_dir}index.html.erb", "w") 
+    f = File.new("#{view_dir}index.html.erb", "w")
+    f.write "index page"
     f.close
     f = File.new("#{view_dir}show.html.erb", "w") 
+    f.write "show page"
     f.close
     f = File.new("#{view_dir}new.html.erb", "w")
-    f.write "<%= render partial => \"\", :object => @ "
+    f.write "<%= render :partial => '#{p}/form', :object => @#{s} %>"
     f.close
     f = File.new("#{view_dir}edit.html.erb", "w") 
+    f.write "<%= render :partial => '#{p}/form', :object => @#{s} %>"
     f.close
-    f = File.new("#{view_dir}_form.html.erb", "w") 
+    f = File.new("#{view_dir}_form.html.erb", "w")
+    f.write "form text"
     f.close
   end
 
