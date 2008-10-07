@@ -3,11 +3,8 @@ It was motivated by the fact that to make a nested resource (ie, to get  /posts/
 
 goaloc myblog
 >> route [:posts, :comments]
->> Post.attrs "body:text", "title:string"
->> Comment.attrs "body:text"
+>> Post.add_attrs "body:text title:string"
+>> Comment.add_attrs "body:text"
 >> generate
 
 
-TODO:
-actually support adding fields to models
-actually support generation
