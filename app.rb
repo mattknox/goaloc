@@ -1,23 +1,19 @@
 class App
   attr_accessor :name, :models, :routes, :options, :debug
 
-  def initialize(name, options = { })
-    self.name = name
+  def initialize(name = nil, options = { })
+    self.name = (name or generate_name)
     self.options = options
     self.models = { } # why do I make this a hash, anyway?
     self.routes = []
   end
 
-  def generable?
-    !self.name.blank?
+  def generate_name
+    "goaloc_app" + Time.now.strftime("%Y%m%d%H%M%S")
   end
-
+  
   def generate(generator = Rails)
-    if generable?
-      generator.new(self).gen_app
-    else
-      "I can't do it!  I don't have the power!"
-    end
+    generator.new(self).generate
   end
 
   def destroy
@@ -31,6 +27,10 @@ class App
     s
   end
 
+  def destroy_model(klass) # TODO: make this also get rid of associations, etc.
+    Object.send(:remove_const, klass.to_s.to_sym)
+  end
+  
   def route_args(*args)  # really want to name this route.  should I rename it?
     if valid_routeset?(args)
       self.routes += args

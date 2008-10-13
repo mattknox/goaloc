@@ -1,0 +1,11 @@
+to get the url '/blogs/1/posts/1/comments' => route [ :blogs, [:posts, :comments]]
+map.resources :foo
+map.resources :bar
+map.resources :baz    => route :foo, :bar, :baz
+
+map.resources :users do |user
+  user.resources :blogs
+  user.resources :projects
+end
+=> route [:users, :blogs, :projects]
+

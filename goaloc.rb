@@ -5,7 +5,7 @@ require "model"
 require "generators/generator"
 require "generators/rails"
 
-@app = App.new(nil)
+@app = App.new
 
 def generate(*args)
   @app.generate(*args)
