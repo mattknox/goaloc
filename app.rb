@@ -27,6 +27,12 @@ class App
     s
   end
 
+  def add_attrs(h)
+    h.each do |k, v|
+      k.to_s.singularize.camelize.constantize.add_attrs v rescue nil
+    end
+  end
+  
   def destroy_model(klass) # TODO: make this also get rid of associations, etc.
     Object.send(:remove_const, klass.to_s.to_sym)
   end
