@@ -38,12 +38,12 @@ class Model # should I perhaps subclass Model, rather than making an instance?
 
     def has_many(m, o = { })
       associate(:has_many, m, o)
-      m.associate(:belongs_to, self, o)
+      m.associate(:belongs_to, self, o) unless o[:skip_belongs_to]
     end
 
     def has_one(m, o = { })
       associate(:has_one, m, o)
-      m.associate(:belongs_to, self, o)
+      m.associate(:belongs_to, self, o) unless o[:skip_belongs_to]
     end
 
     def associate(meth, model, options = { })
