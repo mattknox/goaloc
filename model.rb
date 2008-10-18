@@ -35,8 +35,16 @@ class Model # should I perhaps subclass Model, rather than making an instance?
     end
     
     def belongs_to(m, o = { }) associate(:belongs_to, m, o) end
-    def has_many(m, o = { })   associate(:has_many, m, o)   end
-    def has_one(m, o = { })    associate(:has_one, m, o)    end
+
+    def has_many(m, o = { })
+      associate(:has_many, m, o)
+      m.associate(:belongs_to, self, o)
+    end
+
+    def has_one(m, o = { })
+      associate(:has_one, m, o)
+      m.associate(:belongs_to, self, o)
+    end
 
     def associate(meth, model, options = { })
       assoc_name = options[:assoc_name] || model.default_assoc_name(meth)

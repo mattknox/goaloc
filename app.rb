@@ -60,7 +60,6 @@ class App
       model = (register_model!(sym, route))
       arg[1..-1].each do |a|
         model.has_many(m = build_model(a, (route.to_a << model)))
-        models[m.sym_name].belongs_to(model)
       end
       model
     elsif arg.is_a? Hash
