@@ -1,4 +1,4 @@
-class Model # should I perhaps subclass Model, rather than making an instance?
+class Model 
   def Model.build_and_route(name, route)
     x = Model.make_model_class(name)
     x.routes << (route.to_a << x)
