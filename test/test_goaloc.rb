@@ -8,7 +8,7 @@ class TestGoaloc < Test::Unit::TestCase
       assert @app.route_args(:users)
     end
 
-    context "that has successfully called route" do
+    context "that has successfully called route :users " do
       setup { @app.route_args(:users) }
       
       should "have nonempty routes" do
@@ -20,7 +20,21 @@ class TestGoaloc < Test::Unit::TestCase
       end
       
       should "define User class" do
-        
+        assert defined?(User)
+      end
+
+      context "and User.add_attrs" do
+        setup { User.add_attrs("name:string email:str age:int ssn:integer dead:boolean cute:bool") }
+
+        should "map all six given attrs" do
+          assert !User.fields.empty?
+          assert_equal "string", User.fields["name"]
+          assert_equal "string", User.fields["email"]
+          assert_equal "integer", User.fields["age"]
+          assert_equal "integer", User.fields["ssn"]
+          assert_equal "boolean", User.fields["dead"]
+          assert_equal "boolean", User.fields["cute"]
+        end
       end
     end
 

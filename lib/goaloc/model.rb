@@ -1,8 +1,17 @@
-class Model 
+class Model
   def Model.build_and_route(name, route)
     x = Model.make_model_class(name)
     x.routes << (route.to_a << x)
     x
+  end
+
+  def Model.db_type_map
+    { 
+      "str" => "string", "string" => "string",
+      "int" => "integer", "integer" => "integer",
+      "bool" => "boolean", "boolean" => "boolean",
+      "text" => "text"
+    }
   end
   
   def Model.make_model_class(name)
@@ -63,8 +72,10 @@ class Model
       end 
     end
 
+    
+
     def add_field(name, field_type)
-      fields[name] = field_type
+      self.fields[name] = Model.db_type_map[field_type]
     end
   end
 end
