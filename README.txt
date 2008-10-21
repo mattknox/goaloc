@@ -20,6 +20,8 @@ goaloc myblog
 >> Comment.add_attrs "body:text"
 >> generate
 
+generate presently only knows how to make rails apps, but in principle, any REST-centric MVC app could be targeted comfortably.
+
 == REQUIREMENTS:
 
 shoulda to run tests, possibly ruby2ruby in the future.
