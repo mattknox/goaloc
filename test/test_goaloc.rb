@@ -27,6 +27,10 @@ class TestGoaloc < Test::Unit::TestCase
     context "that routes a nested route" do
       setup { @app.route_args([:posts, :comments])}
 
+      should "define a nested route" do
+        assert @app.routes.member?([:posts, :comments])
+      end
+      
       should "define Post and Comment"do
         assert defined?(Post)
         assert defined?(Comment)
@@ -38,6 +42,10 @@ class TestGoaloc < Test::Unit::TestCase
 
       should "make an association from Comment to Post" do
         assert_equal "post", Comment.associations.keys.first
+      end
+
+      should "set a foreign key on comment" do
+        assert_equal "post_id", Comment.foreign_keys.first
       end
     end
   end
