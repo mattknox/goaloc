@@ -1,4 +1,4 @@
-class Model
+class Model  
   def Model.build_and_route(name, route)
     x = Model.make_model_class(name)
     x.routes << (route.to_a << x)
@@ -71,8 +71,6 @@ class Model
         raise "bad argument type in add_attrs"
       end 
     end
-
-    
 
     def add_field(name, field_type)
       self.fields[name] = Model.db_type_map[field_type]
