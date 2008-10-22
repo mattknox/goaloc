@@ -2,3 +2,8 @@
 
 * 1 major enhancement:
   * Initial release
+
+== 0.0.2 2008-10-19
+* many minor enhancement:
+  * added tests
+  * changed readme, etc.
