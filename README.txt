@@ -4,11 +4,12 @@
 
 == DESCRIPTION:
 
-This is Generate on a Lot of Crack, which started its life as a more powerful script/generate for rails.
+This is Generate on a Lot of Crack, which started its life as a more powerful script/generate for rails, and may evolve into a multi-framework webapp scaffolder
 
 == FEATURES/PROBLEMS:
 
-* FIX (list of features or problems)
+currently supports only rails, should add merb, maybe erlyweb, maybe others.
+
 
 == SYNOPSIS:
 
