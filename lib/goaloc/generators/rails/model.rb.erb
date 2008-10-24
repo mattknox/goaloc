@@ -1,0 +1,5 @@
+class <%= model.to_s -%> < ActiveRecord::Base
+<% model.associations.each do |k, v| -%>
+  <%= "#{v[:type]} :#{k}"  -%>
+<% end -%>
+end
