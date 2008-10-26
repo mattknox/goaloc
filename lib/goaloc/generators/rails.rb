@@ -20,17 +20,13 @@ class Rails < Generator
       f.write "end"
     end
   end
-  
-  def gen_migration(model)
+
+  def gen_migration_string(model)
     cs = model.to_s                      # singular capitalized
     cp = model.to_s.pluralize            # singular capitalized
     s  = model.to_s.underscore           # singular lowercase
     p  = model.to_s.underscore.pluralize # plural lowercase
-
-    Dir.mkdir "#{app_name}/db/migrate" unless File.exists? "#{app_name}/db/migrate"
-    f = File.new("#{app_name}/db/migrate/#{ Time.now.strftime("%Y%m%d%H%M%S") }_create_#{p}.rb", "w")
-    Kernel.sleep(1)  # FIXME: get rid of this nasty hack.
-    f.write """
+     """
 class Create#{cp} < ActiveRecord::Migration
   def self.up
     create_table :#{p} do |t|
@@ -46,6 +42,18 @@ end
   end
 end
 """
+  end
+  
+  def gen_migration(model)
+    cs = model.to_s                      # singular capitalized
+    cp = model.to_s.pluralize            # singular capitalized
+    s  = model.to_s.underscore           # singular lowercase
+    p  = model.to_s.underscore.pluralize # plural lowercase
+
+    Dir.mkdir "#{app_name}/db/migrate" unless File.exists? "#{app_name}/db/migrate"
+    f = File.new("#{app_name}/db/migrate/#{ Time.now.strftime("%Y%m%d%H%M%S") }_create_#{p}.rb", "w")
+    Kernel.sleep(1)  # FIXME: get rid of this nasty hack.
+    f.write gen_migration_string(model)
     f.close
   end
   
