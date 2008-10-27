@@ -54,100 +54,19 @@ class Rails < Generator
     f.write "end"
     f.close
   end
-  
-  def gen_controller(model)              # make this a better controller
+
+  def gen_controller_string(model)
     cs = model.to_s                      # singular capitalized
     cp = model.to_s.pluralize            # singular capitalized
     s  = model.to_s.underscore           # singular lowercase
     p  = model.to_s.underscore.pluralize # plural lowercase
+    template_str = File.open("./goaloc/generators/rails/controller.rb.erb").read
+    ERB.new(template_str).result(binding)
+  end
+  
+  def gen_controller(model)              # make this a better controller
     f = File.new("#{app_name}/app/controllers/#{model.nice_name.pluralize}_controller.rb", "w") 
-    f.write(<<TEMPLATE)
-class #{cp}Controller < ApplicationController
-  # GET /#{p}
-  # GET /#{p}.xml
-  def index
-    @#{p} = #{cs}.find(:all)
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @#{p} }
-    end
-  end
-
-  # GET /#{p}/1
-  # GET /#{p}/1.xml
-  def show
-    @#{s} = #{cs}.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @#{s} }
-    end
-  end
-
-  # GET /#{p}/new
-  # GET /#{p}/new.xml
-  def new
-    @#{s} = #{cs}.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @#{s} }
-    end
-  end
-
-  # GET /#{p}/1/edit
-  def edit
-    @#{s} = #{cs}.find(params[:id])
-  end
-
-  # POST /#{p}
-  # POST /#{p}.xml
-  def create
-    @#{s} = #{cs}.new(params[:#{s}])
-
-    respond_to do |format|
-      if @#{s}.save
-        flash[:notice] = '#{cs} was successfully created.'
-        format.html { redirect_to(@#{s}) }
-        format.xml  { render :xml => @#{s}, :status => :created, :location => @#{s} }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @#{s}.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
-
-  # PUT /#{p}/1
-  # PUT /#{p}/1.xml
-  def update
-    @#{s} = #{cs}.find(params[:id])
-
-    respond_to do |format|
-      if @#{s}.update_attributes(params[:#{s}])
-        flash[:notice] = '#{cs} was successfully updated.'
-        format.html { redirect_to(@#{s}) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @#{s}.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /#{p}/1
-  # DELETE /#{p}/1.xml
-  def destroy
-    @#{s} = #{cs}.find(params[:id])
-    @#{s}.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(#{p}_url) }
-      format.xml  { head :ok }
-    end
-  end
-end
-TEMPLATE
+    f.write(gen_controller_string(model))
     f.close
   end
   
