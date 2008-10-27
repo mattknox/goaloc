@@ -1,3 +1,5 @@
+require "erb"
+
 class Rails < Generator
   # TODO:  make fields get into _form.
   # TODO:  make views happen at all.
@@ -26,22 +28,8 @@ class Rails < Generator
     cp = model.to_s.pluralize            # singular capitalized
     s  = model.to_s.underscore           # singular lowercase
     p  = model.to_s.underscore.pluralize # plural lowercase
-     """
-class Create#{cp} < ActiveRecord::Migration
-  def self.up
-    create_table :#{p} do |t|
-#{ model.fields.map do |k, v| "      t." + v + " :" + k + "\n"; end }
-#{ model.foreign_keys.map do |k| "      t.references :" + k + "\n"; end }
-    
-      t.timestamps
-  end
-end
-
-  def self.down
-    drop_table :#{p}
-  end
-end
-"""
+    template_str = File.open("./goaloc/generators/rails/migration.rb.erb").read
+    ERB.new(template_str).result(binding)
   end
   
   def gen_migration(model)

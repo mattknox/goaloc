@@ -1,17 +1,17 @@
-class Create<%= -%> < ActiveRecord::Migration
+class Create<%= cp %> < ActiveRecord::Migration
   def self.up
-    create_table :<%=  -%> do |t|
-<% model.fields.map do |k, v| -%>
-  <%= "      t." + v + " :" + k  -%>
-<% end -%>
-<% model.foreign_keys.map do |k, v| -%>
-  <%= "      t.references :" + k -%>
-<% end -%>
+    create_table :<%= p %> do |t|
+<% model.fields.map do |k, v| %>
+  <%= "      t." + v + " :" + k  %>
+<% end %>
+<% model.foreign_keys.map do |k, v| %>
+  <%= "      t.references :" + k %>
+<% end %>
       t.timestamps
     end
   end
 
   def self.down
-    drop_table :<%=  -%>
+    drop_table :<%= p %>
   end
 end
