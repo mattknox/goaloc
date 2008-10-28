@@ -1,8 +1,6 @@
 require "erb"
 
 class Rails < Generator
-  # TODO:  make fields get into _form.
-  # TODO:  make views happen at all.
   def app_name(opts = { })
     name = app.name
     name << "_rails" if opts[:prefix]
