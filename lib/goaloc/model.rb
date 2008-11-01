@@ -26,6 +26,22 @@ class Model
       self.foreign_keys = []
       self.validations = { }
 
+      class << self
+        def cs
+          self.to_s
+        end
+
+        def cp
+          self.to_s.pluralize
+        end
+
+        def s
+          self.to_s.underscore
+        end
+
+        def p
+          self.to_s.underscore.pluralize
+        end
     end"
     name.to_s.singularize.camelize.constantize
   end

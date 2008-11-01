@@ -112,7 +112,7 @@ class Rails < Generator
     f = File.new("#{view_dir}edit.html.erb", "w") 
     f.write "<%= render :partial => '#{p}/form', :object => @#{s} %>"
     f.close
-    f = File.new("#{view_dir}_form.html.erb", "w")
+    f = File.new("#{view_dir}_form.html.erb", "w") #TODO: need to allow for using form-builders.
     f.write "<% form_for(@#{s}) do |f| %>\n  <%= f.error_messages %>"
     model.fields.each do |k, v|
       f.write "
