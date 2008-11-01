@@ -22,22 +22,13 @@ class Rails < Generator
   end
 
   def gen_migration_string(model)
-    cs = model.to_s                      # singular capitalized
-    cp = model.to_s.pluralize            # singular capitalized
-    s  = model.to_s.underscore           # singular lowercase
-    p  = model.to_s.underscore.pluralize # plural lowercase
     template_str = File.open("./goaloc/generators/rails/migration.rb.erb").read
     ERB.new(template_str).result(binding)
   end
   
   def gen_migration(model)
-    cs = model.to_s                      # singular capitalized
-    cp = model.to_s.pluralize            # singular capitalized
-    s  = model.to_s.underscore           # singular lowercase
-    p  = model.to_s.underscore.pluralize # plural lowercase
-
     Dir.mkdir "#{app_name}/db/migrate" unless File.exists? "#{app_name}/db/migrate"
-    f = File.new("#{app_name}/db/migrate/#{ Time.now.strftime("%Y%m%d%H%M%S") }_create_#{p}.rb", "w")
+    f = File.new("#{app_name}/db/migrate/#{ Time.now.strftime("%Y%m%d%H%M%S") }_create_#{model.p}.rb", "w")
     Kernel.sleep(1)  # FIXME: get rid of this nasty hack.
     f.write gen_migration_string(model)
     f.close
@@ -54,10 +45,6 @@ class Rails < Generator
   end
 
   def gen_controller_string(model)
-    cs = model.to_s                      # singular capitalized
-    cp = model.to_s.pluralize            # singular capitalized
-    s  = model.to_s.underscore           # singular lowercase
-    p  = model.to_s.underscore.pluralize # plural lowercase
     template_str = File.open("./goaloc/generators/rails/controller.rb.erb").read
     ERB.new(template_str).result(binding)
   end
