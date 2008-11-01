@@ -42,6 +42,7 @@ class Model
         def p
           self.to_s.underscore.pluralize
         end
+      end
     end"
     name.to_s.singularize.camelize.constantize
   end

@@ -1,13 +1,13 @@
-<% form_for(@#{s}) do |f| %>\n  <%= f.error_messages %>"
+<% form_for(@#{model.s}) do |f| %>\n  <%= f.error_messages %>"
     model.fields.each do |k, v|
       f.write
   <p>
     <%= f.label :#{k} %><br />
     <%= f.text_field :#{k} %>
-  </p>\n"
+  </p>
     end
     f.write
   <p>
-    <%= f.submit 'Update' %>
+    <%= f.submit "Submit" %>
   </p>
 <% end %>
