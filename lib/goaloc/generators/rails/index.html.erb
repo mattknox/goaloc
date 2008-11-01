@@ -1,18 +1,18 @@
-<h1>Listing #{p}</h1>
+<h1>Listing <%= model.p -%></h1>
 
 <table>
-  <tr>" + model.fields.map { |k, v| "<th>#{k.capitalize}</th>"}.join("\n")
+  <tr><%= model.fields.map { |k, v| "<th>#{k.capitalize}</th>"}.join("\n") -%>
   </tr>
 
-<% for #{s} in @#{p} %>
-  <tr>" + model.fields.map { |k, v| "<td><%=h #{s}.#{k} %></td>"}.join("\n") 
-    <td><%= link_to 'Show', #{s} %></td>
-    <td><%= link_to 'Edit', edit_#{s}_path(#{s}) %></td>
-    <td><%= link_to 'Destroy', #{s}, :confirm => 'Are you sure?', :method => :delete %></td>
+<%= "<% for #{model.s} in @#{model.p} %>" -%>
+  <tr> <%= model.fields.map { |k, v| "<td> <%=h #{model.s}.#{k} %></td>"}.join("\n")  -%>
+    <td><%= "<%= link_to 'Show', #{model.s} %>" -%></td>
+    <td><%= "<%= link_to 'Edit', edit_#{model.s}_path(#{s}) %>" -%></td>
+    <td><%= "<%= link_to 'Destroy', #{model.s}, :confirm => 'Are you sure?', :method => :delete %>" -%></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New #{s}', new_#{s}_path %>
+<%= "<%= link_to 'New #{model.s}', new_#{model.bs}_path %>" -%>
