@@ -1,6 +1,27 @@
 require "erb"
 
 class Rails < Generator
+  def generate
+    gen_app
+    app.models.values.each do |model|
+      rails_model = railsify(model)
+      gen_routes
+      gen_migration(rails_model)
+      gen_model(rails_model)
+      gen_controller(rails_model)
+      gen_view(rails_model)
+    end
+  end
+
+  def railsify(model)
+    #TODO: put methods for 
+    self.class_eval
+    "
+class Rails#{model} < #{model}
+end
+"
+  end
+  
   def app_name(opts = { })
     name = app.name
     name << "_rails" if opts[:prefix]
