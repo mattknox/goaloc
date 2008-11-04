@@ -7,10 +7,10 @@ class Model
 
   def Model.db_type_map
     { 
-      "str" => "string", "string" => "string",
-      "int" => "integer", "integer" => "integer",
-      "bool" => "boolean", "boolean" => "boolean",
-      "text" => "text"
+      "str" => "string", "string" => "string", "s" => "string",
+      "int" => "integer", "integer" => "integer", "i" => "integer",
+      "bool" => "boolean", "boolean" => "boolean", "b" => "boolean",
+      "text" => "text", "t" => "text"
     }
   end
   
