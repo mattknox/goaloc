@@ -15,12 +15,23 @@ class Rails < Generator
 
   def railsify(model)
     #TODO: put methods for 
-    self.class_eval
-    "
+    Object.class_eval "
 class Rails#{model} < #{model}
 end
 "
+  "Rails#{model}".constantize
   end
+
+#fix this bug!
+# NoMethodError: private method `p' called for nil:NilClass  
+# 	from ./goaloc/generators/rails.rb:52:in `gen_migration'
+# 	from ./goaloc/generators/rails.rb:9:in `generate'
+# 	from ./goaloc/generators/rails.rb:6:in `each'
+# 	from ./goaloc/generators/rails.rb:6:in `generate'
+# 	from ./goaloc/app.rb:16:in `generate'
+# 	from ./goaloc.rb:17:in `generate'
+# 	from (irb):26
+
   
   def app_name(opts = { })
     name = app.name
