@@ -17,6 +17,11 @@ class Rails < Generator
     #TODO: put methods for 
     Object.class_eval "
 class Rails#{model} < #{model}
+  class << self
+    def path
+      
+    end
+  end
 end
 "
   "Rails#{model}".constantize
