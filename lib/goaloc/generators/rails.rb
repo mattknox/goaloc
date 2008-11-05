@@ -18,7 +18,7 @@ class Rails < Generator
     Object.class_eval "
 class Rails#{model} < #{model}
   class << self
-    def path
+    def default_path_method
       
     end
   end

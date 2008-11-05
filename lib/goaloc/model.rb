@@ -1,7 +1,7 @@
 class Model  
   def Model.build_and_route(name, route)
     x = Model.make_model_class(name)
-    x.routes << (route.to_a << x)
+    x.routes << (route.to_a.clone << x)
     x
   end
 

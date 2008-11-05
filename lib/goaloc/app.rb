@@ -37,7 +37,7 @@ class App
     Object.send(:remove_const, klass.to_s.to_sym)
   end
   
-  def route_args(*args)  # really want to name this route.  should I rename it?
+  def route(*args)  # really want to name this route.  should I rename it?
     if valid_routeset?(args)
       self.routes += args
       args.each do |a|
@@ -52,23 +52,24 @@ class App
     args.is_a? Array and !args.empty?
   end
 
-  def build_model(arg, route)
+  def build_model(arg, r)
     if arg.is_a? Symbol
-      register_model!(arg, route)
+      register_model!(arg, r)
     elsif arg.is_a? Array
       sym = arg.first
-      model = (register_model!(sym, route))
+      model = (register_model!(sym, r))
       arg[1..-1].each do |a|
-        model.has_many(m = build_model(a, (route.to_a << model)))
+        m = build_model(a, (r.to_a.clone << model))
+        model.has_many(m)
       end
       model
     elsif arg.is_a? Hash
       sym = arg[:model]
-      register_model!(sym, route)
+      register_model!(sym, r)
     end
   end
   
-  def register_model!(arg, route)
-    self.models[arg] ||= Model.build_and_route(arg, route)
+  def register_model!(arg, r)
+    self.models[arg] ||= Model.build_and_route(arg, r)
   end
 end

@@ -5,11 +5,11 @@ class TestGoaloc < Test::Unit::TestCase
     setup { @app = App.new }
     
     should "route a single symbol" do
-      assert @app.route_args(:users)
+      assert @app.route(:users)
     end
 
-    context "that has successfully called route :users " do
-      setup { @app.route_args(:users) }
+    context "that called route :users " do
+      setup { @app.route(:users) }
       
       should "have nonempty routes" do
         assert !@app.routes.empty?
@@ -21,6 +21,10 @@ class TestGoaloc < Test::Unit::TestCase
       
       should "define User class" do
         assert defined?(User)
+      end
+
+      should "have routes on User" do
+        assert_equal User.routes, [[User]]
       end
 
       context "and User.add_attrs" do
@@ -39,7 +43,7 @@ class TestGoaloc < Test::Unit::TestCase
     end
 
     context "that routes a nested route" do
-      setup { @app.route_args([:posts, :comments])}
+      setup { @app.route([:posts, :comments])}
 
       should "define a nested route" do
         assert @app.routes.member?([:posts, :comments])
@@ -48,6 +52,14 @@ class TestGoaloc < Test::Unit::TestCase
       should "define Post and Comment"do
         assert defined?(Post)
         assert defined?(Comment)
+      end
+
+      should "define a simple Post route" do
+        assert_equal Post.routes, [[Post]]
+      end
+
+      should "define a simple Comment route" do
+        assert_equal Comment.routes, [[Post, Comment]]
       end
 
       should "make an association from Post to Comment" do
@@ -60,6 +72,22 @@ class TestGoaloc < Test::Unit::TestCase
 
       should "set a foreign key on comment" do
         assert_equal "post_id", Comment.foreign_keys.first
+      end
+    end
+
+    context "that routes a highly complex route" do
+      setup { @app.route [:users, :profiles, [:posts, [:comments, :ratings]], [:pictures, :ratings]] }
+
+      should "have routes on User" do
+        assert_equal User.routes, [[User]]
+      end
+
+      should "have routes on Profiles" do
+        assert_equal Profile.routes, [[User, Profile]]
+      end
+
+      should "have routes on Posts" do
+        assert_equal Post.routes, [[User, Post]]
       end
     end
   end

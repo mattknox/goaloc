@@ -18,7 +18,7 @@ def generate(*args)
 end
 
 def route(*args)
-  @app.route_args(*args)
+  @app.route(*args)
 end
 
 def add_attrs(h)
