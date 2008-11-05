@@ -1,8 +1,16 @@
 class Model  
   def Model.build_and_route(name, route)
-    x = Model.make_model_class(name)
-    x.routes << (route.to_a.clone << x)
-    x
+    klass = name.to_s.singularize.camelize.constantize rescue nil
+    if klass
+      klass.routes << route unless klass.routes.include? route
+      puts "#{klass} #{klass.routes}"
+      klass
+    else
+      x = Model.make_model_class(name)
+      x.routes << (route.to_a.clone << x)
+      puts "#{x} #{x.routes}"
+      x
+    end
   end
 
   def Model.db_type_map
@@ -27,6 +35,15 @@ class Model
       self.validations = { }
 
       class << self
+        def minimum_route  # this returns the minimal route to this model, or nothing, if there is no unambiguous minimal route
+          routelist = self.routes.sort {|x, y| x.length <=> y.length }
+          if (routelist.length == 1) || (routelist.first.length == 1) #take the trivial route or the only route
+            routelist.first
+          else #TODO: maybe should deal with a case where there's a simplest route that all the others contain.
+            nil
+          end
+        end
+        
         def cs
           self.to_s
         end

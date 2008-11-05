@@ -70,6 +70,6 @@ class App
   end
   
   def register_model!(arg, r)
-    self.models[arg] ||= Model.build_and_route(arg, r)
+    self.models[arg] = Model.build_and_route(arg, r)
   end
 end
