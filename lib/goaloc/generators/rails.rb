@@ -1,10 +1,16 @@
 require "erb"
 
 class Rails < Generator
+  cattr_accessor :rails_models
+  self.rails_models = []
+  
   def generate
+    app.models.values.each do |m|
+      rails_models  << railsify(model)
+    end
+    
     gen_app
-    app.models.values.each do |model|
-      rails_model = railsify(model)
+    rails_models.each do |rails_model|
       gen_routes
       gen_migration(rails_model)
       gen_model(rails_model)
@@ -18,8 +24,16 @@ class Rails < Generator
     Object.class_eval "
 class Rails#{model} < #{model}
   class << self
+    def symname
+      '@' + self.superclass.to_s.underscore
+    end
+
+    def min_rails_route
+      self.minimum_route.map {|c| ('Rails' + c.to_s).constantize}
+    end
+    
     def default_path_method
-      
+      self.min_rails_route.map {|c| c.superclass.to_s.underscore }.join('_') + '_path(' + self.min_rails_route.map {|c| c.symname }.join(', ') + ')'
     end
   end
 end
