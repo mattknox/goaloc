@@ -1,6 +1,6 @@
-class Create<%= cp %> < ActiveRecord::Migration
+class Create<%= model.cp %> < ActiveRecord::Migration
   def self.up
-    create_table :<%= p %> do |t|
+    create_table :<%= model.p %> do |t|
 <% model.fields.map do |k, v| %>
   <%= "      t." + v + " :" + k  %>
 <% end %>
@@ -12,6 +12,6 @@ class Create<%= cp %> < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :<%= p %>
+    drop_table :<%= model.p %>
   end
 end

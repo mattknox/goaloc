@@ -6,7 +6,7 @@ class Rails < Generator
   
   def generate
     app.models.values.each do |m|
-      rails_models  << railsify(model)
+      rails_models  << railsify(m)
     end
     
     gen_app
@@ -20,7 +20,7 @@ class Rails < Generator
   end
 
   def railsify(model)
-    #TODO: put methods for 
+    #TODO: kill this and make it a module.  How to do?
     Object.class_eval "
 class Rails#{model} < #{model}
   class << self
@@ -58,7 +58,7 @@ end
     name
   end
 
-  def gen_app(opts = { })
+  def gen_app(opts = { })  # TODO:  this is just heinous.  Get rid of it.  
     `rails -d mysql #{app_name(opts)}`
   end
   
@@ -113,7 +113,7 @@ end
     p  = model.to_s.underscore.pluralize # plural lowercase
 
     view_dir = "#{app_name}/app/views/#{p}/"
-    Dir.mkdir view_dir
+    Dir.mkdir view_dir rescue nil
     f = File.new("#{view_dir}index.html.erb", "w")
     f.write "<h1>Listing #{p}</h1>
 
