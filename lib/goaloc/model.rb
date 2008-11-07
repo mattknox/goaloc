@@ -32,7 +32,7 @@ class Model
       self.options = { }
       self.routes = [] # of the form [:classname, [:otherclass, :classname], ...]
       self.foreign_keys = []
-      self.validations = { }
+      self.validations = []
 
       class << self
         def minimum_route  # this returns the minimal route to this model, or nothing, if there is no unambiguous minimal route
@@ -75,6 +75,10 @@ class Model
     
     def default_assoc_name(meth)
       :has_many == meth ? nice_name.pluralize : nice_name
+    end
+
+    def validates(validation_type, field, opts = { })
+      self.validations << opts.merge { :val_type => validation_type, :field => field}
     end
     
     def belongs_to(m, o = { }) associate(:belongs_to, m, o) end
