@@ -74,7 +74,7 @@ end
     f.close
   end
   
-  def gen_model(model)
+  def gen_model(model)  # TODO: put in validations for models
     f = File.new("#{app_name}/app/models/#{model.nice_name}.rb", "w") 
     f.write "class #{model.to_s} < ActiveRecord::Base\n"
     model.associations.each do |k, v|
