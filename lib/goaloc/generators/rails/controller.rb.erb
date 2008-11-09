@@ -1,84 +1,84 @@
-class #{model.cp}Controller < ApplicationController
-  # GET /#{model.p}
-  # GET /#{model.p}.xml
+class <%= model.cp %>Controller < ApplicationController
+  # GET /<%= model.p %>
+  # GET /<%= model.p %>.xml
   def index
-    @#{model.p} = #{model.cs}.find(:all)
+    @<%= model.p %> = <%= model.cs %>.find(:all)
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @#{model.p} }
+      format.xml  { render :xml => @<%= model.p %> }
     end
   end
 
-  # GET /#{model.p}/1
-  # GET /#{model.p}/1.xml
+  # GET /<%= model.p %>/1
+  # GET /<%= model.p %>/1.xml
   def show
-    @#{model.s} = #{model.cs}.find(params[:id])
+    @<%= model.s %> = <%= model.cs %>.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @#{model.s} }
+      format.xml  { render :xml => @<%= model.s %> }
     end
   end
 
-  # GET /#{model.p}/new
-  # GET /#{model.p}/new.xml
+  # GET /<%= model.p %>/new
+  # GET /<%= model.p %>/new.xml
   def new
-    @#{model.s} = #{model.cs}.new
+    @<%= model.s %> = <%= model.cs %>.new
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @#{model.s} }
+      format.xml  { render :xml => @<%= model.s %> }
     end
   end
 
-  # GET /#{model.p}/1/edit
+  # GET /<%= model.p %>/1/edit
   def edit
-    @#{model.s} = #{model.cs}.find(params[:id])
+    @<%= model.s %> = <%= model.cs %>.find(params[:id])
   end
 
-  # POST /#{model.p}
-  # POST /#{model.p}.xml
+  # POST /<%= model.p %>
+  # POST /<%= model.p %>.xml
   def create
-    @#{model.s} = #{model.cs}.new(params[:#{model.s}])
+    @<%= model.s %> = <%= model.cs %>.new(params[:<%= model.s %>])
 
     respond_to do |format|
-      if @#{model.s}.save
-        flash[:notice] = '#{model.cs} was successfully created.'
-        format.html { redirect_to(@#{model.s}) }
-        format.xml  { render :xml => @#{model.s}, :status => :created, :location => @#{model.s} }
+      if @<%= model.s %>.save
+        flash[:notice] = '<%= model.cs %> was successfully created.'
+        format.html { redirect_to(@<%= model.s %>) }
+        format.xml  { render :xml => @<%= model.s %>, :status => :created, :location => @<%= model.s %> }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @#{model.s}.errors, :status => :unprocessable_entity }
+        format.xml  { render :xml => @<%= model.s %>.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # PUT /#{model.p}/1
-  # PUT /#{model.p}/1.xml
+  # PUT /<%= model.p %>/1
+  # PUT /<%= model.p %>/1.xml
   def update
-    @#{model.s} = #{model.cs}.find(params[:id])
+    @<%= model.s %> = <%= model.cs %>.find(params[:id])
 
     respond_to do |format|
-      if @#{model.s}.update_attributes(params[:#{model.s}])
-        flash[:notice] = '#{model.cs} was successfully updated.'
-        format.html { redirect_to(@#{model.s}) }
+      if @<%= model.s %>.update_attributes(params[:<%= model.s %>])
+        flash[:notice] = '<%= model.cs %> was successfully updated.'
+        format.html { redirect_to(@<%= model.s %>) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @#{model.s}.errors, :status => :unprocessable_entity }
+        format.xml  { render :xml => @<%= model.s %>.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /#{model.p}/1
-  # DELETE /#{model.p}/1.xml
+  # DELETE /<%= model.p %>/1
+  # DELETE /<%= model.p %>/1.xml
   def destroy
-    @#{model.s} = #{model.cs}.find(params[:id])
-    @#{model.s}.destroy
+    @<%= model.s %> = <%= model.cs %>.find(params[:id])
+    @<%= model.s %>.destroy
 
     respond_to do |format|
-      format.html { redirect_to(#{model.p}_url) }
+      format.html { redirect_to(<%= model.p %>_url) }
       format.xml  { head :ok }
     end
   end

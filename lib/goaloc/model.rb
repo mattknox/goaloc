@@ -78,7 +78,7 @@ class Model
     end
 
     def validates(validation_type, field, opts = { })
-      self.validations << opts.merge { :val_type => validation_type, :field => field}
+      self.validations << opts.merge({ :val_type => validation_type, :field => field})
     end
     
     def belongs_to(m, o = { }) associate(:belongs_to, m, o) end

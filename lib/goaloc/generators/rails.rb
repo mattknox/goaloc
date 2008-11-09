@@ -4,6 +4,16 @@ class Rails < Generator
   cattr_accessor :rails_models
   self.rails_models = []
   
+  module RailsModel
+    def rails_symname
+      '@' + self.to_s.underscore
+    end
+    
+    def default_path_method
+      self.min_rails_route.map {|c| c.to_s.underscore }.join('_') + '_path(' + self.minimum_route.map {|c| c.symname }.join(', ') + ')'
+    end
+  end
+  
   def generate
     app.models.values.each do |m|
       rails_models  << railsify(m)
@@ -20,25 +30,9 @@ class Rails < Generator
   end
 
   def railsify(model)
-    #TODO: kill this and make it a module.  How to do?
-    Object.class_eval "
-class Rails#{model} < #{model}
-  class << self
-    def symname
-      '@' + self.superclass.to_s.underscore
-    end
-
-    def min_rails_route
-      self.minimum_route.map {|c| ('Rails' + c.to_s).constantize}
-    end
-    
-    def default_path_method
-      self.min_rails_route.map {|c| c.superclass.to_s.underscore }.join('_') + '_path(' + self.min_rails_route.map {|c| c.symname }.join(', ') + ')'
-    end
-  end
-end
-"
-  "Rails#{model}".constantize
+    model.class_eval( "extend RailsModel" )
+    #TODO: kill this and use the module above.
+    model
   end
 
   def app_name(opts = { })
