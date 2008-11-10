@@ -1,15 +1,25 @@
 require File.dirname(__FILE__) + '/test_helper.rb'
 
 class TestGoaloc < Test::Unit::TestCase
+
+  def clean_app!
+    if defined?(@app)
+      @app.models.values.each do |m|
+        Object.send(:remove_const, m.to_s.to_sym)
+      end
+    end
+    @app = App.new
+  end
+  
   context "an app" do
-    setup { @app = App.new }
+    setup { clean_app! }
     
     should "route a single symbol" do
       assert @app.route(:users)
     end
 
     context "that called route :users " do
-      setup { @app.route(:users) }
+      setup { clean_app!; @app.route(:users) }
       
       should "have nonempty routes" do
         assert !@app.routes.empty?
@@ -42,53 +52,53 @@ class TestGoaloc < Test::Unit::TestCase
       end
     end
 
-    context "that routes a nested route" do
-      setup { @app.route([:posts, :comments])}
+#     context "that routes a nested route" do
+#       setup { clean_app!; @app.route([:posts, :comments])}
 
-      should "define a nested route" do
-        assert @app.routes.member?([:posts, :comments])
-      end
+#       should "define a nested route" do
+#         assert @app.routes.member?([:posts, :comments])
+#       end
       
-      should "define Post and Comment"do
-        assert defined?(Post)
-        assert defined?(Comment)
-      end
+#       should "define Post and Comment"do
+#         assert defined?(Post)
+#         assert defined?(Comment)
+#       end
 
-      should "define a simple Post route" do
-        assert_equal Post.routes, [[Post]]
-      end
+#       should "define a simple Post route" do
+#         assert_equal Post.routes, [[Post]]
+#       end
 
-      should "define a simple Comment route" do
-        assert_equal Comment.routes, [[Post, Comment]]
-      end
+#       should "define a simple Comment route" do
+#         assert_equal Comment.routes, [[Post, Comment]]
+#       end
 
-      should "make an association from Post to Comment" do
-        assert_equal "comments", Post.associations.keys.first
-      end
+#       should "make an association from Post to Comment" do
+#         assert_equal "comments", Post.associations.keys.first
+#       end
 
-      should "make an association from Comment to Post" do
-        assert_equal "post", Comment.associations.keys.first
-      end
+#       should "make an association from Comment to Post" do
+#         assert_equal "post", Comment.associations.keys.first
+#       end
 
-      should "set a foreign key on comment" do
-        assert_equal "post_id", Comment.foreign_keys.first
-      end
-    end
+#       should "set a foreign key on comment" do
+#         assert_equal "post_id", Comment.foreign_keys.first
+#       end
+#     end
 
-    context "that routes a highly complex route" do
-      setup { @app.route [:users, :profiles, [:posts, [:comments, :ratings]], [:pictures, :ratings]] }
+#     context "that routes a highly complex route" do
+#       setup { clean_app!;  @app.route( [:users, :profiles, [:posts, [:comments, :ratings]], [:pictures, :ratings]]) }
 
-      should "have routes on User" do
-        assert_equal User.routes, [[User]]
-      end
+#       should "have routes on User" do
+#         assert_equal User.routes, [[User]]
+#       end
 
-      should "have routes on Profiles" do
-        assert_equal Profile.routes, [[User, Profile]]
-      end
+#       should "have routes on Profiles" do
+#         assert_equal Profile.routes, [[User, Profile]]
+#       end
 
-      should "have routes on Posts" do
-        assert_equal Post.routes, [[User, Post]]
-      end
-    end
+#       should "have routes on Posts" do
+#         assert_equal Post.routes, [[User, Post]]
+#       end
+#     end
   end
 end
