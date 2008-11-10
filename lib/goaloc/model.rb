@@ -2,7 +2,7 @@ class Model
   def Model.build_and_route(name, route)
     klass = name.to_s.singularize.camelize.constantize rescue nil
     if klass
-      klass.routes << route unless klass.routes.include? route
+      klass.routes << route unless (klass.routes.include?(route) or route.blank? ) #FIXME: see why nil is getting called in the first place
       puts "#{klass} #{klass.routes}"
       klass
     else
