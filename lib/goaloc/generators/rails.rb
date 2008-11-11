@@ -31,7 +31,6 @@ class Rails < Generator
 
   def railsify(model)
     model.class_eval( "extend RailsModel" )
-    #TODO: kill this and use the module above.
     model
   end
 
