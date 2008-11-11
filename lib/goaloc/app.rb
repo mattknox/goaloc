@@ -49,7 +49,7 @@ class App
   end
   
   def valid_routeset?(args) # TODO: make this less permissive.
-    args.is_a? Array and !args.empty?
+    args.is_a? Array and !args.empty? and args.first.is_a?(Symbol)
   end
 
   def build_model(arg, r)
