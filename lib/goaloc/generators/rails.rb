@@ -55,7 +55,7 @@ class Rails < Generator
   end
 
   def gen_migration_string(model)
-    template_str = File.open("./goaloc/generators/rails/migration.rb.erb").read
+    template_str = File.open("#{File.dirname(__FILE__)/rails/migration.rb.erb").read
     ERB.new(template_str).result(binding)
   end
   
@@ -78,7 +78,7 @@ class Rails < Generator
   end
 
   def gen_controller_string(model)
-    template_str = File.open("./goaloc/generators/rails/controller.rb.erb").read
+    template_str = File.open("#{File.dirname(__FILE__)./rails/controller.rb.erb").read
     ERB.new(template_str).result(binding)
   end
   
