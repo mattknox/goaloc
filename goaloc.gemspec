@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.default_executable = %q{goaloc}
   s.description = %q{TODO}
   s.email = %q{matthewknox@gmail.com}
-  s.executables = ["goaloc']
+  s.executables = ["goaloc"]
   s.homepage = %q{http://github.com/mattknox/goaloc}
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.2.0}
