@@ -21,7 +21,7 @@ class App
   end
   
   def route_usage # FIXME: make this only read once.
-    f = File.open("doc/route_usage")
+    f = File.open("../doc/route_usage")
     s = f.read
     f.close
     s
@@ -38,7 +38,7 @@ class App
   end
   
   def route(*args)  # really want to name this route.  should I rename it?
-    if valid_routeset?(args)
+    if valid_routeset?(*args)
       self.routes += args
       args.each do |a|
         build_model(a, nil)

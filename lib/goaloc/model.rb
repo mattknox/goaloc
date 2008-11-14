@@ -77,6 +77,10 @@ class Model
       :has_many == meth ? nice_name.pluralize : nice_name
     end
 
+    def resource_tuple # thanks to Josh Ladieu for this: it's the array of things needed to get to an instance of this class
+      # TODO: implement this  (should return 
+    end
+    
     def validates(validation_type, field, opts = { })
       self.validations << opts.merge({ :val_type => validation_type, :field => field})
     end
