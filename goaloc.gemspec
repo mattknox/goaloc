@@ -1,7 +1,6 @@
-require 'rake'
 Gem::Specification.new do |s|
   s.name = %q{goaloc}
-  s.version = "0.0.2"
+  s.version = "0.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["matt knox"]
@@ -10,7 +9,6 @@ Gem::Specification.new do |s|
   s.email = %q{matthewknox@gmail.com}
   s.homepage = %q{http://github.com/mattknox/goaloc}
   s.require_paths = ["lib"]
-  s.files = Dir['lib/**/*.rb'] + Dir['bin/*'] + Dir['lib/**/**/*.rb'] + Dir['test/*.rb'] + Dir['script/*'] + Dir['doc/*']
   s.rubygems_version = %q{1.2.0}
   s.summary = %q{TODO}
 
