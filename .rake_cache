@@ -1,0 +1,16 @@
+rake clobber_rcov        # Remove rcov products for rcov
+rake clobber_rdoc        # Remove rdoc products
+rake gemspec             # Generate and validates gemspec
+rake gemspec:generate    # Generates the gemspec
+rake gemspec:validate    # Validates the gemspec
+rake rcov                # Analyze code coverage with tests
+rake rdoc                # Build the rdoc HTML Files
+rake release             # Release the current version.
+rake rerdoc              # Force a rebuild of the RDOC files
+rake test                # Run tests
+rake version             # Displays the current version
+rake version:bump:major  # Bump the gemspec by a major version.
+rake version:bump:minor  # Bump the gemspec by a minor version.
+rake version:bump:patch  # Bump the gemspec by a patch version.
+rake version:display     # Displays the current version
+rake version:write       # Creates an initial version file.
