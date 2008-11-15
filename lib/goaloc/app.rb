@@ -4,7 +4,7 @@ class App
   def initialize(name = nil, options = { })
     self.name = (name or generate_name)
     self.options = options
-    self.models = { } # why do I make this a hash, anyway?
+    self.models = { }
     self.routes = []
   end
 
@@ -20,8 +20,8 @@ class App
     Rails.new.destroy(self)
   end
   
-  def route_usage # FIXME: make this only read once.
-    f = File.open("../doc/route_usage")
+  def route_usage 
+    f = File.open("#{File.dirname(__FILE__)}/../../doc/route_usage")
     s = f.read
     f.close
     s
@@ -37,8 +37,8 @@ class App
     Object.send(:remove_const, klass.to_s.to_sym)
   end
   
-  def route(*args)  # really want to name this route.  should I rename it?
-    if valid_routeset?(*args)
+  def route(*args)
+    if valid_routeset?(args)
       self.routes += args
       args.each do |a|
         build_model(a, nil)
@@ -48,8 +48,14 @@ class App
     end
   end
   
-  def valid_routeset?(args) # TODO: make this less permissive.
-    args.is_a? Array and !args.empty? and args.first.is_a?(Symbol)
+  def valid_routeset?(arg) 
+    arg.is_a?(Symbol) or valid_routeset_array?(arg)
+  end
+
+  def valid_routeset_array?(arg)
+    arg.is_a? Array and
+      !arg.empty? and
+      arg.all? { |x| valid_routeset?(x) }
   end
 
   def build_model(arg, r)

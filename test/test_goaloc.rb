@@ -2,56 +2,6 @@ require File.dirname(__FILE__) + '/test_helper.rb'
 
 class TestGoaloc < Test::Unit::TestCase
 
-  def clean_app!
-    if defined?(@app)
-      @app.models.values.each do |m|
-        Object.send(:remove_const, m.to_s.to_sym)
-      end
-    end
-    @app = App.new
-  end
-  
-  context "an app" do
-    setup { clean_app! }
-    
-    should "route a single symbol" do
-      assert @app.route(:users)
-    end
-
-    context "that called route :users " do
-      setup { clean_app!; @app.route(:users) }
-      
-      should "have nonempty routes" do
-        assert !@app.routes.empty?
-      end
-
-      should "include a route that is just :users" do
-        assert @app.routes.member?(:users)
-      end
-      
-      should "define User class" do
-        assert defined?(User)
-      end
-
-      should "have routes on User" do
-        assert_equal User.routes, [[User]]
-      end
-
-      context "and User.add_attrs" do
-        setup { User.add_attrs("name:string email:str age:int ssn:integer dead:boolean cute:bool") }
-
-        should "map all six given attrs" do
-          assert !User.fields.empty?
-          assert_equal "string", User.fields["name"]
-          assert_equal "string", User.fields["email"]
-          assert_equal "integer", User.fields["age"]
-          assert_equal "integer", User.fields["ssn"]
-          assert_equal "boolean", User.fields["dead"]
-          assert_equal "boolean", User.fields["cute"]
-        end
-      end
-    end
-
 #     context "that routes a nested route" do
 #       setup { clean_app!; @app.route([:posts, :comments])}
 
@@ -100,5 +50,4 @@ class TestGoaloc < Test::Unit::TestCase
 #         assert_equal Post.routes, [[User, Post]]
 #       end
 #     end
-  end
 end
