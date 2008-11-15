@@ -17,20 +17,24 @@ class Rails < Generator
       self.resource_tuple.map {|c| c.to_s.underscore }
     end
     
-    def rails_object_path
-      self.rails_underscore_tuple.join("_") + '_path(' + self.rails_ivar_tuple.join(', ')  + ')'
+    def rails_object_path(str = "@")
+      self.rails_underscore_tuple.join("_") + '_path(' + (self.rails_ivar_tuple[0..-2]  + ["#{str.to_s + self.s})"]).join(', ')
     end
     
-    def rails_edit_path
-      "edit_" + self.rails_object_path
+    def rails_edit_path(str = nil)
+      if str
+        "edit_" + self.rails_object_path(str)
+      else
+        "edit_" + self.rails_object_path
+      end
     end
     
     def rails_new_path
-      "new_" + self.rails_collection_path
+      "new_" + self.rails_underscore_tuple[0..-2].join("_") + "#{self.s}_path(" + self.rails_ivar_tuple(-2).join(', ') + ')'
     end
 
-    def rails_collection_path
-      self.rails_underscore_tuple.join("_") + '_path(' + self.rails_ivar_tuple(-2).join(', ') + ')'
+    def rails_collection_path 
+      (self.rails_underscore_tuple[0..-2] + [self.p]).join("_") +  "_path(" + self.rails_ivar_tuple(-2).join(', ') + ')'
     end
 
     def nested?
@@ -38,21 +42,22 @@ class Rails < Generator
     end
     
     # this returns @foo = Foo.find(params[:param_name]) or @foo = @bar.foos.find(params[:param_name])
-    def rails_finder_string
+    def rails_finder_string(id_str = nil)
+      id_str ||= "#{self.s}_id"
       if self.nested?
         enclosing_resource = self.resource_tuple[-2]
-        "@#{self.s} = @#{enclosing_resource.s}.#{self.p}.find(params[:#{self.s}_id])"
+        "@#{self.s} = @#{enclosing_resource.s}.#{self.p}.find(params[:#{id_str}])"
       else
-        "@#{self.s} = #{self.cs}.find(params[:id])"
+        "@#{self.s} = #{self.cs}.find(params[:#{id_str}])"
       end
     end
     
     def rails_collection_finder_string
       if self.nested?
         enclosing_resource = self.resource_tuple[-2]
-        "@#{self.s} = @#{enclosing_resource.s}.#{self.p}"
+        "@#{self.p} = @#{enclosing_resource.s}.#{self.p}"
       else
-        "@#{self.s} = #{self.cs}.find(:all)"
+        "@#{self.p} = #{self.cs}.find(:all)"
       end
     end
 
@@ -68,17 +73,20 @@ class Rails < Generator
     # TODO: right now this doesn't handle routes that have an multiply routed resource in the chain somewhere
     # eg route :blogs, [:users, [:blogs, :posts]]  It's obvious in posts that blogs is the nested bit.  
     def rails_find_method
-      wrap_method("find_#{self.s}", self.resource_tuple.map { |var| var.rails_finder_string })
+      wrap_method("find_#{self.s}",
+                  self.resource_tuple[0..-2].map { |var| var.rails_finder_string } +
+                  [self.rails_finder_string("id")] + 
+                  self.nested_resources.map { |k,v| v.rails_new_object_string()})
     end
 
     def rails_find_collection_method
       wrap_method("find_#{self.p}", (self.resource_tuple[0..-2].map { |var| var.rails_finder_string } +
-                  [self.rails_collection_finder_string]))
+                                     [self.rails_collection_finder_string, self.rails_new_object_string]))
     end
-
+    
     def rails_new_object_method
       wrap_method("new_#{self.s}", (self.resource_tuple[0..-2].map { |var| var.rails_finder_string } +
-                  [self.rails_new_object_string]))
+                                    [self.rails_new_object_string]))
     end
     
     def wrap_method(name, arr, indent_string = "  ")
@@ -169,6 +177,11 @@ class Rails < Generator
     template_str = File.open("#{File.dirname(__FILE__)}/rails/_form.html.erb").read
     ERB.new(template_str).result(binding)
   end
+
+  def gen_show_string(model)
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/show.html.erb").read
+    ERB.new(template_str).result(binding)
+  end
   
   def gen_view(model)
     cs = model.to_s                      # singular capitalized
@@ -182,16 +195,10 @@ class Rails < Generator
       f.write self.gen_index_string(model)
     end
     
-    f = File.new("#{view_dir}show.html.erb", "w") 
-    model.fields.each do |k, v|
-      f.write "
-  <p>
-    <b>#{k}:</b>
-    <%=h @#{s}.#{k} %>
-  </p>\n"
+    File.open("#{view_dir}show.html.erb", "w") do |f|
+      f.write self.gen_show_string(model)
     end
-    f.write "<%= link_to 'Edit', edit_#{s}_path(@#{s}) %> |\n <%= link_to 'Back', #{p}_path %>"
-    f.close
+    
     f = File.new("#{view_dir}new.html.erb", "w")
     f.write "<%= render :partial => '#{p}/form', :object => @#{s} %>"
     f.close

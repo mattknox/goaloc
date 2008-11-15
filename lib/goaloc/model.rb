@@ -34,6 +34,7 @@ class Model
       self.validations = []
 
       class << self
+        # TODO: can some or all of this be moved out of here and into the model class?
         # thanks to Josh Ladieu for this: it's the array of things needed to get to an instance of this class
         def resource_tuple  # this returns the minimal route to this model, or nothing, if there is no unambiguous minimal route
           routelist = self.routes.sort {|x, y| x.length <=> y.length }
@@ -42,6 +43,10 @@ class Model
           else #TODO: maybe should deal with a case where there's a simplest route that all the others contain.
             nil
           end
+        end
+
+        def nested_resources
+          APP.models.reject {|k,v| v.routes != [(self.resource_tuple + [v])] }
         end
         
         def cs

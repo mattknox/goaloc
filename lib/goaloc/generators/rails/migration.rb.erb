@@ -5,7 +5,7 @@ class Create<%= model.cp %> < ActiveRecord::Migration
   <%= "      t." + v + " :" + k  %>
 <% end %>
 <% model.foreign_keys.map do |k, v| %>
-  <%= "      t.references :" + k %>
+  <%= "      t.references :" + k[0..-4] %>
 <% end %>
       t.timestamps
     end

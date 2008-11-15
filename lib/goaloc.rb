@@ -12,6 +12,7 @@ module Goaloc
 end
 
 @app = App.new
+APP = @app
 
 def generate(*args)
   @app.generate(*args)

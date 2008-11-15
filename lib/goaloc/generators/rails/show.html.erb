@@ -1,0 +1,13 @@
+<% model.fields.each do |k, v| %>
+  <p>
+    <b><%= k %>:</b>
+    <%= "<%=h @#{model.s}.#{k} %" + ">" %>
+  </p>
+<% end %>
+  <%= "<%= link_to 'Edit', #{model.rails_edit_path} %" + ">|\n <%= link_to 'Back', #{model.rails_collection_path} %" + ">"  %>
+<%  model.nested_resources.each do |k, v| %>
+  <p>
+    <%=  "make a new #{v.s} " %>
+    <%=  "<%= render :partial => '#{v.p}/form', :object => @#{v.s} %" + ">" %>
+  </p>
+<% end %>
