@@ -10,7 +10,7 @@ class Rails < Generator
     end
     
     def default_path_method
-      self.min_rails_route.map {|c| c.to_s.underscore }.join('_') + '_path(' + self.minimum_route.map {|c| c.symname }.join(', ') + ')'
+      self.min_rails_route.map {|c| c.to_s.underscore }.join('_') + '_path(' + self.resource_tuple.map {|c| c.symname }.join(', ') + ')'
     end
   end
   

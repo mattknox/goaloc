@@ -3,7 +3,6 @@ class Model
     klass = name.to_s.singularize.camelize.constantize rescue nil
     if klass
       klass.routes << route unless (klass.routes.include?(route) or route.blank? or !route.member?(klass)) #FIXME: see why nil is getting called in the first place
-      puts "#{klass} #{klass.routes}"
       klass
     else
       x = Model.make_model_class(name)
@@ -35,7 +34,8 @@ class Model
       self.validations = []
 
       class << self
-        def minimum_route  # this returns the minimal route to this model, or nothing, if there is no unambiguous minimal route
+        # thanks to Josh Ladieu for this: it's the array of things needed to get to an instance of this class
+        def resource_tuple  # this returns the minimal route to this model, or nothing, if there is no unambiguous minimal route
           routelist = self.routes.sort {|x, y| x.length <=> y.length }
           if (routelist.length == 1) || (routelist.first.length == 1) #take the trivial route or the only route
             routelist.first
@@ -77,10 +77,6 @@ class Model
       :has_many == meth ? nice_name.pluralize : nice_name
     end
 
-    def resource_tuple # thanks to Josh Ladieu for this: it's the array of things needed to get to an instance of this class
-      # TODO: implement this  (should return 
-    end
-    
     def validates(validation_type, field, opts = { })
       self.validations << opts.merge({ :val_type => validation_type, :field => field})
     end
