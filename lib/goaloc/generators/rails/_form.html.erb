@@ -1,13 +1,13 @@
-<% form_for(@#{model.s}) do |f| %>\n  <%= f.error_messages %>"
-    model.fields.each do |k, v|
-      f.write
+<%= "<% form_for([#{model.rails_ivar_tuple.join(",")}]) do |f| %" + ">" %>
+<%= "<%= f.error_messages %" + ">" %>
+<% model.fields.each do |k, v| %>
   <p>
-    <%= f.label :#{k} %><br />
-    <%= f.text_field :#{k} %>
-  </p>
-    end
-    f.write
-  <p>
-    <%= f.submit "Submit" %>
+    <%= "    <%= f.label :#{k} %" + "><br />" %>
+    <%= "    <%= f.text_field :#{k} %" + ">" %>
   </p>
 <% end %>
+
+  <p>
+    <%= "<%= f.submit 'Submit' %" + ">" %>
+  </p>
+<%= "<% end %" + ">" %>

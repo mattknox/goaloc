@@ -9,8 +9,80 @@ class Rails < Generator
       '@' + self.to_s.underscore
     end
     
-    def default_path_method
-      self.min_rails_route.map {|c| c.to_s.underscore }.join('_') + '_path(' + self.resource_tuple.map {|c| c.symname }.join(', ') + ')'
+    def rails_ivar_tuple(end_index = -1)
+      self.resource_tuple[0..end_index].map {|c| c.rails_symname }
+    end
+    
+    def rails_underscore_tuple
+      self.resource_tuple.map {|c| c.to_s.underscore }
+    end
+    
+    def rails_object_path
+      self.rails_underscore_tuple.join("_") + '_path(' + self.rails_ivar_tuple.join(', ')  + ')'
+    end
+    
+    def rails_edit_path
+      "edit_" + self.rails_object_path
+    end
+    
+    def rails_new_path
+      "new_" + self.rails_collection_path
+    end
+
+    def rails_collection_path
+      self.rails_underscore_tuple.join("_") + '_path(' + self.rails_ivar_tuple(-2).join(', ') + ')'
+    end
+
+    def nested?
+      self.resource_tuple.length > 1
+    end
+    
+    # this returns @foo = Foo.find(params[:param_name]) or @foo = @bar.foos.find(params[:param_name])
+    def rails_finder_string
+      if self.nested?
+        enclosing_resource = self.resource_tuple[-2]
+        "@#{self.s} = @#{enclosing_resource.s}.#{self.p}.find(params[:#{self.s}_id])"
+      else
+        "@#{self.s} = #{self.cs}.find(params[:id])"
+      end
+    end
+    
+    def rails_collection_finder_string
+      if self.nested?
+        enclosing_resource = self.resource_tuple[-2]
+        "@#{self.s} = @#{enclosing_resource.s}.#{self.p}"
+      else
+        "@#{self.s} = #{self.cs}.find(:all)"
+      end
+    end
+
+    def rails_new_object_string
+      if self.nested?
+        enclosing_resource = self.resource_tuple[-2]
+        "@#{self.s} = @#{enclosing_resource.s}.#{self.p}.build(params[:#{self.s}])"
+      else
+        "@#{self.s} = #{self.cs}.new(params[:#{self.s}])"
+      end
+    end
+    
+    # TODO: right now this doesn't handle routes that have an multiply routed resource in the chain somewhere
+    # eg route :blogs, [:users, [:blogs, :posts]]  It's obvious in posts that blogs is the nested bit.  
+    def rails_find_method
+      wrap_method("find_#{self.s}", self.resource_tuple.map { |var| var.rails_finder_string })
+    end
+
+    def rails_find_collection_method
+      wrap_method("find_#{self.p}", (self.resource_tuple[0..-2].map { |var| var.rails_finder_string } +
+                  [self.rails_collection_finder_string]))
+    end
+
+    def rails_new_object_method
+      wrap_method("new_#{self.s}", (self.resource_tuple[0..-2].map { |var| var.rails_finder_string } +
+                  [self.rails_new_object_string]))
+    end
+    
+    def wrap_method(name, arr, indent_string = "  ")
+      indent_string + "def #{name}\n" + arr.map { |s| indent_string + "  " + s }.join("\n") + "\n#{indent_string}end"
     end
   end
   
@@ -40,11 +112,11 @@ class Rails < Generator
     name
   end
 
-  def gen_app(opts = { })  # TODO:  this is just heinous.  Get rid of it.  
+  def gen_app(opts = { })  # TODO:  this is just heinous.  Get rid of it.  Ideally make it possible to do a suspecders-like thing.
     `rails -d mysql #{app_name(opts)}`
   end
   
-  def gen_routes  # FIXME:  this is pretty bad, but works
+  def gen_routes
     arr = app.routes
     insert_string = arr.map { |a| gen_route(a)}.join("\n") + "\n"
     File.open("#{app_name}/config/routes.rb", "w") do |f|
@@ -87,6 +159,16 @@ class Rails < Generator
     f.write(gen_controller_string(model))
     f.close
   end
+
+  def gen_index_string(model)
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/index.html.erb").read
+    ERB.new(template_str).result(binding)
+  end
+
+  def gen_form_string(model)
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/_form.html.erb").read
+    ERB.new(template_str).result(binding)
+  end
   
   def gen_view(model)
     cs = model.to_s                      # singular capitalized
@@ -96,26 +178,10 @@ class Rails < Generator
 
     view_dir = "#{app_name}/app/views/#{p}/"
     Dir.mkdir view_dir rescue nil
-    f = File.new("#{view_dir}index.html.erb", "w")
-    f.write "<h1>Listing #{p}</h1>
-
-<table>
-  <tr>" + model.fields.map { |k, v| "<th>#{k.capitalize}</th>"}.join("\n") + 
-"  </tr>
-
-<% for #{s} in @#{p} %>
-  <tr>" + model.fields.map { |k, v| "<td><%=h #{s}.#{k} %></td>"}.join("\n") + 
-"    <td><%= link_to 'Show', #{s} %></td>
-    <td><%= link_to 'Edit', edit_#{s}_path(#{s}) %></td>
-    <td><%= link_to 'Destroy', #{s}, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New #{s}', new_#{s}_path %>"
-    f.close
+    File.open("#{view_dir}index.html.erb", "w") do |f|
+      f.write self.gen_index_string(model)
+    end
+    
     f = File.new("#{view_dir}show.html.erb", "w") 
     model.fields.each do |k, v|
       f.write "
@@ -132,21 +198,23 @@ class Rails < Generator
     f = File.new("#{view_dir}edit.html.erb", "w") 
     f.write "<%= render :partial => '#{p}/form', :object => @#{s} %>"
     f.close
-    f = File.new("#{view_dir}_form.html.erb", "w") #TODO: need to allow for using form-builders.
-    f.write "<% form_for(@#{s}) do |f| %>\n  <%= f.error_messages %>"
+    File.open("#{view_dir}_form.html.erb", "w") do |f|
+      f.write self.gen_form_string(model)
+    end
+    "<% form_for(@#{s}) do |f| %>\n  <%= f.error_messages %>"
     model.fields.each do |k, v|
-      f.write "
+       "
   <p>
     <%= f.label :#{k} %><br />
     <%= f.text_field :#{k} %>
   </p>\n"
     end
-    f.write "
+     "
   <p>
     <%= f.submit 'Update' %>
   </p>
 <% end %>"
-    f.close
+    
   end
 
   def gen_route(x, var = "map", pad = "  ")
