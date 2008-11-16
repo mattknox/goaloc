@@ -6,7 +6,11 @@ class Rails < Generator
   
   module RailsModel
     def rails_symname
-      '@' + self.to_s.underscore
+      '@' + self.s
+    end
+    
+    def rails_plural_symname
+      '@' + self.p
     end
     
     def rails_ivar_tuple(end_index = -1)
@@ -14,7 +18,7 @@ class Rails < Generator
     end
     
     def rails_underscore_tuple
-      self.resource_tuple.map {|c| c.to_s.underscore }
+      self.resource_tuple.map {|c| c.s }
     end
     
     def rails_object_path(str = "@")
@@ -30,7 +34,7 @@ class Rails < Generator
     end
     
     def rails_new_path
-      "new_" + self.rails_underscore_tuple[0..-2].join("_") + "#{self.s}_path(" + self.rails_ivar_tuple(-2).join(', ') + ')'
+      "new_" + (self.rails_underscore_tuple[0..-2] + ["#{self.s}"]).join("_") + "_path(" + self.rails_ivar_tuple(-2).join(', ') + ')'
     end
 
     def rails_collection_path 
