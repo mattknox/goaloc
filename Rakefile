@@ -19,7 +19,7 @@ end
 
 Rake::TestTask.new do |t|
   t.libs << 'lib'
-  t.pattern = 'test/**/*_test.rb'
+  t.pattern = 'test/**/test_*.rb'
   t.verbose = false
 end
 

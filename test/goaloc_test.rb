@@ -49,6 +49,12 @@ class GoalocTest < Test::Unit::TestCase
           assert_equal "boolean", User.fields["cute"]
         end
       end
+
+      context "and has extended RailsModel" do
+        setup { User.class_eval "extend Rails::RailsModel"}
+
+        should "have a "
+      end
     end
     
     context "that routes a nested route" do
@@ -84,20 +90,20 @@ class GoalocTest < Test::Unit::TestCase
       end
     end
     
-#     context "that routes a highly complex route" do
-#       setup { clean_app!;  @app.route( [:users, :profiles, [:posts, [:comments, :ratings]], [:pictures, :ratings]]) }
+    context "that routes a highly complex route" do
+      setup { clean_app!;  @app.route( [:applications, :profiles, [:blogposts, [:blogcomments, :ratings]], [:pictures, :ratings]]) }
       
-#       should "have routes on User" do
-#         assert_equal User.routes, [[User]]
-#       end
+      should "have routes on User" do
+        assert_equal Application.routes, [[Application]]
+      end
       
-#       should "have routes on Profiles" do
-#         assert_equal Profile.routes, [[User, Profile]]
-#       end
+      should "have routes on Profiles" do
+        assert_equal Profile.routes, [[Application, Profile]]
+      end
       
-#       should "have routes on Posts" do
-#         assert_equal Post.routes, [[User, Post]]  #this breaks for some reason that I don't understand.
-#       end
-#     end
+      should "have routes on Posts" do
+        assert_equal Blogpost.routes, [[Application, Blogpost]]  #this breaks for some reason that I don't understand.
+      end
+    end
   end
 end
