@@ -7,7 +7,6 @@ class Model
     else
       x = Model.make_model_class(name)
       x.routes << (route.to_a.clone << x)
-      puts "#{x} #{x.routes}"
       x
     end
   end
