@@ -12,11 +12,12 @@ class Model
   end
 
   def Model.db_type_map
-    { 
+    { # definitely have to add high-level datatypes.
       "str" => "string", "string" => "string", "s" => "string",
       "int" => "integer", "integer" => "integer", "i" => "integer",
       "bool" => "boolean", "boolean" => "boolean", "b" => "boolean",
-      "text" => "text", "t" => "text"
+      "text" => "text", "t" => "text",
+      "email" => "string", "url" => "string"
     }
   end
   

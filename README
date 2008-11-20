@@ -10,10 +10,15 @@ This is Generate on a Lot of Crack, which started its life as a more powerful sc
 
 -currently supports only rails, should add merb, maybe erlyweb, maybe others.
 -currently, goaloc does not generate useful views for nested resources.  So it is only better than ./script/generate scaffold  in that it makes the models and migrations easier.
--it should be easier to remove, rename, etc., attributes.
--it should support using a suspenders-style app skeleton 
--it should be better tested internally
--it should produce fully tested apps
+it should:
+-be easier to remove, rename, etc., attributes.
+-support using a suspenders-style app skeleton 
+-be better tested internally
+-support acts-as-tree things
+-have high-level datatypes, like email, url, ssn, etc..
+-handle hmt
+-handle singular resources
+-handle enums, so you can do some of the constraint stuff from PicoLisp
 
 == SYNOPSIS:
 
@@ -25,7 +30,12 @@ goaloc myblog
 >> Comment.add_attrs "body:text"
 >> generate
 
+route [:causes, { :has_many => :users, :through => :memberships }, :tasks, ]
 generate presently only knows how to make rails apps, but in principle, any REST-centric MVC app could be targeted comfortably, and even PHP apps could be done.
+
+{:type => :hmt, :a => :users, :b => :causes, :bidi => true }
+
+{:type => :tree, :class => :tasks}  maybe not so interesting, except that it should have wacky routes.
 
 == REQUIREMENTS:
 

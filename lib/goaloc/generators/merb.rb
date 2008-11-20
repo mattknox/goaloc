@@ -7,6 +7,7 @@ class Merb < Generator
     name
   end
 
+  # gonna get Foy to help with this.
   def gen_routes
   end
   def gen_migration(model)
