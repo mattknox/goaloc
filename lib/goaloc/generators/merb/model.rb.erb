@@ -1,0 +1,13 @@
+class <%= model.to_s %>
+  include DataMapper::Resource
+  
+  property :id, Serial
+
+<% model.fields.each do |k, v| %>
+  property :<%= "#{k}, #{Merb.db_value_name(v)}" %>
+<% end %>
+
+<% model.associations.each do |k, v| %>
+  <%= "#{v[:type]} :#{k}" %>
+<% end %>
+end

@@ -7,6 +7,7 @@ require "goaloc/app"
 require "goaloc/model"
 require "goaloc/generators/generator"
 require "goaloc/generators/rails"
+require "goaloc/generators/merb"
 
 module Goaloc
 end
