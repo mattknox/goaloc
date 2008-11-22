@@ -1,0 +1,54 @@
+class <%= model.cs -%> < Application
+  # provides :xml, :yaml, :js
+
+  def index
+    <%= model.merb_symname -%> = <%= model.cs -%>.all
+    display <%= model.merb_plural_symname -%>
+  end
+
+  def show(id)
+    <%= model.merb_find_string -%>
+    display <%= model.merb_symname -%>
+  end
+
+  def new
+    only_provides :html
+    <%= model.merb_make_new  -%>
+    display <%= model.merb_symname -%>
+  end
+
+  def edit(id)
+    only_provides :html
+    <%= model.merb_find_string -%>
+    display <%= model.merb_symname -%>
+  end
+
+  def create(<%= model.s -%>)
+    <%= model.merb_make_new  -%>
+    if <%= model.merb_symname -%>.save
+      redirect resource(<%= model.merb_symname -%>), :message => {:notice => "<%= model.cs -%> was successfully created"}
+    else
+      message[:error] = "<%= model.cs -%> failed to be created"
+      render :new
+    end
+  end
+
+  def update(id, model.s)
+    <%= model.merb_find_string -%>
+    if <%= model.merb_symname -%>.update_attributes(<%= model.s -%>)
+       redirect resource(<%= model.merb_symname -%>)
+    else
+      display <%= model.merb_symname -%>, :edit
+    end
+  end
+
+  def destroy(id)
+    <%= model.merb_find_string -%>
+    if <%= model.merb_symname -%>.destroy
+      redirect resource(:<%= s %>)
+    else
+      raise InternalServerError
+    end
+  end
+
+end # <%= model.cs -%>

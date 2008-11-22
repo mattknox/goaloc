@@ -5,6 +5,22 @@ class Merb < Generator
   self.merb_models = []
 
   module MerbModel
+    def merb_symname
+      '@' + self.s
+    end
+    
+    def merb_plural_symname
+      '@' + self.p
+    end
+    
+    def merb_find_string
+      "    #{self.merb_symname} = #{self.cs}.get(id)
+    raise NotFound unless <%= self.merb_symname -%>"
+    end
+
+    def merb_make_new
+      self.merb_symname + " #{self.cs}.new" 
+    end
   end
   
   def app_name(opts = { })
