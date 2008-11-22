@@ -25,6 +25,10 @@ class Merb < Generator
     end
   end
   # gonna get Foy to help with this.
+  def gen_app # this is just heinous.  Maybe get rid of it?
+    `merb-gen app #{app.name}`
+  end
+  
   def gen_routes
   end
   def gen_migration(model)
