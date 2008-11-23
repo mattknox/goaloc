@@ -74,7 +74,8 @@ class Merb < Generator
   def gen_routes_string
     arr = app.routes
     insert_string = arr.map { |a| gen_route(a)}.join("\n") + "\n"
-    "ActionController::Routing::Routes.draw do |map|\n" + 
+    'Merb.logger.info("Compiling routes...")
+Merb::Router.prepare do' + "\n"  + 
       insert_string + 
       "end"
   end
