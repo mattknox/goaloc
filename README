@@ -30,12 +30,14 @@ goaloc myblog
 >> Comment.add_attrs "body:text"
 >> generate
 
-route [:causes, { :has_many => :users, :through => :memberships }, :tasks, ]
-generate presently only knows how to make rails apps, but in principle, any REST-centric MVC app could be targeted comfortably, and even PHP apps could be done.
+generate presently only knows how to make rails apps, and part of merb apps, but in principle, any REST-centric MVC app could be targeted comfortably, and even PHP apps could be done.
 
+How should I handle has_many through?
 {:type => :hmt, :a => :users, :b => :causes, :bidi => true }
 
 {:type => :tree, :class => :tasks}  maybe not so interesting, except that it should have wacky routes.
+
+route [:causes, { :has_many => :users, :through => :memberships }, :tasks, ]
 
 == REQUIREMENTS:
 
