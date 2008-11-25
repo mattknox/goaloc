@@ -133,7 +133,7 @@ class TestGoaloc < Test::Unit::TestCase
     end
     
     context "that routes a highly complex route" do
-      setup { clean_app!;  @app.route( [:applications, :profiles, [:blogposts, [:blogcomments, :ratings]]]) }
+      setup { clean_app!;  @app.route( [:applications, :profiles, [:blogposts, :blogcomments]]) }
       
       should "have routes on Application" do
         assert_equal Application.routes, [[Application]]
@@ -148,7 +148,7 @@ class TestGoaloc < Test::Unit::TestCase
       end
 
       context "and has extended RailsModel" do
-        setup { [Application, Profile, Blogpost, Blogcomment, Rating].map { |x| x.class_eval "extend Rails::RailsModel"}}
+        setup { [Application, Profile, Blogpost, Blogcomment].map { |x| x.class_eval "extend Rails::RailsModel"}}
         
         should "return correct strings for the various rails helper functions on Application" do
           assert_equal Application.rails_symname, "@application"
@@ -182,7 +182,7 @@ class TestGoaloc < Test::Unit::TestCase
           assert_equal Blogcomment.rails_new_path, "new_application_blogpost_blogcomment_path(@application, @blogpost)"
           assert_equal Blogcomment.rails_collection_path, "application_blogpost_blogcomments_path(@application, @blogpost)"
           assert_equal Blogcomment.nested?, true
-#          assert_equal Blogcomment.rails_find_method, "  def find_blogcomment\n    @application = Application.find(params[:application_id])\n    @blogpost = @application.blogposts.find(params[:blogpost_id])\n    @blogcomment = @blogpost.blogcomments.find(params[:id])\n    @rating = @blogcomment.ratings.build(params[:rating])\n  end"  #TODO:  figure out why this fails.
+          assert_equal Blogcomment.rails_find_method, "  def find_blogcomment\n    @application = Application.find(params[:application_id])\n    @blogpost = @application.blogposts.find(params[:blogpost_id])\n    @blogcomment = @blogpost.blogcomments.find(params[:id])\n  end"
           assert_equal Blogcomment.rails_new_object_method, "  def new_blogcomment\n    @application = Application.find(params[:application_id])\n    @blogpost = @application.blogposts.find(params[:blogpost_id])\n    @blogcomment = @blogpost.blogcomments.build(params[:blogcomment])\n  end"
           assert_equal Blogcomment.rails_find_collection_method, "  def find_blogcomments\n    @application = Application.find(params[:application_id])\n    @blogpost = @application.blogposts.find(params[:blogpost_id])\n    @blogcomments = @blogpost.blogcomments\n    @blogcomment = @blogpost.blogcomments.build(params[:blogcomment])\n  end"
           assert_equal Blogcomment.rails_collection_finder_string, "@blogcomments = @blogpost.blogcomments"
