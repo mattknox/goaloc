@@ -7,10 +7,10 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |s|
     s.name = "goaloc"
-    s.summary = "TODO"
+    s.summary = %q{ this allows for rapid, console-based generation of merb or rails apps}
     s.email = "matthewknox@gmail.com"
     s.homepage = "http://github.com/mattknox/goaloc"
-    s.description = "TODO"
+    s.description =  %q{Generate On A Lot of Crack speeds and extends the early sketching phase of RESTFUL MVC app development }
     s.authors = ["matt knox"]
   end
 rescue LoadError
