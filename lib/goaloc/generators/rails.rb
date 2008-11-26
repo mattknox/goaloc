@@ -68,7 +68,7 @@ class Rails < Generator
     def rails_new_object_string
       if self.nested?
         enclosing_resource = self.resource_tuple[-2]
-        "@#{self.s} = @#{enclosing_resource.s}.#{self.p}.build(params[:#{self.s}])"
+        "@#{self.s} = #{self.cs}.new((params[:#{self.s}] or {}).merge({:#{enclosing_resource.s} => @#{enclosing_resource.s}}))"
       else
         "@#{self.s} = #{self.cs}.new(params[:#{self.s}])"
       end
