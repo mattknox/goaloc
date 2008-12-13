@@ -103,7 +103,7 @@ class Rails < Generator
       rails_models  << railsify(m)
     end
     
-    gen_app
+    gen_app(opts)
     rails_models.each do |rails_model|
       gen_routes
       gen_migration(rails_model)
@@ -132,7 +132,7 @@ class Rails < Generator
     if opts[:template]
       gen_from_suspenders
     else
-      ` #{ rails_str } `
+      ` #{ rails_str(opts) } `
     end
   end
 

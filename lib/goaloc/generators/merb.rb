@@ -30,11 +30,9 @@ class Merb < Generator
   end
 
   def generate(opts = { })
-    app.models.values.each do |m|
-      merb_models  << merbify(m)
-    end
+    app.models.values.map { |model| model.class_eval( "extend MerbModel" ) }
     
-    gen_app
+    gen_app(opts)
     merb_models.each do |merb_model|
       gen_routes
       gen_migration(merb_model)
@@ -44,23 +42,24 @@ class Merb < Generator
     end
   end
 
-  def merbify(model)
-    model.class_eval( "extend MerbModel" )
-    model
-  end
-
   def Merb.db_value_name(str)
     #    { "string" => "String", "text"}[str]
     str.capitalize
   end
   
   # gonna get Foy to help with this.
-  def gen_app # this is just heinous.  Maybe get rid of it?
+  def gen_app(opts) # this is just heinous.  Maybe get rid of it?
     `#{gen_app_string}`
   end
 
+  def app_name(opts)
+    name = app.name
+    name << "_merb" if opts[:prefix]
+    name
+  end
+  
   def gen_app_string
-    "merb-gen app #{app.name}"
+    "merb-gen app #{app_name(opts)}"
   end
   
   def gen_routes
