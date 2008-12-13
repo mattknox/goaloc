@@ -8,11 +8,11 @@ This is Generate on a Lot of Crack, which started its life as a more powerful sc
 
 == FEATURES/PROBLEMS:
 
--currently supports only rails and some merb, maybe erlyweb, maybe others.
--currently, goaloc does not generate useful views for nested resources.  So it is only better than ./script/generate scaffold  in that it makes the models and migrations easier.
+-currently supports only rails and some merb
 it should:
 -be easier to remove, rename, etc., attributes.
--support using a suspenders-style app skeleton 
+-support using a suspenders-style app skeleton
+-include a css framework (bluprint, tripoli, bluetrip, maybe)
 -be better tested internally
 -support acts-as-tree things
 -have high-level datatypes, like email, url, ssn, etc..

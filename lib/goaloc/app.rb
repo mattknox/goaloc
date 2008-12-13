@@ -8,29 +8,28 @@ class App
     self.routes = []
   end
 
+  ROUTE_USAGE_STR = File.open("#{File.dirname(__FILE__)}/../../doc/route_usage").read
+  
   def generate_name
     "goaloc_app" + Time.now.strftime("%Y%m%d%H%M%S")
   end
   
-  def generate(generator = Rails)
-    generator.new(self).generate
+  def generate(generator = Rails, opts = { })
+    if :all == generator
+      Generator.subclasses.map { |g| g.constantize.new(self).generate(opts.merge(:prefix => true)) }
+    elsif Generator.subclasses.member?(generator.to_s)
+      generator.new(self).generate(opts)
+    else
+      raise "generator not implemented"
+    end
   end
 
   def destroy
     Rails.new.destroy(self)
   end
   
-  def route_usage 
-    f = File.open("#{File.dirname(__FILE__)}/../../doc/route_usage")
-    s = f.read
-    f.close
-    s
-  end
-
   def add_attrs(h)
-    h.each do |k, v|
-      k.to_s.singularize.camelize.constantize.add_attrs v rescue nil
-    end
+    h.map {  |k, v| k.to_s.singularize.camelize.constantize.add_attrs v rescue nil }
   end
   
   def destroy_model(klass) # TODO: make this also get rid of associations, etc.
@@ -44,7 +43,7 @@ class App
         build_model(a, nil)
       end
     else
-      puts route_usage
+      puts ROUTE_USAGE_STR
     end
   end
   

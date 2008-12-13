@@ -12,8 +12,7 @@ require "goaloc/generators/merb"
 module Goaloc
 end
 
-@app = App.new
-APP = @app
+APP = @app = App.new
 
 def generate(*args)
   @app.generate(*args)

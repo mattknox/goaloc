@@ -98,7 +98,7 @@ class Rails < Generator
     end
   end
   
-  def generate
+  def generate(opts = { })
     app.models.values.each do |m|
       rails_models  << railsify(m)
     end
@@ -124,8 +124,24 @@ class Rails < Generator
     name
   end
 
+  def options(opts = { })
+    # TODO
+  end
+  
   def gen_app(opts = { })  # TODO:  this is just heinous.  Get rid of it.  Ideally make it possible to do a suspecders-like thing.
-    `rails -d mysql #{app_name(opts)}`
+    if opts[:template]
+      gen_from_suspenders
+    else
+      ` #{ rails_str } `
+    end
+  end
+
+  def gen_from_suspenders
+    raise :not_yet_implemented
+  end
+
+  def rails_str(opts)
+    "rails #{ options(opts)} #{app_name(opts)}"
   end
   
   def gen_routes

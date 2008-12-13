@@ -29,7 +29,7 @@ class Merb < Generator
     name
   end
 
-  def generate
+  def generate(opts = { })
     app.models.values.each do |m|
       merb_models  << merbify(m)
     end
