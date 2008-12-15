@@ -30,7 +30,7 @@ class Merb < Generator
   end
 
   def generate(opts = { })
-    app.models.values.map { |model| model.class_eval( "extend MerbModel" ) }
+    app.models.values.map { |model| model.class_eval( "extend MerbModel" ) unless model.respond_to?(:merb_find_string) }
     
     gen_app(opts)
     merb_models.each do |merb_model|
@@ -92,12 +92,26 @@ Merb::Router.prepare do' + "\n"  +
   def gen_migration(model)
   end
   
-  def gen_model(model)
+  def gen_model_str(model)
     template_str = File.open("#{File.dirname(__FILE__)}/merb/model.rb.erb").read
     ERB.new(template_str).result(binding)
   end
 
+  def gen_model(model)
+    File.open("#{app_name}/app/controllers/#{model.nice_name.pluralize}.rb", "w") do |f|
+      f.write gen_model_str(model)
+    end
+  end
+
+  def gen_controller_str(model)
+    template_str = File.open("#{File.dirname(__FILE__)}/merb/controller.rb.erb").read
+    ERB.new(template_str).result(binding)
+  end
+
   def gen_controller(model)
+    f = File.new("#{app_name}/app/controllers/#{model.nice_name.pluralize}.rb", "w") 
+    f.write(gen_controller_string(model))
+    f.close
   end
 
   def gen_view(model)

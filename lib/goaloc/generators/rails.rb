@@ -100,7 +100,7 @@ class Rails < Generator
   
   def generate(opts = { })
     app.models.values.each do |m|
-      rails_models  << railsify(m)
+      rails_models  << railsify(m) unless rails_models.member?(m)
     end
     
     gen_app(opts)
@@ -125,7 +125,7 @@ class Rails < Generator
   end
 
   def options(opts = { })
-    # TODO
+    "-d mysql "
   end
   
   def gen_app(opts = { })  # TODO:  this is just heinous.  Get rid of it.  Ideally make it possible to do a suspecders-like thing.
