@@ -10,4 +10,5 @@ class Generator
       str.constantize.new(app).generate(:prefix => true)
     end
   end
+  # TODO: put the 'goaloc string'-the stuff to feed to goaloc needed to regenerate the app.
 end

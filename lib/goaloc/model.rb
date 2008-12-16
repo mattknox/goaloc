@@ -12,12 +12,13 @@ class Model
   end
 
   def Model.db_type_map
-    { # definitely have to add high-level datatypes.
+    { # definitely have to add high-level datatypes.  This will need to be partly replicated in generators
       "str" => "string", "string" => "string", "s" => "string",
       "int" => "integer", "integer" => "integer", "i" => "integer",
       "bool" => "boolean", "boolean" => "boolean", "b" => "boolean",
       "text" => "text", "t" => "text",
-      "email" => "string", "url" => "string"
+      "email" => "string", "url" => "string",
+      "datetime" => "datetime"
     }
   end
   
@@ -96,6 +97,10 @@ class Model
     def has_one(m, o = { })
       associate(:has_one, m, o)
       m.associate(:belongs_to, self, o) unless o[:skip_belongs_to]
+    end
+
+    def hmt(o = { })
+      
     end
 
     def associate(meth, model, options = { })

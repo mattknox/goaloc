@@ -48,13 +48,20 @@ class App
   end
   
   def valid_routeset?(arg) 
-    arg.is_a?(Symbol) or valid_routeset_array?(arg)
+    arg.is_a?(Symbol) or
+      valid_routeset_hash?(arg) or
+      valid_routeset_array?(arg)
   end
 
   def valid_routeset_array?(arg)
     arg.is_a? Array and
       !arg.empty? and
       arg.all? { |x| valid_routeset?(x) }
+  end
+
+  def valid_routeset_hash?(arg)
+    arg.is_a? Hash and
+      arg[:class].is_a? Symbol
   end
 
   def build_model(arg, r)
