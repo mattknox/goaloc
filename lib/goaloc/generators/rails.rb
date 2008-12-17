@@ -156,7 +156,6 @@ class Rails < Generator
 
   def gen_migration_string(model)
     # TODO make this not put so many blank lines.
-    # TODO make this handle datetimes
     template_str = File.open("#{File.dirname(__FILE__)}/rails/migration.rb.erb").read
     ERB.new(template_str).result(binding)
   end
