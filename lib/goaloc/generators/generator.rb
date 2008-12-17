@@ -1,16 +1,19 @@
 class Generator
-  attr_accessor :app
+  attr_accessor :app, :opts
 
-  def initialize(app)
+  def initialize(app, opts = { })
     @app = app
+    @opts = opts
   end
 
-  def Generator.generate_all
+  def Generator.generate_all(opts = { })
     self.subclasses.each do |str|
-      str.constantize.new(app).generate(:prefix => true)
+      str.constantize.new(app, opts.merge(:prefix => true)).generate
     end
   end
   # TODO: put the 'goaloc string'-the stuff to feed to goaloc needed to regenerate the app.
   # TODO: move a lot of the duplicated stuff from rails/merb into here.
   #   then the various generators just have to provide appropriate templates.
+
+  
 end

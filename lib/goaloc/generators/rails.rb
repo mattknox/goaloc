@@ -98,12 +98,12 @@ class Rails < Generator
     end
   end
   
-  def generate(opts = { })
+  def generate()
     app.models.values.each do |m|
       rails_models  << railsify(m) unless rails_models.member?(m)
     end
     
-    gen_app(opts)
+    gen_app()
     rails_models.each do |rails_model|
       gen_routes
       gen_migration(rails_model)
@@ -118,21 +118,21 @@ class Rails < Generator
     model
   end
 
-  def app_name(opts = { })
-    name = app.name
+  def app_name
+    name = app.name.clone
     name << "_rails" if opts[:prefix]
     name
   end
 
-  def options(opts = { })
+  def options
     "-d mysql "
   end
   
-  def gen_app(opts = { })  # TODO:  this is just heinous.  Get rid of it.  Ideally make it possible to do a suspecders-like thing.
+  def gen_app  # TODO:  this is just heinous.  Get rid of it.  Ideally make it possible to do a suspecders-like thing.
     if opts[:template]
       gen_from_suspenders
     else
-      ` #{ rails_str(opts) } `
+      ` #{ rails_str} `
     end
   end
 
@@ -140,8 +140,8 @@ class Rails < Generator
     raise :not_yet_implemented
   end
 
-  def rails_str(opts)
-    "rails #{ options(opts)} #{app_name(opts)}"
+  def rails_str
+    "rails #{ options} #{app_name}"
   end
   
   def gen_routes

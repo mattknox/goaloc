@@ -23,16 +23,16 @@ class Merb < Generator
     end
   end
   
-  def app_name(opts = { })
-    name = app.name
+  def app_name
+    name = app.name.clone
     name << "_merb" if opts[:prefix]
     name
   end
 
-  def generate(opts = { })
+  def generate
     app.models.values.map { |model| model.class_eval( "extend MerbModel" ) unless model.respond_to?(:merb_find_string) }
     
-    gen_app(opts)
+    gen_app
     merb_models.each do |merb_model|
       gen_routes
       gen_migration(merb_model)
@@ -48,18 +48,12 @@ class Merb < Generator
   end
   
   # gonna get Foy to help with this.
-  def gen_app(opts) # this is just heinous.  Maybe get rid of it?
+  def gen_app # this is just heinous.  Maybe get rid of it?
     `#{gen_app_string}`
   end
 
-  def app_name(opts)
-    name = app.name
-    name << "_merb" if opts[:prefix]
-    name
-  end
-  
   def gen_app_string
-    "merb-gen app #{app_name(opts)}"
+    "merb-gen app #{app_name}"
   end
   
   def gen_routes

@@ -16,9 +16,9 @@ class App
   
   def generate(generator = Rails, opts = { })
     if :all == generator
-      Generator.subclasses.map { |g| g.constantize.new(self).generate(opts.merge(:prefix => true)) }
+      Generator.subclasses.map { |g| g.constantize.new(self, opts.merge(:prefix => true)).generate }
     elsif Generator.subclasses.member?(generator.to_s)
-      generator.new(self).generate(opts)
+      generator.new(self, opts).generate
     else
       raise "generator not implemented"
     end
