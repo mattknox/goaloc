@@ -76,8 +76,9 @@ class App
       end
       model
     elsif arg.is_a? Hash
-      sym = arg[:model]
-      register_model!(sym, r)
+      sym = arg[:class]
+      model = register_model!(sym, r)
+      model.handle_hash(arg)
     end
   end
   

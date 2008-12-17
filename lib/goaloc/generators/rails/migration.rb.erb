@@ -1,11 +1,11 @@
 class Create<%= model.cp %> < ActiveRecord::Migration
   def self.up
     create_table :<%= model.p %> do |t|
-<% model.fields.each do |k, v| %>
-  <%= "    t." + v.to_s + " :" + k.to_s  %>
+<% model.fields.map do |k, v| %>
+  <%= "      t." + v.to_s + " :" + k.to_s  %>
 <% end %>
-<% model.foreign_keys.each do |k, v| %>
-  <%= "    t.references :" + k[0..-4] %>
+<% model.foreign_keys.map do |k, v| %>
+  <%= "      t.references :" + k[0..-4] %>
 <% end %>
       t.timestamps
     end
