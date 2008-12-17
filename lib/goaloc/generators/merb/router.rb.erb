@@ -27,9 +27,9 @@
 
 Merb.logger.info("Compiling routes...")
 Merb::Router.prepare do
-<% app.models.each do |model| -%>
-  resources :<%= model.p -%>
-<% end -%>
+<% app.models.each do |model| %>
+  resources :<%= model.p %>
+<% end %>
   # RESTful routes
   # resources :posts
   

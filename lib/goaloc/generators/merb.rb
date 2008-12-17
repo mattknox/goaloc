@@ -14,7 +14,7 @@ class Merb < Generator
     end
     
     def merb_find_string
-      "    #{self.merb_symname} = #{self.cs}.get(id)
+      "#{self.merb_symname} = #{self.cs}.get(id)
     raise NotFound unless <%= self.merb_symname -%>"
     end
 
@@ -33,12 +33,12 @@ class Merb < Generator
     app.models.values.map { |model| model.class_eval( "extend MerbModel" ) unless model.respond_to?(:merb_find_string) }
     
     gen_app
-    merb_models.each do |merb_model|
+    app.models.values.each do |model|
       gen_routes
-      gen_migration(merb_model)
-      gen_model(merb_model)
-      gen_controller(merb_model)
-      gen_view(merb_model)
+      gen_migration(model)
+      gen_model(model)
+      gen_controller(model)
+      gen_view(model)
     end
   end
 
@@ -92,7 +92,7 @@ Merb::Router.prepare do' + "\n"  +
   end
 
   def gen_model(model)
-    File.open("#{app_name}/app/controllers/#{model.nice_name.pluralize}.rb", "w") do |f|
+    File.open("#{app_name}/app/models/#{model.nice_name.pluralize}.rb", "w") do |f|
       f.write gen_model_str(model)
     end
   end
@@ -104,7 +104,7 @@ Merb::Router.prepare do' + "\n"  +
 
   def gen_controller(model)
     f = File.new("#{app_name}/app/controllers/#{model.nice_name.pluralize}.rb", "w") 
-    f.write(gen_controller_string(model))
+    f.write(gen_controller_str(model))
     f.close
   end
 
