@@ -25,3 +25,7 @@ end
 def add_attrs(h)
   @app.add_attrs(h)
 end
+
+def name=(name)
+  @app.name = name
+end
