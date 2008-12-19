@@ -98,11 +98,26 @@ class Model
       associate(:has_one, m, o)
       m.associate(:belongs_to, self, o) unless o[:skip_belongs_to]
     end
-
+    
     def hmt(o = { })
-      
+      # this should generate the has_many :through and the requisite has_many
+      m = o[:class]  # this is the thing which this model has many of
+      thru = o[:through] # this is the join model
+      has_many(thru)
+      has_many(m, { :through => thru, :skip_belongs_to => true })
+      unless o[:bidi] == false
+        m.has_many(thru)
+        m.has_many( self, { :through => thru, :skip_belongs_to => true })
+      end
     end
 
+    def handle_hash(h)
+      # this is here as part of has_many :through.  It receives args like:
+      # {:class => :foos, :through => :bars }
+      m = h[:class].to_s.camelize.constantize
+      thru = h[:through].to_s.camelize.constantize
+    end
+    
     def associate(meth, model, options = { })
       assoc_name = options[:assoc_name] || model.default_assoc_name(meth)
       self.foreign_keys << ( assoc_name.to_s + "_id" ) if meth == :belongs_to  #FIXME: might be something other than assoc_name_id

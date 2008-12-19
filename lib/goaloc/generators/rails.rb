@@ -96,6 +96,12 @@ class Rails < Generator
     def wrap_method(name, arr, indent_string = "  ")
       indent_string + "def #{name}\n" + arr.map { |s| indent_string + "  " + s }.join("\n") + "\n#{indent_string}end"
     end
+
+    def rails_association_string(assoc_name, assoc_hash)
+      option_str = ""
+      option_str << ", :through => :#{assoc_hash[:through].p}"
+      "#{assoc_hash[:type]} :#{assoc_name}"
+    end
   end
   
   def generate()

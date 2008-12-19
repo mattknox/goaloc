@@ -79,6 +79,8 @@ class App
     elsif arg.is_a? Hash
       sym = arg[:class]
       model = register_model!(sym, r)
+      thru = arg[:through]
+      thru_model = register_model!(thru, r) if thru
       model.handle_hash(arg)
     end
   end
