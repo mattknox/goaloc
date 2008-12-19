@@ -110,6 +110,7 @@ class Rails < Generator
       gen_model(rails_model)
       gen_controller(rails_model)
       gen_view(rails_model)
+      gen_misc
     end
   end
 
@@ -252,6 +253,15 @@ class Rails < Generator
       pad + "#{var}.resources :#{x.first.to_s} do |#{x.first.to_s.singularize}|\n" +
         x[1..-1].map { |y| gen_route(y, x.first.to_s.singularize, pad + "  ")}.join("\n") + "\n" +
       pad + "end"
+    end
+  end
+
+  def gen_misc # here we put in the layout, blueprint CSS, and the goaloc log
+    File.open("#{app_name}/app/views/layouts/application.rb", "w") do |f|
+      f.write File.open("#{File.dirname(__FILE__)}/rails/application.html.erb").read
+    end
+    File.open("#{app_name}/doc/goaloc", "w") do |f|
+      f.write app.log.join("\n")
     end
   end
 end

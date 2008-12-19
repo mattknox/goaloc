@@ -1,11 +1,12 @@
 class App
-  attr_accessor :name, :models, :routes, :options, :debug
+  attr_accessor :name, :models, :routes, :options, :debug, :log
 
   def initialize(name = nil, options = { })
     self.name = (name or generate_name)
     self.options = options
     self.models = { }
     self.routes = []
+    self.log = []
   end
 
   ROUTE_USAGE_STR = File.open("#{File.dirname(__FILE__)}/../../doc/route_usage").read
