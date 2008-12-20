@@ -262,12 +262,13 @@ class Rails < Generator
     end
   end
 
-  def gen_misc # here we put in the layout, blueprint CSS, and the goaloc log
+  def gen_misc # here we put in the layout, the goaloc log, and libraries (blueprint CSS, jquery)
     File.open("#{app_name}/app/views/layouts/application.html.erb", "w") do |f|
       f.write File.open("#{File.dirname(__FILE__)}/rails/application.html.erb").read
     end
     File.open("#{app_name}/doc/goaloc", "w") do |f|
       f.write app.log.join("\n")
     end
+    
   end
 end
