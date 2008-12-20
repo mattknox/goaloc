@@ -106,8 +106,8 @@ class Rails < Generator
 
     def rails_field_string(name, type)
       case type
-        when "text" then "    <%= f.text_area :#{k} %" + ">"
-      else "    <%= f.text_field :#{k} %" + ">"
+        when "text" then "    <%= f.text_area :#{name} %" + ">"
+      else "    <%= f.text_field :#{name} %" + ">"
       end
     end
   end
