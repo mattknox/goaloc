@@ -69,7 +69,7 @@ class Rails < Generator
     def rails_new_object_string
       if self.nested?
         enclosing_resource = self.resource_tuple[-2]
-        "@#{self.s} = #{self.cs}.new((params[:#{self.s}] or {}).merge({:#{enclosing_resource.s} => @#{enclosing_resource.s}}))"
+        "@#{self.s} = @#{enclosing_resource.s}.#{self.p}.new(params[:#{self.s}])"
       else
         "@#{self.s} = #{self.cs}.new(params[:#{self.s}])"
       end
@@ -271,6 +271,6 @@ class Rails < Generator
       f.write app.log.join("\n")
     end
     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/bluetrip", "#{app_name}/public/stylesheets")
-    File.copy("#{File.dirname(__FILE__)}/resources/jquery-1.2.6.min.js", "#{app_name}/public/javascripts")
+    FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/jquery-1.2.6.min.js", "#{app_name}/public/javascripts")
   end
 end
