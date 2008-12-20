@@ -1,4 +1,5 @@
 require "erb"
+require "fileutils"
 
 class Rails < Generator
   cattr_accessor :rails_models
@@ -269,6 +270,7 @@ class Rails < Generator
     File.open("#{app_name}/doc/goaloc", "w") do |f|
       f.write app.log.join("\n")
     end
-    
+    FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/bluetrip", "#{app_name}/public/stylesheets")
+    File.copy("#{File.dirname(__FILE__)}/resources/jquery-1.2.6.min.js", "#{app_name}/public/javascripts")
   end
 end
