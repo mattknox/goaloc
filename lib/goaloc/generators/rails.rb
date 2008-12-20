@@ -103,6 +103,13 @@ class Rails < Generator
       option_str << ", :through => :#{assoc_hash[:through].p}" if assoc_hash[:through]
       "#{assoc_hash[:type]} :#{assoc_name + option_str}"
     end
+
+    def rails_field_string(name, type)
+      case type
+        when "text" then "    <%= f.text_area :#{k} %" + ">"
+      else "    <%= f.text_field :#{k} %" + ">"
+      end
+    end
   end
   
   def generate()

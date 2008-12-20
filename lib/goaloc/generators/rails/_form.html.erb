@@ -3,7 +3,7 @@
 <% model.fields.each do |k, v| %>
   <p>
     <%= "    <%= f.label :#{k} %" + "><br />" %>
-    <%= "    <%= f.text_field :#{k} %" + ">" %>
+    <%= rails_field_string(k, v) %>
   </p>
 <% end %>
 
