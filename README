@@ -20,6 +20,7 @@ it should:
 -do haml for views (maybe?)
 -generate tests for the generated app
 -make nice semantic HTML for the views
+-make it serve goaloc directly (this is maybe really hard)
 
 ==DONE:
 -include jquery for js
