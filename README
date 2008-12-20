@@ -12,16 +12,18 @@ This is Generate on a Lot of Crack, which started its life as a more powerful sc
 it should:
 -be easier to remove, rename, etc., attributes.
 -support using a suspenders-style app skeleton
--include a css framework (bluprint, tripoli, bluetrip, maybe)
 -be better tested internally
 -support acts-as-tree things
 -have high-level datatypes, like email, url, ssn, etc..
 -handle singular resources
 -handle enums, so you can do some of the constraint stuff from PicoLisp
 -do haml for views (maybe?)
--include jquery for js
 -generate tests for the generated app
 -make nice semantic HTML for the views
+
+==DONE:
+-include jquery for js
+-include bluetrip css framework
 
 == SYNOPSIS:
 
