@@ -41,7 +41,7 @@ class <%= model.cp %>Controller < ApplicationController
     respond_to do |format|
       if @<%= model.s %>.save
         flash[:notice] = '<%= model.cs %> was successfully created.'
-        format.html { redirect_to(<%= model.rails_object_path %>) }
+        format.html { redirect_to(<%= model.rails_collection_path %>) }
         format.xml  { render :xml => @<%= model.s %>, :status => :created, :location => @<%= model.s %> }
       else
         format.html { render :action => "new" }

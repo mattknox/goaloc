@@ -99,8 +99,8 @@ class Rails < Generator
 
     def rails_association_string(assoc_name, assoc_hash)
       option_str = ""
-      option_str << ", :through => :#{assoc_hash[:through].p}"
-      "#{assoc_hash[:type]} :#{assoc_name}"
+      option_str << ", :through => :#{assoc_hash[:through].p}" if assoc_hash[:through]
+      "#{assoc_hash[:type]} :#{assoc_name + option_str}"
     end
   end
   
@@ -179,7 +179,7 @@ class Rails < Generator
     f = File.new("#{app_name}/app/models/#{model.nice_name}.rb", "w") 
     f.write "class #{model.to_s} < ActiveRecord::Base\n"
     model.associations.each do |k, v|
-      f.write "  #{v[:type]} :#{k}\n"
+      f.write "  #{model.rails_association_string(k,v)}\n"
     end
     f.write "end"
     f.close
@@ -263,7 +263,7 @@ class Rails < Generator
   end
 
   def gen_misc # here we put in the layout, blueprint CSS, and the goaloc log
-    File.open("#{app_name}/app/views/layouts/application.rb", "w") do |f|
+    File.open("#{app_name}/app/views/layouts/application.html.erb", "w") do |f|
       f.write File.open("#{File.dirname(__FILE__)}/rails/application.html.erb").read
     end
     File.open("#{app_name}/doc/goaloc", "w") do |f|

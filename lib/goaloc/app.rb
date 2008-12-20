@@ -84,6 +84,12 @@ class App
       model.handle_hash(arg)
     end
   end
+
+  def build_model_from_hash(m, h, r)
+    if h.has_key?(:through)
+      m.hmt(h)
+    end
+  end
   
   def register_model!(arg, r)
     self.models[arg] = Model.build_and_route(arg, r)

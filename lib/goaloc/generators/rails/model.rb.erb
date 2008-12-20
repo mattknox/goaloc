@@ -1,5 +1,5 @@
 class <%= model.to_s -%> < ActiveRecord::Base
 <% model.associations.each do |k, v| -%>
-  <%= "#{v[:type]} :#{k}"  -%>
+  <%= model.rails_association_string(k, v)  -%>
 <% end -%>
 end
