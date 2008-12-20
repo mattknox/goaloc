@@ -1,15 +1,18 @@
 class App
-  attr_accessor :name, :models, :routes, :options, :debug, :log
+  attr_accessor :name, :routes, :options, :debug, :log
 
   def initialize(name = nil, options = { })
     self.name = (name or generate_name)
     self.options = options
-    self.models = { }
     self.routes = []
     self.log = []
   end
 
   ROUTE_USAGE_STR = File.open("#{File.dirname(__FILE__)}/../../doc/route_usage").read
+
+  def models
+    Model.subclasses.inject({}) {|res, elt| res.merge(elt.underscore.pluralize.to_sym =>  elt.constantize)}
+  end
   
   def generate_name
     "goaloc_app" + Time.now.strftime("%Y%m%d%H%M%S")
@@ -92,6 +95,6 @@ class App
   end
   
   def register_model!(arg, r)
-    self.models[arg] = Model.build_and_route(arg, r)
+    Model.build_and_route(arg, r)
   end
 end

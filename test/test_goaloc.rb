@@ -122,7 +122,7 @@ class TestGoaloc < Test::Unit::TestCase
           assert_equal Post.rails_new_path, "new_post_path()"
           assert_equal Post.rails_collection_path, "posts_path()"
           assert_equal Post.nested?, false
-          assert_equal Post.rails_find_method, "  def find_post\n    @post = Post.find(params[:id])\n  end"
+          assert_equal Post.rails_find_method, "  def find_post\n    @post = Post.find(params[:id])\n    @comment = Comment.new((params[:comment] or {}).merge({:post => @post}))\n  end"
           assert_equal Post.rails_new_object_method, "  def new_post\n    @post = Post.new(params[:post])\n  end"
           assert_equal Post.rails_find_collection_method, "  def find_posts\n    @posts = Post.find(:all)\n    @post = Post.new(params[:post])\n  end"
           assert_equal Post.rails_collection_finder_string, "@posts = Post.find(:all)"
@@ -162,7 +162,7 @@ class TestGoaloc < Test::Unit::TestCase
           assert_equal Application.rails_new_path, "new_application_path()"
           assert_equal Application.rails_collection_path, "applications_path()"
           assert_equal Application.nested?, false
-          assert_equal Application.rails_find_method, "  def find_application\n    @application = Application.find(params[:id])\n  end"
+          assert_equal Application.rails_find_method, "  def find_application\n    @application = Application.find(params[:id])\n    @profile = Profile.new((params[:profile] or {}).merge({:application => @application}))\n    @blogpost = Blogpost.new((params[:blogpost] or {}).merge({:application => @application}))\n  end"
           assert_equal Application.rails_new_object_method, "  def new_application\n    @application = Application.new(params[:application])\n  end"
           assert_equal Application.rails_find_collection_method, "  def find_applications\n    @applications = Application.find(:all)\n    @application = Application.new(params[:application])\n  end"
           assert_equal Application.rails_collection_finder_string, "@applications = Application.find(:all)"
