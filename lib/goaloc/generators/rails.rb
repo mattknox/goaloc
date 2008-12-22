@@ -17,7 +17,14 @@ class Rails < Generator
     def rails_ivar_tuple(end_index = -1)
       self.resource_tuple[0..end_index].map {|c| c.rails_symname }
     end
-    
+
+    def rails_backvar_tuple(end_element = "form")
+      # this is intended to grab the list of elements needed to populate a form_for,
+      # propagated back from the named end_element
+      # so for [:users, [:posts, [:comments, :ratings]]] in the rating form it would be:
+      # form.comment.post.user, form.comment.post, form.comment, form
+      self.resource_tuple[0..-2].map {|c| c.s }.reverse.inject([end_element]) {|acc, x| acc.unshift(acc.first + "." + x )}
+    end
     def rails_underscore_tuple
       self.resource_tuple.map {|c| c.s }
     end
@@ -162,9 +169,12 @@ class Rails < Generator
   def gen_routes
     arr = app.routes
     insert_string = arr.map { |a| gen_route(a)}.join("\n") + "\n"
+    defroute = gen_default_route
+    
     File.open("#{app_name}/config/routes.rb", "w") do |f|
       f.write "ActionController::Routing::Routes.draw do |map|\n"
       f.write insert_string
+      f.write defroute.to_s
       f.write "end"
     end
   end
@@ -188,6 +198,9 @@ class Rails < Generator
     f.write "class #{model.to_s} < ActiveRecord::Base\n"
     model.associations.each do |k, v|
       f.write "  #{model.rails_association_string(k,v)}\n"
+    end
+    model.associations.reject { |k,v| v[:type] != :belongs_to }.each do |k, v|
+      f.write "  validates_presence_of :#{v[:name]}\n"
     end
     f.write "end"
     f.close
@@ -219,6 +232,16 @@ class Rails < Generator
     ERB.new(template_str).result(binding)
   end
   
+  def gen_partial_string(model)
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/_model.html.erb").read
+    ERB.new(template_str).result(binding)
+  end
+
+  def gen_small_partial_string(model)
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/_model_small.html.erb").read
+    ERB.new(template_str).result(binding)
+  end
+
   def gen_view(model)
     cs = model.to_s                      # singular capitalized
     cp = model.to_s.pluralize            # singular capitalized
@@ -233,6 +256,14 @@ class Rails < Generator
     
     File.open("#{view_dir}show.html.erb", "w") do |f|
       f.write self.gen_show_string(model)
+    end
+    
+    File.open("#{view_dir}_#{model.s}.html.erb", "w") do |f|
+      f.write self.gen_partial_string(model)
+    end
+    
+    File.open("#{view_dir}_#{model.s}_small.html.erb", "w") do |f|
+      f.write self.gen_small_partial_string(model)
     end
     
     f = File.new("#{view_dir}new.html.erb", "w")
@@ -267,6 +298,18 @@ class Rails < Generator
       pad + "#{var}.resources :#{x.first.to_s} do |#{x.first.to_s.singularize}|\n" +
         x[1..-1].map { |y| gen_route(y, x.first.to_s.singularize, pad + "  ")}.join("\n") + "\n" +
       pad + "end"
+    end
+  end
+
+  def gen_default_route  # this is nasty.  Somehow needs to isolate the route writing from the file clobbering.
+    if 1 == app.routes.length
+      File.delete("#{app_name}/public/index.html")
+      "  map.root :controller => '#{app.routes.first.first}'"
+    else
+      File.open("#{app_name}/public/index.html", "w") do |f|
+        app.routes.map { |x| f.write "<div><a href=/#{x.first}>#{x.first}</a><br/></div>" }
+      end
+      ""
     end
   end
 

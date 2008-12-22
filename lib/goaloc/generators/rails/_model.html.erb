@@ -1,19 +1,19 @@
-<%= "<% div_for(#{model.s}) do %" + ">" -%>
+<%= "<% div_for(#{model.s}) do %" + ">" %>
+<%= "<h3>#{model.s}</h3>" %>
 <% model.fields.each do |k, v| %>
   <p>
     <b><%= k %>:</b>
     <%= "<%=h #{model.s}.#{k} %" + ">" %>
   </p>
 <% end %>
-<%= "<%= link_to 'Edit', #{model.rails_edit_path} %" + ">|\n <%= link_to 'Back', #{model.rails_collection_path} %" + ">"  %>
+<%= "<% end %" + ">" %>
 <%  model.nested_resources.each do |k, v| %>
   <p>
-    <%=  "make a new #{v.s} " %>
-    <%=  "<%= render :partial => '#{v.p}/form', :object => @#{v.s} %" + ">" %>
-  </p>
-  <p>
+    <%= "<h4>list of #{v.p}</h4>" %>
     <%=  "<%= render :partial => '#{v.p}/#{v.s}_small', :collection => #{model.s}.#{v.p} %" + ">" %>
   </p>
+  <p>
+    <%=  "<h4>make a new #{v.s}</h4>" %>
+    <%=  "<%= render :partial => '#{v.p}/form', :object => #{model.s}.#{v.p}.new %" + ">" %>
+  </p>
 <% end %>
-
-<%= "<% end %" + ">" -%>

@@ -25,7 +25,7 @@ def route(*args)
 end
 
 def add_attrs(h)
-  @app.log << "add_attrs #{h.inspect}"
+  @app.log << "add_attrs #{h.inspect[1..-2]}"
   @app.add_attrs(h)
 end
 

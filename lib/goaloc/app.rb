@@ -100,7 +100,7 @@ class App
 
   def goaloc_log
     out = log.clone
-    out << self.routes.inspect[1..-2]
+    out << ("route " + self.routes.inspect[1..-2])
     self.models.each do |key, model|
       model.associations.each do |name, assoc|
         if assoc.has_key?(:through)
