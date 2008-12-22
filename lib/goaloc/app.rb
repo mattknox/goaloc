@@ -99,8 +99,11 @@ class App
   end
 
   def goaloc_log
+    gen = []
     out = log.clone
-    out << ("route " + self.routes.inspect[1..-2])
+    out.unshift "@app.name = #{self.name}" unless self.name.to_s.match(/goaloc_app20/)
+    gen = [out.pop] if out.last.to_s.match(/^generate/)
+    out << ("route " + self.routes.inspect[1..-2]) unless routes.empty?
     self.models.each do |key, model|
       model.associations.each do |name, assoc|
         if assoc.has_key?(:through)
@@ -110,6 +113,6 @@ class App
         end
       end
     end
-    out
+    out + gen
   end
 end
