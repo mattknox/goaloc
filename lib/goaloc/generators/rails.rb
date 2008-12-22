@@ -275,7 +275,7 @@ class Rails < Generator
       f.write File.open("#{File.dirname(__FILE__)}/rails/application.html.erb").read
     end
     File.open("#{app_name}/doc/goaloc", "w") do |f|
-      f.write app.log.join("\n")
+      f.write app.goaloc_log.join("\n")
     end
     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/bluetrip", "#{app_name}/public/stylesheets")
     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/jquery-1.2.6.min.js", "#{app_name}/public/javascripts")

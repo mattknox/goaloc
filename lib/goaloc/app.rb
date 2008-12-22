@@ -97,4 +97,19 @@ class App
   def register_model!(arg, r)
     Model.build_and_route(arg, r)
   end
+
+  def goaloc_log
+    out = log.clone
+    out << self.routes.inspect[1..-2]
+    self.models.each do |key, model|
+      model.associations.each do |name, assoc|
+        if assoc.has_key?(:through)
+          out << "#{model}.hmt({ :class => #{assoc[:class]}, :through => #{assoc[:through]})"
+        else
+          out << "#{model.to_s}.#{assoc[:type]}(#{assoc[:model].to_s})"
+        end
+      end
+    end
+    out
+  end
 end
