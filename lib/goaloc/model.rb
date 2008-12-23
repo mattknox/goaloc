@@ -32,7 +32,7 @@ class Model
       self.options = { }
       self.routes = [] # of the form [:classname, [:otherclass, :classname], ...]
       self.foreign_keys = []
-      self.validations = []
+      self.validations = {}
 
       class << self
         # TODO: can some or all of this be moved out of here and into the model class?
@@ -87,16 +87,19 @@ class Model
       self.validations << opts.merge({ :val_type => validation_type, :field => field})
     end
     
-    def belongs_to(m, o = { }) associate(:belongs_to, m, o) end
+    def belongs_to(m, o = { })
+      self.validations["validates_presence_of:#{m.s}_id"] = { :type => "validates_presence_of", :target => m.s}
+      associate(:belongs_to, m, o)
+    end
 
     def has_many(m, o = { })
       associate(:has_many, m, o)
-      m.associate(:belongs_to, self, o) unless o[:skip_belongs_to]
+      m.belongs_to(self, o) unless o[:skip_belongs_to]
     end
 
     def has_one(m, o = { })
       associate(:has_one, m, o)
-      m.associate(:belongs_to, self, o) unless o[:skip_belongs_to]
+      m.belongs_to(self, o) unless o[:skip_belongs_to]
     end
     
     def hmt(o = { })

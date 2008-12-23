@@ -198,8 +198,8 @@ class Rails < Generator
     model.associations.each do |k, v|
       f.write "  #{model.rails_association_string(k,v)}\n"
     end
-    model.associations.reject { |k,v| v[:type] != :belongs_to }.each do |k, v|
-      f.write "  validates_presence_of :#{v[:name]}\n"
+    model.validations.each do |k, v|
+      f.write "  #{v[:type]} :#{v[:target]}\n"
     end
     f.write "end"
     f.close
