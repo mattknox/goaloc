@@ -2,9 +2,6 @@ require "erb"
 require "fileutils"
 
 class Rails < Generator
-  cattr_accessor :rails_models
-  self.rails_models = []
-  
   module RailsModel
     def rails_symname
       '@' + self.s
@@ -113,24 +110,22 @@ class Rails < Generator
 
     def rails_field_string(name, type)
       case type
-        when "text" then "    <%= f.text_area :#{name} %" + ">"
+      when "text" then "    <%= f.text_area :#{name} %" + ">"
       else "    <%= f.text_field :#{name} %" + ">"
       end
     end
   end
   
   def generate()
-    app.models.values.each do |m|
-      rails_models  << railsify(m) unless rails_models.member?(m)
-    end
+    app.models.values.map { |m| railsify(m) unless model.respond_to?(:rails_find_method) }
     
     gen_app()
-    rails_models.each do |rails_model|
+    @app.models.each do |model|
       gen_routes
-      gen_migration(rails_model)
-      gen_model(rails_model)
-      gen_controller(rails_model)
-      gen_view(rails_model)
+      gen_migration(model)
+      gen_model(model)
+      gen_controller(model)
+      gen_view(model)
       gen_misc
     end
   end
@@ -192,7 +187,7 @@ class Rails < Generator
     f.close
   end
   
-  def gen_model(model)  # TODO: put in validations for models
+  def gen_model(model)
     f = File.new("#{app_name}/app/models/#{model.nice_name}.rb", "w") 
     f.write "class #{model.to_s} < ActiveRecord::Base\n"
     model.associations.each do |k, v|

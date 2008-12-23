@@ -122,7 +122,7 @@ class TestGoaloc < Test::Unit::TestCase
           assert_equal Post.rails_new_path, "new_post_path()"
           assert_equal Post.rails_collection_path, "posts_path()"
           assert_equal Post.nested?, false
-          assert_equal Post.rails_find_method, "  def find_post\n    @post = Post.find(params[:id])\n    @comment = Comment.new((params[:comment] or {}).merge({:post => @post}))\n  end"
+          assert_equal Post.rails_find_method, "  def find_post\n    @post = Post.find(params[:id])\n    @comment = @post.comments.new(params[:comment])\n  end"
           assert_equal Post.rails_new_object_method, "  def new_post\n    @post = Post.new(params[:post])\n  end"
           assert_equal Post.rails_find_collection_method, "  def find_posts\n    @posts = Post.find(:all)\n    @post = Post.new(params[:post])\n  end"
           assert_equal Post.rails_collection_finder_string, "@posts = Post.find(:all)"
@@ -162,7 +162,7 @@ class TestGoaloc < Test::Unit::TestCase
           assert_equal Application.rails_new_path, "new_application_path()"
           assert_equal Application.rails_collection_path, "applications_path()"
           assert_equal Application.nested?, false
-          assert_equal Application.rails_find_method, "  def find_application\n    @application = Application.find(params[:id])\n    @profile = Profile.new((params[:profile] or {}).merge({:application => @application}))\n    @blogpost = Blogpost.new((params[:blogpost] or {}).merge({:application => @application}))\n  end"
+          assert_equal Application.rails_find_method, "  def find_application\n    @application = Application.find(params[:id])\n    @profile = @application.profiles.new(params[:profile])\n    @blogpost = @application.blogposts.new(params[:blogpost])\n  end"
           assert_equal Application.rails_new_object_method, "  def new_application\n    @application = Application.new(params[:application])\n  end"
           assert_equal Application.rails_find_collection_method, "  def find_applications\n    @applications = Application.find(:all)\n    @application = Application.new(params[:application])\n  end"
           assert_equal Application.rails_collection_finder_string, "@applications = Application.find(:all)"
@@ -183,11 +183,11 @@ class TestGoaloc < Test::Unit::TestCase
           assert_equal Blogcomment.rails_collection_path, "application_blogpost_blogcomments_path(@application, @blogpost)"
           assert_equal Blogcomment.nested?, true
           assert_equal Blogcomment.rails_find_method, "  def find_blogcomment\n    @application = Application.find(params[:application_id])\n    @blogpost = @application.blogposts.find(params[:blogpost_id])\n    @blogcomment = @blogpost.blogcomments.find(params[:id])\n  end"
-          assert_equal Blogcomment.rails_new_object_method, "  def new_blogcomment\n    @application = Application.find(params[:application_id])\n    @blogpost = @application.blogposts.find(params[:blogpost_id])\n    @blogcomment = Blogcomment.new((params[:blogcomment] or {}).merge({:blogpost => @blogpost}))\n  end"
-          assert_equal Blogcomment.rails_find_collection_method, "  def find_blogcomments\n    @application = Application.find(params[:application_id])\n    @blogpost = @application.blogposts.find(params[:blogpost_id])\n    @blogcomments = @blogpost.blogcomments\n    @blogcomment = Blogcomment.new((params[:blogcomment] or {}).merge({:blogpost => @blogpost}))\n  end"
+          assert_equal Blogcomment.rails_new_object_method, "  def new_blogcomment\n    @application = Application.find(params[:application_id])\n    @blogpost = @application.blogposts.find(params[:blogpost_id])\n    @blogcomment = @blogpost.blogcomments.new(params[:blogcomment])\n  end"
+          assert_equal Blogcomment.rails_find_collection_method, "  def find_blogcomments\n    @application = Application.find(params[:application_id])\n    @blogpost = @application.blogposts.find(params[:blogpost_id])\n    @blogcomments = @blogpost.blogcomments\n    @blogcomment = @blogpost.blogcomments.new(params[:blogcomment])\n  end"
           assert_equal Blogcomment.rails_collection_finder_string, "@blogcomments = @blogpost.blogcomments"
           assert_equal Blogcomment.rails_finder_string, "@blogcomment = @blogpost.blogcomments.find(params[:blogcomment_id])"
-          assert_equal Blogcomment.rails_new_object_string, "@blogcomment = Blogcomment.new((params[:blogcomment] or {}).merge({:blogpost => @blogpost}))"
+          assert_equal Blogcomment.rails_new_object_string, "@blogcomment = @blogpost.blogcomments.new(params[:blogcomment])"
         end
       end
     end
