@@ -11,7 +11,6 @@ class Generator
       str.constantize.new(app, opts.merge(:prefix => true)).generate
     end
   end
-  # TODO: put the 'goaloc string'-the stuff to feed to goaloc needed to regenerate the app.
   # TODO: move a lot of the duplicated stuff from rails/merb into here.
   #   then the various generators just have to provide appropriate templates.
 
