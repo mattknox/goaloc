@@ -11,7 +11,7 @@ This is Generate on a Lot of Crack, which started its life as a more powerful sc
 -currently supports only rails and some merb
 it should:
 -be easier to remove, rename, etc., attributes.
--support using a suspenders-style app skeleton
+-support using a rails app specifier 
 -be better tested internally
 -support acts-as-tree things
 -have high-level datatypes, like email, url, ssn, etc..
