@@ -7,6 +7,14 @@
   </p>
 <% end %>
 
+<% keys_in_path = model.resource_tuple.map {|x| x.s + "_id" } %>
+<% model.foreign_keys.uniq.reject {|x| keys_in_path.member?(x) }.each do |key| %>
+  <p>
+    <%= "    <%= f.label :#{key[0..-4]} %" + "><br />" %>
+    <%= model.rails_field_string(key, "foreign_key") %>
+  </p>
+<% end %>
+
   <p>
     <%= "<%= f.submit 'Submit' %" + ">" %>
   </p>

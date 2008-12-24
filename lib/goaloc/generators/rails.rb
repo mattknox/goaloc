@@ -111,16 +111,17 @@ class Rails < Generator
     def rails_field_string(name, type)
       case type
       when "text" then "    <%= f.text_area :#{name} %" + ">"
+      when "foreign_key" then "    <%= f.select :#{name[0..-4]}, #{name[0..-4].camelize}.find(:all).map { |x| [#{name} + x.id.to_s, x.id]} %>"
       else "    <%= f.text_field :#{name} %" + ">"
       end
     end
   end
   
   def generate()
-    app.models.values.map { |m| railsify(m) unless model.respond_to?(:rails_find_method) }
+    app.models.values.map { |m| railsify(m) unless m.respond_to?(:rails_find_method) }
     
     gen_app()
-    @app.models.each do |model|
+    @app.models.values.each do |model|
       gen_routes
       gen_migration(model)
       gen_model(model)
@@ -301,7 +302,7 @@ class Rails < Generator
       "  map.root :controller => '#{app.routes.first.first}'"
     else
       File.open("#{app_name}/public/index.html", "w") do |f|
-        app.routes.map { |x| f.write "<div><a href=/#{x.first}>#{x.first}</a><br/></div>" }
+        app.routes.map { |x| sym = (x.is_a?(Array) ? x.first : x) ; f.write "<div><a href=/#{sym}>#{sym}</a><br/></div>" }
       end
       ""
     end
