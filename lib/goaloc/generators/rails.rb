@@ -302,6 +302,7 @@ class Rails < Generator
       "  map.root :controller => '#{app.routes.first.first}'"
     else
       File.open("#{app_name}/public/index.html", "w") do |f|
+        f.write "this will be the index page of the app.  But it isn't yet."
         app.routes.map { |x| sym = (x.is_a?(Array) ? x.first : x) ; f.write "<div><a href=/#{sym}>#{sym}</a><br/></div>" }
       end
       ""
