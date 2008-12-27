@@ -1,21 +1,21 @@
 <%= "<% form_for([#{model.rails_backvar_tuple.join(',')}]) do |f| %" + ">" %>
 <%= "<%= f.error_messages %" + ">" %>
 <% model.fields.each do |k, v| %>
-  <p>
-    <%= "    <%= f.label :#{k} %" + "><br />" %>
+  <div>
+    <%= "    <%= f.label :#{k} %" + ">" %>
     <%= model.rails_field_string(k, v) %>
-  </p>
+  </div>
 <% end %>
 
 <% keys_in_path = model.resource_tuple.map {|x| x.s + "_id" } %>
 <% model.foreign_keys.uniq.reject {|x| keys_in_path.member?(x) }.each do |key| %>
-  <p>
-    <%= "    <%= f.label :#{key[0..-4]} %" + "><br />" %>
+  <div>
+    <%= "    <%= f.label :#{key[0..-4]} %" + ">" %>
     <%= model.rails_field_string(key, "foreign_key") %>
-  </p>
+  </div>
 <% end %>
 
-  <p>
+  <div>
     <%= "<%= f.submit 'Submit' %" + ">" %>
-  </p>
+  </div>
 <%= "<% end %" + ">" %>

@@ -273,15 +273,15 @@ class Rails < Generator
     "<% form_for(@#{s}) do |f| %>\n  <%= f.error_messages %>"
     model.fields.each do |k, v|
        "
-  <p>
+  <div>
     <%= f.label :#{k} %><br />
     <%= f.text_field :#{k} %>
-  </p>\n"
+  </div>\n"
     end
      "
-  <p>
+  <div>
     <%= f.submit 'Update' %>
-  </p>
+  </div>
 <% end %>"
     
   end
