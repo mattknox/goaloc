@@ -1,20 +1,20 @@
 <%= "<% div_for(#{model.s}) do %" + ">" %>
 <%= "<h3>#{model.s}</h3>" %>
 <% model.fields.each do |k, v| %>
-  <p>
+  <div>
     <b><%= k %>:</b>
     <%= "<%=h #{model.s}.#{k} %" + ">" %>
-  </p>
+  </div>
 <% end %>
 <%= "<% end %" + ">" %>
 <%  model.nested_resources.each do |k, v| %>
   
-  <p>
+  <div>
     <%= "<h4>list of #{v.p}</h4>" %>
     <%=  "<%= render :partial => '#{v.p}/#{v.s}_small', :collection => #{model.s}.#{v.p} %" + ">" %>
-  </p>
-  <p>
+  </div>
+  <div>
     <%=  "<h4>make a new #{v.s}</h4>" %>
     <%=  "<%= render :partial => '#{v.p}/form', :object => #{model.s}.#{v.p}.new %" + ">" %>
-  </p>
+  </div>
 <% end %>

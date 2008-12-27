@@ -1,8 +1,8 @@
 <%= "<% div_for(#{model.s}_small) do %" + ">" %>
 <% model.fields.each do |k, v| %>
-  <p>
-    <b><%= k %>:</b>
+  <div>
+    <span><%= k %>:</span>
     <%= "<%=h #{model.s}_small.#{k} %" + ">" %>
-  </p>
+  </div>
 <% end %>
 <%= "<% end %" + ">" %>
