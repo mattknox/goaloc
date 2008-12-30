@@ -21,6 +21,8 @@ it should:
 -TODO: generate tests for the generated app
 -TODO: make nice semantic HTML for the views
 -make it serve goaloc directly (this is maybe really hard)
+-handle chained resources better
+-include a javascripty interface, so that one can go up the post-comment-rating chain in one page.
 
 ==DONE:
 -include jquery for js
@@ -41,6 +43,16 @@ generate presently only knows how to make rails apps, and part of merb apps, but
 route [:causes, { :class => :users, :through => :memberships }, :tasks, ]
 
 will set up causes has many users through memberships
+
+People keep joking that I should just be able to say "goaloc blog" and get an app.  Is that actually a bad idea?  I'm not sure.  It seems like it would be a great idea to be able to say, for instance, that at any given point, you should be able to include an entire app rooted at the spot in the routes you currently occupy.  Something like this:
+
+route [:users, blog, photogallery]
+
+could make a blog that is accessible through the user object.  This could come with a bunch of options, like setting authentication, etc.  
+
+This would allow people to make individual web components, possibly including views.
+
+This almost suggests a need for a version control system for "goals" (might need a better name for it and for the project as a whole)
 
 == REQUIREMENTS:
 

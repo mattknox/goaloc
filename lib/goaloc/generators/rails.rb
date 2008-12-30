@@ -127,6 +127,7 @@ class Rails < Generator
       gen_model(model)
       gen_controller(model)
       gen_view(model)
+      gen_tests(model)
       gen_misc
     end
   end
@@ -309,6 +310,10 @@ class Rails < Generator
     end
   end
 
+  def gen_tests(model)
+    # TODO: actually implement this.  :)
+  end
+  
   def gen_misc # here we put in the layout, the goaloc log, and libraries (blueprint CSS, jquery)
     File.open("#{app_name}/app/views/layouts/application.html.erb", "w") do |f|
       f.write File.open("#{File.dirname(__FILE__)}/rails/application.html.erb").read
