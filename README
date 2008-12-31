@@ -44,6 +44,7 @@ route [:causes, { :class => :users, :through => :memberships }, :tasks, ]
 
 will set up causes has many users through memberships
 
+Possible rewrite:
 People keep joking that I should just be able to say "goaloc blog" and get an app.  Is that actually a bad idea?  I'm not sure.  It seems like it would be a great idea to be able to say, for instance, that at any given point, you should be able to include an entire app rooted at the spot in the routes you currently occupy.  Something like this:
 
 route [:users, blog, photogallery]
@@ -52,7 +53,8 @@ could make a blog that is accessible through the user object.  This could come w
 
 This would allow people to make individual web components, possibly including views.
 
-This almost suggests a need for a version control system for "goals" (might need a better name for it and for the project as a whole)
+This almost suggests a need for a version control system for "goals" (might need a better name for it and for the project as a whole), and really points up the importance of making this servable on its own.  
+
 
 == REQUIREMENTS:
 
