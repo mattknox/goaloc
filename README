@@ -49,11 +49,12 @@ People keep joking that I should just be able to say "goaloc blog" and get an ap
 
 route [:users, blog, photogallery]
 
-could make a blog that is accessible through the user object.  This could come with a bunch of options, like setting authentication, etc.  
+could make a blog that is accessible through the user object.  Each goal-generating function could come with a bunch of options, like setting authentication, etc.  
 
 This would allow people to make individual web components, possibly including views.
 
-This almost suggests a need for a version control system for "goals" (might need a better name for it and for the project as a whole), and really points up the importance of making this servable on its own.  
+This almost suggests a need for a gem-like system for "goals" (might need a better name for it and for the project as a whole), and really points up the importance of making this servable on its own-it would be great to be able to toss in a component, look at the resulting app, and then change it.
+
 
 
 == REQUIREMENTS:
