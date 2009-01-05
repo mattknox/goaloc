@@ -1,0 +1,208 @@
+require 'test_helper'
+
+class <%= model.cp %>ControllerTest < ActionController::TestCase
+  def setup
+    <%= model.rails_symname %> = <%= model.cs %>.find(:first)
+  end
+
+  context "on GET to <%= model.cp %>Controller#index" do
+    setup do
+    
+    end
+
+    should "respond with success" do 
+    end
+
+    should "assign <%= model.rails_symname %>" do
+    end
+
+    should "render template :index" do 
+    end
+
+    should "not set the flash" do 
+    end
+  end
+
+  context "on GET to <%= model.cp %>Controller#show" do
+    setup do
+      get :show
+    end
+
+    should "assign <%= model.rails_symname %>" do 
+    end
+
+    should "respond with success" do 
+    end
+
+    should "render template :show" do 
+    end
+
+    should "not set the flash" do 
+    end
+  end
+
+  context "on GET to <%= model.cp %>Controller#new" do
+    setup do
+    
+    end
+
+    should "respond with success" do 
+    end
+
+    should "assign <%= model.rails_symname %>" do 
+    end
+
+    should "not set the flash" do 
+    end
+
+    should "render template :new" do 
+    end
+
+    should "display a form" do 
+    end
+  end
+
+  context "on GET to <%= model.cp %>Controller#edit" do
+    setup do
+      get :edit, 
+    end
+
+    should "assign <%= model.rails_symname %>" do 
+    end
+
+    should "respond with success" do 
+    end
+
+    should "render template :edit" do 
+    end
+
+    should "not set the flash" do 
+    end
+
+    should "display a form" do 
+    end
+
+    should "set <%= model.rails_symname %> to requested instance" do 
+    end
+  end
+
+  context "on POST to <%= model.cp %>Controller#create with " do
+    setup do
+      post :create
+    end
+
+    should "assign <%= model.rails_symname %>" do 
+    end
+
+    should "have /created/i in the flash" do 
+    end
+
+    should "redirect to '<%= model.s %>_url(<%= model.rails_symname %>)'" do 
+    end
+
+    should "not have errors on <%= model.rails_symname %>" do 
+    end
+  end
+
+  context "on PUT to <%= model.cp %>Controller#update with {:title=>"a title ", :body=>"body"}" do
+    setup do
+    
+    end
+
+    should "assign <%= model.rails_symname %>" do 
+    end
+
+    should "have /updated/i in the flash" do 
+    end
+
+    should "redirect to '<%= model.s %>_url(<%= model.rails_symname %>)'" do 
+    end
+
+    should "not have errors on <%= model.rails_symname %>" do 
+    end
+  end
+
+  context "on DELETE to <%= model.cp %>Controller#destroy" do
+    setup do
+    
+    end
+
+    should "have /removed/i in the flash" do 
+    end
+
+    should "redirect to '<%= model.p %>_url()'" do 
+    end
+
+    should "destroy record" do 
+    end
+  end
+
+  context "on GET to <%= model.cp %>Controller#index as xml" do
+    setup do
+    
+    end
+
+    should "respond with success" do 
+    end
+
+    should "have ContentType set to 'application/xml'" do 
+    end
+
+    should "return <<%= model.p %>/> as the root element" do 
+    end
+
+    should "assign <%= model.rails_symname %>s" do 
+    end
+  end
+
+  context "on GET to <%= model.cp %>Controller#show as xml" do
+    setup do
+    
+    end
+
+    should "assign <%= model.rails_symname %>" do 
+    end
+
+    should "respond with success" do 
+    end
+
+    should "have ContentType set to 'application/xml'" do 
+    end
+
+    should "return <<%= model.s %>/> as the root element" do 
+    end
+  end
+
+  context "on POST to <%= model.cp %>Controller#create as xml" do
+    setup do
+    
+    end
+
+    should "assign <%= model.rails_symname %>" do 
+    end
+
+    should "not have errors on <%= model.rails_symname %>" do 
+    end
+  end
+
+  context "on PUT to <%= model.cp %>Controller#update as xml" do
+    setup do
+    
+    end
+
+    should "assign <%= model.rails_symname %>" do 
+    end
+
+    should "not have errors on <%= model.rails_symname %>" do 
+    end
+  end
+
+  context "on DELETE to <%= model.cp %>Controller#destroy as xml" do
+    setup do
+    
+    end
+
+    should "destroy record" do 
+    end
+  end
+end
