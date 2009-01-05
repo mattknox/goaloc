@@ -1,0 +1,9 @@
+require File.dirname(__FILE__) + '/../test_helper'
+
+class <%= model.cs %>Test < ActiveSupport::TestCase
+  <% model.associations.each do |k, v| %>
+    <% if :belongs_to == v[:type] %>
+  <%= "should_belong_to :#{k}" %>
+    <% end %>
+  <% end %>
+end
