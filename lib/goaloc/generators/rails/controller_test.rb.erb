@@ -7,82 +7,52 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
 
   context "on GET to <%= model.cp %>Controller#index" do
     setup do
-    
     end
 
-    should "respond with success" do 
-    end
-
-    should "assign <%= model.rails_symname %>" do
-    end
-
-    should "render template :index" do 
-    end
-
-    should "not set the flash" do 
-    end
+    should_respond_with :success
+    should_assign_to :<%= model.s %>
+    should_render_template :index
+    should_not_set_the_flash
   end
 
   context "on GET to <%= model.cp %>Controller#show" do
     setup do
-      get :show
+      get :show, :id => <%= model.rails_symname %>.id
     end
 
-    should "assign <%= model.rails_symname %>" do 
-    end
-
-    should "respond with success" do 
-    end
-
-    should "render template :show" do 
-    end
-
-    should "not set the flash" do 
+    should_assign_to :<%= model.s %>
+    should_respond_with :success
+    should_render_template :show
+    should_not_set_the_flash
+    should "set <%= model.rails_symname %> to requested instance" do
+      assert_equal <%= model.rails_symname %>, assigns(:<%= model.s %>)
     end
   end
 
   context "on GET to <%= model.cp %>Controller#new" do
     setup do
-    
     end
 
-    should "respond with success" do 
-    end
-
-    should "assign <%= model.rails_symname %>" do 
-    end
-
-    should "not set the flash" do 
-    end
-
-    should "render template :new" do 
-    end
-
-    should "display a form" do 
-    end
+    should_respond_with :success
+    should_assign_to :<%= model.s %>
+    should_not_set_the_flash
+    should_render_template :new
+    should_render_a_form
   end
 
   context "on GET to <%= model.cp %>Controller#edit" do
     setup do
-      get :edit, 
+      get :edit
     end
 
-    should "assign <%= model.rails_symname %>" do 
-    end
+    should_assign_to :<%= model.s %>
+    should_respond_with :success
 
-    should "respond with success" do 
-    end
-
-    should "render template :edit" do 
-    end
-
-    should "not set the flash" do 
-    end
-
-    should "display a form" do 
-    end
-
-    should "set <%= model.rails_symname %> to requested instance" do 
+    should_render_template :edit
+    should_not_set_the_flash
+    should_render_a_form
+    should "set <%= model.rails_symname %> to requested instance" do
+      assert_equal <%= model.rails_symname %>, assigns(:<%= model.s %>)
     end
   end
 
@@ -91,80 +61,55 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
       post :create
     end
 
-    should "assign <%= model.rails_symname %>" do 
-    end
-
-    should "have /created/i in the flash" do 
-    end
-
-    should "redirect to '<%= model.s %>_url(<%= model.rails_symname %>)'" do 
-    end
-
+    should_assign_to :<%= model.s %>
+    should_set_the_flash_to(/created/i)
+    should_redirect_to  "<%= model.s %>_url(<%= model.rails_symname %>)"
     should "not have errors on <%= model.rails_symname %>" do 
     end
   end
 
   context "on PUT to <%= model.cp %>Controller#update with {:title=>"a title ", :body=>"body"}" do
     setup do
-    
     end
 
-    should "assign <%= model.rails_symname %>" do 
-    end
-
-    should "have /updated/i in the flash" do 
-    end
-
-    should "redirect to '<%= model.s %>_url(<%= model.rails_symname %>)'" do 
-    end
-
-    should "not have errors on <%= model.rails_symname %>" do 
+    should_assign_to :<%= model.s %>
+    should_set_the_flash_to(/updated/i)
+    should_redirect_to "<%= model.s %>_url(<%= model.rails_symname %>)"
+    should "not have errors on <%= model.rails_symname %>" do
+      assert assigns(:<%= model.s %>).errors.empty?
     end
   end
 
   context "on DELETE to <%= model.cp %>Controller#destroy" do
     setup do
-    
     end
 
-    should "have /removed/i in the flash" do 
-    end
-
-    should "redirect to '<%= model.p %>_url()'" do 
-    end
-
+    should_set_the_flash_to(/removed/i)
+    should_redirect_to "<%= model.p %>_url()"
     should "destroy record" do 
     end
   end
 
   context "on GET to <%= model.cp %>Controller#index as xml" do
     setup do
-    
     end
 
-    should "respond with success" do 
-    end
-
+    should_respond_with :success
     should "have ContentType set to 'application/xml'" do 
     end
 
     should "return <<%= model.p %>/> as the root element" do 
     end
 
-    should "assign <%= model.rails_symname %>s" do 
-    end
+    should_assign_to :<%= model.p %>
   end
 
   context "on GET to <%= model.cp %>Controller#show as xml" do
     setup do
-    
     end
 
-    should "assign <%= model.rails_symname %>" do 
-    end
-
-    should "respond with success" do 
-    end
+    should_assign_to :<%= model.s %>
+    should_respond_with :success
 
     should "have ContentType set to 'application/xml'" do 
     end
@@ -175,31 +120,24 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
 
   context "on POST to <%= model.cp %>Controller#create as xml" do
     setup do
-    
     end
 
-    should "assign <%= model.rails_symname %>" do 
-    end
-
+    should_assign_to :<%= model.s %>
     should "not have errors on <%= model.rails_symname %>" do 
     end
   end
 
   context "on PUT to <%= model.cp %>Controller#update as xml" do
     setup do
-    
     end
 
-    should "assign <%= model.rails_symname %>" do 
-    end
-
+    should_assign_to :<%= model.s %>
     should "not have errors on <%= model.rails_symname %>" do 
     end
   end
 
   context "on DELETE to <%= model.cp %>Controller#destroy as xml" do
     setup do
-    
     end
 
     should "destroy record" do 
