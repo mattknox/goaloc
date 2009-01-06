@@ -310,8 +310,34 @@ class Rails < Generator
     end
   end
 
+  def gen_unit_test_string(model)
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/model_test.rb.erb").read
+    ERB.new(template_str).result(binding)
+  end
+  
+  def gen_unit_test(model)
+    Dir.mkdir "#{app_name}/test/unit" unless File.exists? "#{app_name}/test/unit"
+    f = File.new("#{app_name}/test/unit/#{ model.s }_test.rb", "w")
+    f.write gen_unit_test_string(model)
+    f.close
+  end
+
+  def gen_controller_test_string(model)
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/controller_test.rb.erb").read
+    ERB.new(template_str).result(binding)
+  end
+  
+  def gen_controller_test(model)
+    Dir.mkdir "#{app_name}/test/functional" unless File.exists? "#{app_name}/test/functional"
+    f = File.new("#{app_name}/test/functional/#{ model.p }_test.rb", "w")
+    f.write gen_controller_test_string(model)
+    f.close
+  end
+  
   def gen_tests(model)
-    # TODO: actually implement this.  :)
+    # TODO: get shoulda into place.
+    gen_unit_test(model)
+    gen_controller_test(model)
   end
   
   def gen_misc # here we put in the layout, the goaloc log, and libraries (blueprint CSS, jquery)
