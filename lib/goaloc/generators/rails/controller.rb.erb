@@ -70,6 +70,7 @@ class <%= model.cp %>Controller < ApplicationController
   def destroy
     @<%= model.s %>.destroy
 
+    flash[:notice] = '<%= model.cs %> was successfully removed.'
     respond_to do |format|
       format.html { redirect_to(<%= model.rails_collection_path %>) }
       format.xml  { head :ok }
