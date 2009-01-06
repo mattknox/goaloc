@@ -2,11 +2,12 @@ require 'test_helper'
 
 class <%= model.cp %>ControllerTest < ActionController::TestCase
   def setup
-    <%= model.rails_symname %> = <%= model.cs %>.find(:first)
+    <%= model.resource_tuple.map { |var| var.rails_test_var_string }.join("\n    ") %>
   end
 
   context "on GET to <%= model.cp %>Controller#index" do
     setup do
+      get <%= [[':index'] + model.resource_tuple[0..-2].map {|m| ":#{m.s}_id => @#{m.s}.to_param" }].join(", ") %>
     end
 
     should_respond_with :success
@@ -17,7 +18,7 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
 
   context "on GET to <%= model.cp %>Controller#show" do
     setup do
-      get :show, :id => <%= model.rails_symname %>.id # TODO: make this deal with nested routes.
+      get <%= [[":show, :id => #{model.rails_symname}.to_param"] + model.resource_tuple[0..-2].map {|m| ":#{m.s}_id => @#{m.s}.to_param" }].join(", ")  %>
     end
 
     should_assign_to :<%= model.s %>
@@ -31,6 +32,7 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
 
   context "on GET to <%= model.cp %>Controller#new" do
     setup do
+      get <%= [[":new"] + model.resource_tuple[0..-2].map {|m| ":#{m.s}_id => @#{m.s}.to_param" }].join(", ") %>
     end
 
     should_respond_with :success
@@ -42,7 +44,7 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
 
   context "on GET to <%= model.cp %>Controller#edit" do
     setup do
-      get :edit
+      get <%= [[":edit, :id => #{model.rails_symname}.to_param"] + model.resource_tuple[0..-2].map {|m| ":#{m.s}_id => @#{m.s}.to_param" }].join(", ")  %>
     end
 
     should_assign_to :<%= model.s %>
@@ -58,23 +60,24 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
 
   context "on POST to <%= model.cp %>Controller#create with " do
     setup do
-      post :create
+      post <%= [[":create"] + model.resource_tuple[0..-2].map {|m| ":#{m.s}_id => @#{m.s}.to_param" }].join(", ") %>
     end
 
     should_assign_to :<%= model.s %>
-    should_set_the_flash_to(/created/i)
-    should_redirect_to  "<%= model.s %>_url(<%= model.rails_symname %>)"
+#    should_set_the_flash_to(/created/i)
+#    should_redirect_to <%= model.rails_ivar_or_array_of_ivars(-2) %>
     should "not have errors on <%= model.rails_symname %>" do 
     end
   end
 
   context "on PUT to <%= model.cp %>Controller#update with" do
     setup do
+      put <%= [[":update, :id => #{model.rails_symname}.to_param"] + model.resource_tuple[0..-2].map {|m| ":#{m.s}_id => @#{m.s}.to_param" }].join(", ") %>
     end
 
     should_assign_to :<%= model.s %>
-    should_set_the_flash_to(/updated/i)
-    should_redirect_to "<%= model.s %>_url(<%= model.rails_symname %>)"
+#    should_set_the_flash_to(/updated/i)
+#    should_redirect_to <%= model.rails_ivar_or_array_of_ivars %>
     should "not have errors on <%= model.rails_symname %>" do
       assert assigns(:<%= model.s %>).errors.empty?
     end
@@ -82,16 +85,18 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
 
   context "on DELETE to <%= model.cp %>Controller#destroy" do
     setup do
+      delete <%= [[":destroy, :id => #{model.rails_symname}.to_param"] + model.resource_tuple[0..-2].map {|m| ":#{m.s}_id => @#{m.s}.to_param" }].join(", ") %>
     end
 
-    should_set_the_flash_to(/removed/i)
-    should_redirect_to "<%= model.p %>_url()"
+#    should_set_the_flash_to(/removed/i)
+#    should_redirect_to <%= model.rails_collection_path %>
     should "destroy record" do 
     end
   end
 
   context "on GET to <%= model.cp %>Controller#index as xml" do
     setup do
+      get <%= [[":index"] + model.resource_tuple[0..-2].map {|m| ":#{m.s}_id => @#{m.s}.to_param" }].join(", ")  %>
     end
 
     should_respond_with :success
@@ -106,6 +111,7 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
 
   context "on GET to <%= model.cp %>Controller#show as xml" do
     setup do
+      get <%= [[":show, :id => #{model.rails_symname}.to_param"] + model.resource_tuple[0..-2].map {|m| ":#{m.s}_id => @#{m.s}.to_param" }].join(", ")  %>
     end
 
     should_assign_to :<%= model.s %>
@@ -120,6 +126,7 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
 
   context "on POST to <%= model.cp %>Controller#create as xml" do
     setup do
+      post <%= [[":create"] + model.resource_tuple[0..-2].map {|m| ":#{m.s}_id => @#{m.s}.to_param" }].join(", ")  %>
     end
 
     should_assign_to :<%= model.s %>
@@ -129,6 +136,7 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
 
   context "on PUT to <%= model.cp %>Controller#update as xml" do
     setup do
+      put <%= [[":update, :id => #{model.rails_symname}.to_param"] + model.resource_tuple[0..-2].map {|m| ":#{m.s}_id => @#{m.s}.to_param" }].join(", ")  %>
     end
 
     should_assign_to :<%= model.s %>
@@ -138,6 +146,7 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
 
   context "on DELETE to <%= model.cp %>Controller#destroy as xml" do
     setup do
+      delete <%= [[":destroy, :id => #{model.rails_symname}.to_param"] + model.resource_tuple[0..-2].map {|m| ":#{m.s}_id => @#{m.s}.to_param" }].join(", ")  %>
     end
 
     should "destroy record" do 

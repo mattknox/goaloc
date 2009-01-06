@@ -15,6 +15,10 @@ class Rails < Generator
       self.resource_tuple[0..end_index].map {|c| c.rails_symname }
     end
 
+    def rails_ivar_or_array_of_ivars(end_index = -1)
+      "[" + self.resource_tuple[0..end_index].map {|c| c.rails_symname }.join(", ") + "]"
+    end
+    
     def rails_backvar_tuple(end_element = "form")
       # this is intended to grab the list of elements needed to populate a form_for,
       # propagated back from the named end_element
@@ -58,6 +62,15 @@ class Rails < Generator
         "@#{self.s} = @#{enclosing_resource.s}.#{self.p}.find(params[:#{id_str}])"
       else
         "@#{self.s} = #{self.cs}.find(params[:#{id_str}])"
+      end
+    end
+
+    def rails_test_var_string
+      if self.nested?
+        enclosing_resource = self.resource_tuple[-2]
+        "@#{self.s} = @#{enclosing_resource.s}.#{self.p}.find(:first)"
+      else
+        "@#{self.s} = #{self.cs}.find(:first)"
       end
     end
     
@@ -309,7 +322,7 @@ class Rails < Generator
       ""
     end
   end
-
+  
   def gen_unit_test_string(model)
     template_str = File.open("#{File.dirname(__FILE__)}/rails/model_test.rb.erb").read
     ERB.new(template_str).result(binding)
@@ -329,7 +342,7 @@ class Rails < Generator
   
   def gen_controller_test(model)
     Dir.mkdir "#{app_name}/test/functional" unless File.exists? "#{app_name}/test/functional"
-    f = File.new("#{app_name}/test/functional/#{ model.p }_test.rb", "w")
+    f = File.new("#{app_name}/test/functional/#{ model.p }_controller_test.rb", "w")
     f.write gen_controller_test_string(model)
     f.close
   end
@@ -338,8 +351,38 @@ class Rails < Generator
     # TODO: get shoulda into place.
     gen_unit_test(model)
     gen_controller_test(model)
+    gen_fixture(model)
+  end
+
+  def exemplar_data(data_type)
+    case data_type
+    when "integer" then rand(100)
+    else data_type + rand(100).to_s
+    end
   end
   
+  def gen_fixture_string(model, n)
+    out = ""
+    (1..n).each do |i|
+      out << "#{model.s}#{i}:\n"
+      out << "  id: #{i}\n"
+      model.fields.each do |k, v|
+        out << "  #{k}: #{exemplar_data(v)}\n"
+      end
+      model.foreign_keys.uniq.each do |key|
+        out << "  #{key}: #{i}\n"
+      end
+      out << "\n"
+    end
+    out
+  end
+
+  def gen_fixture(model)
+    File.open("#{app_name}/test/fixtures/#{model.p}.yml", "w") do |f|
+      f.write gen_fixture_string(model, 100)
+    end
+  end
+
   def gen_misc # here we put in the layout, the goaloc log, and libraries (blueprint CSS, jquery)
     File.open("#{app_name}/app/views/layouts/application.html.erb", "w") do |f|
       f.write File.open("#{File.dirname(__FILE__)}/rails/application.html.erb").read
@@ -349,5 +392,6 @@ class Rails < Generator
     end
     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/bluetrip", "#{app_name}/public/stylesheets")
     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/jquery-1.2.6.min.js", "#{app_name}/public/javascripts")
+    FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/shoulda", "#{app_name}/vendor/plugins/")
   end
 end
