@@ -17,7 +17,7 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
 
   context "on GET to <%= model.cp %>Controller#show" do
     setup do
-      get :show, :id => <%= model.rails_symname %>.id
+      get :show, :id => <%= model.rails_symname %>.id # TODO: make this deal with nested routes.
     end
 
     should_assign_to :<%= model.s %>
