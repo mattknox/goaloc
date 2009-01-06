@@ -110,6 +110,14 @@ class Rails < Generator
       wrap_method("new_#{self.s}", (self.resource_tuple[0..-2].map { |var| var.rails_finder_string } +
                                     [self.rails_new_object_string]))
     end
+
+    def rails_required_nonpath_params
+      self.associations.reject { |k,v| v[:type] != :belongs_to }.keys.reject {|x| self.resource_tuple.map { |y| y.s }.member?(x) }
+    end
+
+    def rails_required_nonpath_param_string
+      rails_required_nonpath_params.map { |z| ":#{ z.singularize }_id => 1" }.join(", ")
+    end
     
     def wrap_method(name, arr, indent_string = "  ")
       indent_string + "def #{name}\n" + arr.map { |s| indent_string + "  " + s }.join("\n") + "\n#{indent_string}end"

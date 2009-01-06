@@ -60,7 +60,7 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
 
   context "on POST to <%= model.cp %>Controller#create with " do
     setup do
-      post <%= [[":create"] + model.resource_tuple[0..-2].map {|m| ":#{m.s}_id => @#{m.s}.to_param" }].join(", ") %> # TODO: make this handle necessary things outside of the routes.
+      post <%= [[":create"] + model.resource_tuple[0..-2].map {|m| ":#{m.s}_id => @#{m.s}.to_param" }].join(", ") %>, :<%= model.s %> => { <%= model.rails_required_nonpath_param_string %> }
     end
 
     should_assign_to :<%= model.s %>
@@ -126,7 +126,7 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
 
   context "on POST to <%= model.cp %>Controller#create as xml" do
     setup do
-      post <%= [[":create"] + model.resource_tuple[0..-2].map {|m| ":#{m.s}_id => @#{m.s}.to_param" }].join(", ")  %>
+      post <%= [[":create"] + model.resource_tuple[0..-2].map {|m| ":#{m.s}_id => @#{m.s}.to_param" }].join(", ")  %>, :<%= model.s %> => { <%= model.rails_required_nonpath_param_string %> }
     end
 
     should_assign_to :<%= model.s %>
