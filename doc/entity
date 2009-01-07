@@ -1,0 +1,33 @@
+a goaloc entity needs to be able to encapsulate roughly what a merb slice does:  the model, view, and controller parts of an application.
+
+it needs:
+
+model:
+associations
+dbfields
+validations
+model_lifecycle_callbacks:  before_save, after_validate, etc..
+
+controller:
+list of actions to support
+filters
+destinations for the non-GET actions (delete, create, update ) (pretty much only 2 reasonable options for each)
+
+view:
+form, large and small individual representations, collection representation, optionally a layout
+
+tests:
+unit
+functional
+a coverage metric (how hard do you want this covered?)
+
+
+An app has a collection of such entities, and also 
+routes
+plugins
+gems
+configuration
+
+
+how does this play with javascript?  maybe better than rails.
+how does this do continuation-based apps?
