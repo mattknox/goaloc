@@ -206,6 +206,7 @@ class Rails < Generator
     Dir.mkdir "#{app_name}/db/migrate" unless File.exists? "#{app_name}/db/migrate"
     f = File.new("#{app_name}/db/migrate/#{ Time.now.strftime("%Y%m%d%H%M%S") }_create_#{model.p}.rb", "w")
     Kernel.sleep(1)  # FIXME: get rid of this nasty hack.
+                     # TODO: I should make a migration_order accessor, so people can define the order in which migrations happen.  This would also, coincidentally, allow me to get rid of the Kernel.sleep(1) hack.
     f.write gen_migration_string(model)
     f.close
   end
