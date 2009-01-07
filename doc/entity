@@ -31,3 +31,12 @@ configuration
 
 how does this play with javascript?  maybe better than rails.
 how does this do continuation-based apps?
+
+
+I should be able to indicate to the app that it will always have an instance of a given class, accessible by a given method_name
+
+so, eg., when you install restful_auth, it can tell the app that there is a user available under current_user
+
+actually, current_user makes sense in an app-from the point of view of any given controller, there will always be exactly one current user, so that should be visible in the framework and available to anyone.  
+
+also, need to cope with roles, probably.  

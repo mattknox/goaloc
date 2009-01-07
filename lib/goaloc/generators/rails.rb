@@ -395,7 +395,7 @@ class Rails < Generator
     File.open("#{app_name}/app/views/layouts/application.html.erb", "w") do |f|
       f.write File.open("#{File.dirname(__FILE__)}/rails/application.html.erb").read
     end
-    File.open("#{app_name}/doc/goaloc", "w") do |f|
+    File.open("#{app_name}/doc/goaloc_spec", "w") do |f|
       f.write app.goaloc_log.join("\n")
     end
     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/bluetrip", "#{app_name}/public/stylesheets")
