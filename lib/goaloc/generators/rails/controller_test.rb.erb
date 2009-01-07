@@ -64,8 +64,8 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
     end
 
     should_assign_to :<%= model.s %>
-#    should_set_the_flash_to(/created/i)
-#    should_redirect_to <%= model.rails_ivar_or_array_of_ivars(-2) %>
+    should_set_the_flash_to(/created/i)
+    should_redirect_to "<%= model.rails_collection_path %>"
     should "not have errors on <%= model.rails_symname %>" do 
     end
   end
@@ -76,8 +76,8 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
     end
 
     should_assign_to :<%= model.s %>
-#    should_set_the_flash_to(/updated/i)
-#    should_redirect_to <%= model.rails_ivar_or_array_of_ivars %>
+    should_set_the_flash_to(/updated/i)
+    should_redirect_to "<%= model.rails_object_path %>"
     should "not have errors on <%= model.rails_symname %>" do
       assert assigns(:<%= model.s %>).errors.empty?
     end
@@ -88,9 +88,10 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
       delete <%= [[":destroy, :id => #{model.rails_symname}.to_param"] + model.resource_tuple[0..-2].map {|m| ":#{m.s}_id => @#{m.s}.to_param" }].join(", ") %>
     end
 
-#    should_set_the_flash_to(/removed/i)
-#    should_redirect_to <%= model.rails_collection_path %>
-    should "destroy record" do 
+    should_set_the_flash_to(/removed/i)
+    should_redirect_to "<%= model.rails_collection_path %>"
+    should "destroy record" do
+      
     end
   end
 
