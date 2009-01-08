@@ -32,7 +32,6 @@ configuration
 how does this play with javascript?  maybe better than rails.
 how does this do continuation-based apps?
 
-
 I should be able to indicate to the app that it will always have an instance of a given class, accessible by a given method_name
 
 so, eg., when you install restful_auth, it can tell the app that there is a user available under current_user
@@ -42,3 +41,11 @@ actually, current_user makes sense in an app-from the point of view of any given
 also, need to cope with roles, probably.  
 
 I should make a migration_order accessor, so people can define the order in which migrations happen.  This would also, coincidentally, allow me to get rid of the Kernel.sleep(1) hack.
+
+It might be interesting, as a process note, to develop goaloc in two parts:  a front end which is mostly about poking objects and modifying their state (at which ruby excels) and another part that is all about code generation (at which ruby is OK and lisp is unbeatable).  The interface between the two might be reasonably easy to express in thrift.  
+
+Need a name for the thing that you generate when you do 
+
+route :posts
+
+a goal?  an entity?  goal is cuter.  
