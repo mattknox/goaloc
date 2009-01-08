@@ -1,4 +1,4 @@
-class <%= model.to_s -%> < ActiveRecord::Base
+class <%= model.to_s -%> < ActiveRecord::Base <% #FIXME:  make this restrict access to attributes that shouldn't be accessible %>
 <% model.associations.each do |k, v| -%>
   <%= model.rails_association_string(k, v)  -%>
 <% end -%>
