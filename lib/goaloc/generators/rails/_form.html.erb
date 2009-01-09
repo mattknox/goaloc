@@ -1,8 +1,8 @@
-<%= "<% form_for([#{model.rails_backvar_tuple.join(',')}]) do |f| %" + ">" %>
-<%= "<%= f.error_messages %" + ">" %>
+<%= "<% form_for([#{model.rails_backvar_tuple.join(',')}]) do |f| %%>" %>
+<%= "<%= f.error_messages %%>" %>
 <% model.fields.each do |k, v| %>
   <div>
-    <%= "    <%= f.label :#{k} %" + ">" %>
+    <%= "    <%= f.label :#{k} %%>" %>
     <%= model.rails_field_string(k, v) %>
   </div>
 <% end %>
@@ -10,12 +10,12 @@
 <% keys_in_path = model.resource_tuple.map {|x| x.s + "_id" } %>
 <% model.foreign_keys.uniq.reject {|x| keys_in_path.member?(x) }.each do |key| %>
   <div>
-    <%= "    <%= f.label :#{key[0..-4]} %" + ">" %>
+    <%= "    <%= f.label :#{key[0..-4]} %%>" %>
     <%= model.rails_field_string(key, "foreign_key") %>
   </div>
 <% end %>
 
   <div>
-    <%= "<%= f.submit 'Submit' %" + ">" %>
+    <%= "<%= f.submit 'Submit' %%>" %>
   </div>
-<%= "<% end %" + ">" %>
+<%= "<% end %%>" %>
