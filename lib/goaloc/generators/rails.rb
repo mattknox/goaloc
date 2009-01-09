@@ -321,8 +321,9 @@ class Rails < Generator
 
   def gen_default_route  # this is nasty.  Somehow needs to isolate the route writing from the file clobbering.
     if 1 == app.routes.length
-      File.delete("#{app_name}/public/index.html")
-      "  map.root :controller => '#{app.routes.first.first}'"
+      unwrappedroute = app.routes.first.to_a
+      File.delete("#{app_name}/public/index.html") rescue nil
+      "  map.root :controller => '#{unwrappedroute.first}'"
     else
       File.open("#{app_name}/public/index.html", "w") do |f|
         f.write "this will be the index page of the app.  But it isn't yet."
