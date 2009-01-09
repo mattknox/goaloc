@@ -56,10 +56,22 @@ BDD the goal object
   fields
   associations
   validations
-  
+  lifecycle callbacks
+  class/instance meths
+  requires/acts_as_* calls
 
 BDD the code generator
   migration
   model
   controller
-  
+  views
+    index
+    show
+    form
+    partials
+
+
+Questions:  
+do I need to define classes?  Might it suffice to define instances, and perhaps bind appropriately-named constants to them?
+how do I define a blog such that it only has the create method on comments routed, and not the others?
+how hard is it to serve it directly?  (need to add rack handler)
