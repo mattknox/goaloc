@@ -1,7 +1,7 @@
 <h1>Listing <%= model.p %></h1>
 
 
-<%=  "<%= render :partial => '#{model.p}/#{model.s}', :collection => @#{model.p} %" + ">" %>
+<%=  "<%= render :partial => '#{model.p}/#{model.s}', :collection => @#{model.p} %%>" %>
 
 <h2>create a new <%= model.s %></h2>
-<%=  "<%= render :partial => '#{model.p}/form', :object => @#{model.s} %" + ">" %>
+<%=  "<%= render :partial => '#{model.p}/form', :object => @#{model.s} %%>" %>
