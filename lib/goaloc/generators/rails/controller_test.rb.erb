@@ -101,7 +101,8 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
     end
 
     should_respond_with :success
-    should "have ContentType set to 'application/xml'" do 
+    should "have ContentType set to 'application/xml'" do
+      should_respond_with_content_type 'application/rss+xml'
     end
 
     should "return <<%= model.p %>/> as the root element" do 
@@ -119,6 +120,7 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
     should_respond_with :success
 
     should "have ContentType set to 'application/xml'" do 
+      should_respond_with_content_type 'application/rss+xml'
     end
 
     should "return <<%= model.s %>/> as the root element" do 
