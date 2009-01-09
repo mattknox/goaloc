@@ -11,7 +11,9 @@ begin
     s.email = "matthewknox@gmail.com"
     s.homepage = "http://github.com/mattknox/goaloc"
     s.description =  %q{Generate On A Lot of Crack speeds and extends the early sketching phase of RESTFUL MVC app development }
+    s.files = FileList["[A-Z]*.*", "{bin,generators,lib,test,spec}/**/*"]
     s.authors = ["matt knox"]
+    s.executables = ["goaloc"]
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
