@@ -48,4 +48,18 @@ Need a name for the thing that you generate when you do
 
 route :posts
 
-a goal?  an entity?  goal is cuter.  
+a goal?  an entity?  goal is cuter.
+
+
+plan for the rewrite:
+BDD the goal object
+  fields
+  associations
+  validations
+  
+
+BDD the code generator
+  migration
+  model
+  controller
+  
