@@ -67,6 +67,7 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
     should_set_the_flash_to(/created/i)
     should_redirect_to "<%= model.rails_collection_path %>"
     should "not have errors on <%= model.rails_symname %>" do 
+      assert assigns(:<%= model.s %>).errors.blank?
     end
   end
 
@@ -134,6 +135,7 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
 
     should_assign_to :<%= model.s %>
     should "not have errors on <%= model.rails_symname %>" do 
+      assert assigns(:<%= model.s %>).errors.blank?
     end
   end
 
@@ -143,7 +145,8 @@ class <%= model.cp %>ControllerTest < ActionController::TestCase
     end
 
     should_assign_to :<%= model.s %>
-    should "not have errors on <%= model.rails_symname %>" do 
+    should "not have errors on <%= model.rails_symname %>" do
+      assert assigns(:<%= model.s %>).errors.blank?
     end
   end
 
