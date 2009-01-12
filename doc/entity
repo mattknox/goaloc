@@ -77,3 +77,5 @@ how do I define a blog such that it only has the create method on comments route
 how hard is it to serve it directly?  (need to add rack handler)
 do I need to add the ability to do continuation-based apps?
 how soon should I make this able to serve itself?
+
+It'd be nice to rename something and have that rename propagate to all the places it might be needed.
