@@ -75,3 +75,5 @@ Questions:
 do I need to define classes?  Might it suffice to define instances, and perhaps bind appropriately-named constants to them?
 how do I define a blog such that it only has the create method on comments routed, and not the others?
 how hard is it to serve it directly?  (need to add rack handler)
+do I need to add the ability to do continuation-based apps?
+how soon should I make this able to serve itself?
