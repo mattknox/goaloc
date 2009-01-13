@@ -8,7 +8,7 @@ class Goal
     self.validations = []
     self.fields = HashWithIndifferentAccess.new
     self.options = { }
-    self.routes = (route.clone) # of the form [:classname, [:otherclass, :classname], ...]
+    self.routes = [route.to_a.clone] # of the form [:classname, [:otherclass, :classname], ...]
   end
 
   # here are a list of name-ish methods
@@ -21,6 +21,20 @@ class Goal
   def cs; self.name.camelize.singularize; end
   def cp; self.name.camelize.pluralize; end
 
+  # stuff used to introspect on the goal
+  def resource_tuple # this returns the minimal route to this goal, or nothing, if there is no unambiguous minimal route
+    routelist = self.routes.sort { |x, y| x.length <=> y.length }
+    if routelist.length == 1 
+      routelist.first
+    else #TODO: maybe should deal with a case where there's a simplest route that all the others contain.
+      nil
+    end
+  end
+
+  def nested_resources
+    APP.goals.reject { |k, v| v.routes != [(self.resource_tuple + [v])] }
+  end
+  
   # association stuff
   def belongs_to(goal, options = { })
     self.fields[goal.foreign_key] = "reference"

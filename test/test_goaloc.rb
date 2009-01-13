@@ -17,9 +17,20 @@ class TestGoaloc < Test::Unit::TestCase
     should "route a single symbol" do
       assert @app.respond_to? :route
       assert @app.route(:posts)
-      assert_equal @app.routes, [:posts]
-      assert_equal @app.goals[:post].routes, [:posts]
-      assert_match "route :posts", @app.goaloc_log.first
+    end
+
+    context "on which route :posts has been called " do
+      setup { @app.route :posts }
+
+      should "have routes on itself and its goal" do 
+        assert_equal @app.routes, [:posts]
+        assert_equal @app.goals[:post].routes, [[:posts]]
+        assert_match "route :posts", @app.goaloc_log.first
+      end
+
+      should "have a resource tuple" do
+        assert_equal @app.goals[:post].resource_tuple, [:posts]
+      end
     end
 
     context "when routing a single symbol" do
@@ -53,9 +64,15 @@ class TestGoaloc < Test::Unit::TestCase
 
       should "have routes" do
         assert_equal @app.routes, [:posts, :comments, :users]
-        assert_equal @app.goals[:post].routes, [:posts]
-        assert_equal @app.goals[:comment].routes, [:comments]
-        assert_equal @app.goals[:user].routes, [:users]
+        assert_equal @app.goals[:post].routes, [[:posts]]
+        assert_equal @app.goals[:comment].routes, [[:comments]]
+        assert_equal @app.goals[:user].routes, [[:users]]
+      end
+
+      should "have resource tuples on all its goals" do
+        assert_equal @app.goals[:post].resource_tuple, [:posts]
+        assert_equal @app.goals[:comment].resource_tuple, [:comments]
+        assert_equal @app.goals[:user].resource_tuple, [:users]
       end
     end
 
@@ -86,11 +103,19 @@ class TestGoaloc < Test::Unit::TestCase
 
       should "have routes" do
         assert_equal @app.routes, [:users, :names, [:posts, :comments, :postbundle]]
-        assert_equal @app.goals[:user].routes, [:users]
-        assert_equal @app.goals[:name].routes, [:names]
-        assert_equal @app.goals[:post].routes, [:posts]
-        assert_equal @app.goals[:comment].routes, [:posts, :comments]
-        assert_equal @app.goals[:postbundle].routes, [:posts, :postbundle]
+        assert_equal @app.goals[:user].routes, [[:users]]
+        assert_equal @app.goals[:name].routes, [[:names]]
+        assert_equal @app.goals[:post].routes, [[:posts]]
+        assert_equal @app.goals[:comment].routes, [[:posts, :comments]]
+        assert_equal @app.goals[:postbundle].routes, [[:posts, :postbundle]]
+      end
+
+      should "have resource tuples on all its goals" do
+        assert_equal @app.goals[:user].resource_tuple, [:users]
+        assert_equal @app.goals[:name].resource_tuple, [:names]
+        assert_equal @app.goals[:post].resource_tuple, [:posts]
+        assert_equal @app.goals[:comment].resource_tuple, [:posts, :comments]
+        assert_equal @app.goals[:postbundle].resource_tuple, [:posts, :postbundle]
       end
     end
 
