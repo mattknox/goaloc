@@ -156,5 +156,40 @@ class TestGoaloc < Test::Unit::TestCase
         assert @goal1.associations[@goal2.name][:goal] == @goal2
       end
     end
+
+    context "#hmt method" do
+      setup do
+        @goal1 = Goal.new("goal1")
+        @goal2 = Goal.new("goal2")
+        @goal3 = Goal.new("goal3")
+        @goal1.hmt @goal2, :through => @goal3
+      end
+
+      should "put has_many, belongs_to, and has_many :through assocs in place" do
+        assert !@goal1.associations.blank?
+        assert @goal1.associations["goal2s"].is_a? Hash
+        assert @goal1.associations["goal3s"].is_a? Hash # this is a has_many, so it's plural
+        assert_equal @goal1.associations["goal2s"][:type], :has_many
+        assert_equal @goal1.associations["goal2s"][:goal], @goal2
+        assert_equal @goal1.associations["goal2s"][:through], @goal3
+        assert_equal @goal1.associations["goal3s"][:type], :has_many
+        assert_equal @goal1.associations["goal3s"][:goal], @goal3
+        assert !@goal2.associations.blank?
+        assert @goal2.associations["goal1s"].is_a? Hash
+        assert @goal2.associations["goal3s"].is_a? Hash # this is a has_many, so it's plural
+        assert_equal @goal2.associations["goal1s"][:type], :has_many
+        assert_equal @goal2.associations["goal1s"][:goal], @goal1
+        assert_equal @goal2.associations["goal1s"][:through], @goal3
+        assert_equal @goal2.associations["goal3s"][:type], :has_many
+        assert_equal @goal2.associations["goal3s"][:goal], @goal3
+        assert !@goal3.associations.blank?
+        assert @goal3.associations[:goal2].is_a? Hash
+        assert @goal3.associations[:goal1].is_a? Hash
+        assert_equal @goal3.associations[:goal1][:type], :belongs_to
+        assert_equal @goal3.associations[:goal1][:goal], @goal1
+        assert_equal @goal3.associations[:goal2][:type], :belongs_to
+        assert_equal @goal3.associations[:goal2][:goal], @goal2
+      end
+    end
   end
 end

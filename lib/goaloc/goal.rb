@@ -22,24 +22,34 @@ class Goal
   def cp; self.name.camelize.pluralize; end
 
   # association stuff
-  def belongs_to(goal)
-    self.associations[goal.name] = { :goal => goal, :type => :belongs_to }
+  def belongs_to(goal, options = { })
     self.fields[goal.foreign_key] = "reference"
+    self.associate(:belongs_to, goal, options)
   end
 
-  def has_many(goal)
-    self.associations[goal.name.pluralize] = { :goal => goal, :type => :has_many }
-    goal.belongs_to(self)
+  def has_many(goal, options = { })
+    goal.belongs_to(self) unless options[:skip_belongs_to]
+    self.associate(:has_many, goal, options)
   end
 
-  def has_one(goal)
-    self.associations[goal.name] = { :goal => goal, :type => :has_one }
-    goal.belongs_to(self)
+  def has_one(goal, options = { })
+    goal.belongs_to(self) unless options[:skip_belongs_to]
+    self.associate(:has_one, goal, options)
+  end
+
+  def hmt(goal, options)
+    thru = options[:through]
+    self.has_many(thru)
+    self.has_many(goal, :through => thru, :skip_belongs_to => true)
+    unless options[:bidi] == false
+      goal.has_many(thru)
+      goal.has_many( self, { :through => thru, :skip_belongs_to => true })
+    end
   end
 
   def associate(assoc_type, goal, options = { })
     assoc_name = options[:assoc_name] || goal.default_assoc_name(assoc_type)
-    self.associations[assoc_name] = { :goal => goal, :type => assoc_type }
+    self.associations[assoc_name] = { :goal => goal, :name => assoc_name, :type => assoc_type }.merge(options)
   end
 
   def default_assoc_name(assoc_type)
