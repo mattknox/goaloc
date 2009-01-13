@@ -32,6 +32,9 @@ class TestGoaloc < Test::Unit::TestCase
       should "add fields with add_attrs" do
         assert @app.goals[:post].fields.empty?
         @app.goals[:post].add_attrs "name:string body:text"
+        assert !@app.goals[:post].fields.empty?
+        assert_equal @app.goals[:post].fields[:name], "string"
+        assert_equal @app.goals[:post].fields[:body], "text"
       end
     end
 
@@ -52,7 +55,7 @@ class TestGoaloc < Test::Unit::TestCase
     end
 
     context  "route nested arrays of symbols, like [:posts, :comments] or [:users, [:posts, :comments]]" do
-      setup { @app.route(:users, :names, [:posts, :comments]) }
+      setup { @app.route(:users, :names, [:posts, :comments, :postbundle]) }
 
       %w{ post comment }.each do |word|
         should "have a goal named #{word}" do
@@ -65,12 +68,19 @@ class TestGoaloc < Test::Unit::TestCase
           assert !@app.goals[:post].associations.blank?
           assert @app.goals[:post].associations.is_a? Hash
           assert @app.goals[:post].associations[:comments].is_a? Hash
-          assert @app.goals[:post].associations[:comments]
+          assert_equal @app.goals[:post].associations[:comments][:goal], @app.goals[:comment]
+          assert_equal @app.goals[:post].associations[:comments][:type], :has_many
+          assert_equal @app.goals[:comment].associations[:post][:goal], @app.goals[:post]
+          assert_equal @app.goals[:comment].associations[:post][:type], :belongs_to
+          assert_equal @app.goals[:post].associations[:postbundle][:goal], @app.goals[:postbundle]
+          assert_equal @app.goals[:post].associations[:postbundle][:type], :has_one 
+          assert_equal @app.goals[:postbundle].associations[:post][:goal], @app.goals[:post]
+          assert_equal @app.goals[:postbundle].associations[:post][:type], :belongs_to 
         end
       end
 
       should "have routes" do
-        assert_equal @app.routes, [:users, :names, [:posts, :comments]]
+        assert_equal @app.routes, [:users, :names, [:posts, :comments, :postbundle]]
       end
     end
 

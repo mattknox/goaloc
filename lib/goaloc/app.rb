@@ -26,7 +26,11 @@ class App
       res = [base]
       arg[1..-1].each do |elt|
         goal = route_elt(elt, route_prefix)
-        base.has_many(goal)
+        if plural?(elt)
+          base.has_many(goal)
+        else
+          base.has_one(goal)
+        end
         res << goal
       end
       res
@@ -47,6 +51,10 @@ class App
     arg.is_a? Array and
       !arg.empty? and
       arg.all? { |x| valid_routeset?(x) }
+  end
+
+  def plural?(sym)
+    sym.to_s.pluralize == sym.to_s
   end
 end
 
