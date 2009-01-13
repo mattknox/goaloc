@@ -8,3 +8,20 @@ require "goaloc/goal"
 
 module Goaloc
 end
+
+APP = @app = App.new
+
+def generate(*args)
+  @app.log << "generate #{args.inspect[1..-2]}"
+  @app.generate(*args)
+end
+
+def route(*args)
+  @app.log << "route #{args.inspect[1..-2]}"
+  @app.route(*args)
+end
+
+def add_attrs(h)
+  @app.log << "add_attrs #{h.inspect[1..-2]}"
+  @app.add_attrs(h)
+end
