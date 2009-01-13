@@ -18,6 +18,7 @@ class TestGoaloc < Test::Unit::TestCase
       assert @app.respond_to? :route
       assert @app.route(:posts)
       assert_equal @app.routes, [:posts]
+      assert_equal @app.goals[:post].routes, [:posts]
       assert_match "route :posts", @app.goaloc_log.first
     end
 
@@ -52,6 +53,9 @@ class TestGoaloc < Test::Unit::TestCase
 
       should "have routes" do
         assert_equal @app.routes, [:posts, :comments, :users]
+        assert_equal @app.goals[:post].routes, [:posts]
+        assert_equal @app.goals[:comment].routes, [:comments]
+        assert_equal @app.goals[:user].routes, [:users]
       end
     end
 
@@ -82,6 +86,11 @@ class TestGoaloc < Test::Unit::TestCase
 
       should "have routes" do
         assert_equal @app.routes, [:users, :names, [:posts, :comments, :postbundle]]
+        assert_equal @app.goals[:user].routes, [:users]
+        assert_equal @app.goals[:name].routes, [:names]
+        assert_equal @app.goals[:post].routes, [:posts]
+        assert_equal @app.goals[:comment].routes, [:posts, :comments]
+        assert_equal @app.goals[:postbundle].routes, [:posts, :postbundle]
       end
     end
 

@@ -21,12 +21,12 @@ class App
 
   def route_elt(arg, route_prefix)
     if arg.is_a? Symbol
-      goal_for_sym(arg, route_prefix)
+      goal_for_sym(arg, route_prefix.clone << arg)
     elsif arg.is_a? Array
       base = route_elt(arg.first, route_prefix)
       res = [base]
       arg[1..-1].each do |elt|
-        goal = route_elt(elt, route_prefix)
+        goal = route_elt(elt, route_prefix.clone << arg.first)
         if plural?(elt)
           base.has_many(goal)
         else
@@ -40,7 +40,7 @@ class App
 
   def goal_for_sym(sym, route_prefix)
     name = sym.to_s.singularize
-    self.goals[name] ||= Goal.new(name)
+    self.goals[name] ||= Goal.new(name, route_prefix)
   end
 
   def valid_routeset?(arg)
@@ -80,31 +80,3 @@ class App
     out + gen
   end
 end
-
-#   def build_model(arg, r)
-#     if arg.is_a? Symbol
-#       register_model!(arg, r)
-#     elsif arg.is_a? Array
-#       sym = arg.first
-#       model = (register_model!(sym, r))
-#       arg[1..-1].each do |a|
-#         m = build_model(a, (r.to_a.clone << model))
-#         model.has_many(m)
-#       end
-#       model
-#     elsif arg.is_a? Hash
-#       sym = arg[:class]
-#       model = register_model!(sym, r)
-#       thru = arg[:through]
-#       thru_model = register_model!(thru, r) if thru
-#       model.handle_hash(arg)
-#     end
-#   end
-
-#   def build_model_from_hash(m, h, r)
-#     if h.has_key?(:through)
-#       m.hmt(h)
-#     end
-#   end
-  
-# end
