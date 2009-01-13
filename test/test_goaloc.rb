@@ -4,9 +4,34 @@ class TestGoaloc < Test::Unit::TestCase
   context "an app" do
     setup { @app = App.new }
 
+    should "have a settable name" do
+      assert @app.name
+      @app.name = "foobar"
+      assert_equal "foobar", @app.name
+    end
+    
     should "route a single symbol" do
       assert @app.respond_to? :route
       assert @app.route(:posts)
+      assert_equal @app.routes, [:posts]
+    end
+
+    should "route a number of sequential symbols, like :posts, :comments"
+    should "route nested arrays of symbols, like [:posts, :comments] or [:users, [:posts, :comments]]"
+    
+    context "#route method" do
+      should "return nil if called without args" do
+        assert_equal nil, @app.route
+        assert_equal nil, @app.route
+      end
+    end
+  end
+
+  context "a named app" do
+    setup { @app = App.new("foobar")}
+
+    should "have the set name" do
+      assert_equal "foobar", @app.name
     end
   end
   

@@ -1,29 +1,61 @@
 class App
-  attr_accessor :name, :routes
+  attr_accessor :name, :routes, :options, :models
+
+  def initialize(name = nil)
+    self.name = (name or generate_name)
+    self.routes = []
+  end
+
+  def generate_name
+    "goaloc_app" + Time.now.strftime("%Y%m%d%H%M%S")
+  end
+
+  ROUTE_USAGE_STR = File.open("#{File.dirname(__FILE__)}/../../doc/route_usage").read
   
   def route(*args)
-    args += args
+    if valid_routeset?(args)
+      self.routes += args
+    end
+  end
+
+  def valid_routeset?(arg)
+    arg.is_a?(Symbol) or
+      valid_routeset_array?(arg)
+  end
+  
+  def valid_routeset_array?(arg)
+    arg.is_a? Array and
+      !arg.empty? and
+      arg.all? { |x| valid_routeset?(x) }
   end
 end
-#   attr_accessor :name, :routes, :options, :debug, :log
 
-#   def initialize(name = nil, options = { })
-#     self.name = (name or generate_name)
-#     self.options = options
-#     self.routes = []
-#     self.log = []
+#   def route(*args)
+#     if valid_routeset?(args)
+#       self.routes += args
+#       args.each do |a|
+#         build_model(a, nil)
+#       end
+#     else
+#       puts ROUTE_USAGE_STR
+#     end
+#   end
+  
+#   def valid_routeset?(arg) 
+#     arg.is_a?(Symbol) or
+#       valid_routeset_hash?(arg) or
+#       valid_routeset_array?(arg)
 #   end
 
-#   ROUTE_USAGE_STR = File.open("#{File.dirname(__FILE__)}/../../doc/route_usage").read
+#   def valid_routeset_hash?(arg)
+#     arg.is_a? Hash and
+#       arg[:class].is_a? Symbol
+#   end
 
 #   def models
 #     Model.subclasses.inject({}) {|res, elt| res.merge(elt.underscore.pluralize.to_sym =>  elt.constantize)}
 #   end
-  
-#   def generate_name
-#     "goaloc_app" + Time.now.strftime("%Y%m%d%H%M%S")
-#   end
-  
+    
 #   def generate(generator = Rails, opts = { })
 #     if :all == generator
 #       Generator.subclasses.map { |g| g.constantize.new(self, opts.merge(:prefix => true)).generate }
@@ -44,35 +76,7 @@ end
   
 #   def destroy_model(klass) # TODO: make this also get rid of associations, etc.
 #     Object.send(:remove_const, klass.to_s.to_sym)
-#   end
-  
-#   def route(*args)
-#     if valid_routeset?(args)
-#       self.routes += args
-#       args.each do |a|
-#         build_model(a, nil)
-#       end
-#     else
-#       puts ROUTE_USAGE_STR
-#     end
-#   end
-  
-#   def valid_routeset?(arg) 
-#     arg.is_a?(Symbol) or
-#       valid_routeset_hash?(arg) or
-#       valid_routeset_array?(arg)
-#   end
-
-#   def valid_routeset_array?(arg)
-#     arg.is_a? Array and
-#       !arg.empty? and
-#       arg.all? { |x| valid_routeset?(x) }
-#   end
-
-#   def valid_routeset_hash?(arg)
-#     arg.is_a? Hash and
-#       arg[:class].is_a? Symbol
-#   end
+#   end  
 
 #   def build_model(arg, r)
 #     if arg.is_a? Symbol
