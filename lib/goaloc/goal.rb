@@ -22,6 +22,7 @@ class Goal
   def cp; self.name.camelize.pluralize; end
 
   # stuff used to introspect on the goal
+  # thanks to Josh Ladieu for this: it's the array of things needed to get to an instance of this class, if there is a unique set.
   def resource_tuple # this returns the minimal route to this goal, or nothing, if there is no unambiguous minimal route
     routelist = self.routes.sort { |x, y| x.length <=> y.length }
     if routelist.length == 1 
@@ -34,10 +35,16 @@ class Goal
   def nested_resources
     APP.goals.reject { |k, v| v.routes != [(self.resource_tuple + [v])] }
   end
-  
+
+  # validations
+  def validates(validation_type, field, opts = { })
+    self.validations << opts.merge({ :val_type => validation_type, :field => field})
+  end
+
   # association stuff
   def belongs_to(goal, options = { })
     self.fields[goal.foreign_key] = "reference"
+    self.validates(:presence_of, goal.foreign_key)
     self.associate(:belongs_to, goal, options)
   end
 

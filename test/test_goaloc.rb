@@ -147,6 +147,14 @@ class TestGoaloc < Test::Unit::TestCase
       assert @goal.respond_to? :name
       assert !(@goal.respond_to? "name=")
     end
+
+    should "accept calls to validates" do
+      @goal.validates(:presence_of, :foobar)
+      assert !@goal.validations.blank?
+      assert_equal @goal.validations.length, 1
+      assert_equal @goal.validations.first[:val_type], :presence_of
+      assert_equal @goal.validations.first[:field], :foobar
+    end
     
     context "#belongs_to method" do
       setup do
