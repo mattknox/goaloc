@@ -52,6 +52,8 @@ class Goal
         name, field_type = s.split(":")
         add_attr(name, field_type)
       end
+    else
+      raise "bad arg type in add_attrs"
     end
   end
 
