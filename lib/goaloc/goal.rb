@@ -2,13 +2,13 @@ class Goal
   attr_reader :name
   attr_accessor :associations, :validations, :fields, :options, :routes
 
-  def initialize(name)
+  def initialize(name, route = [])
     @name = name.underscore.singularize   # TODO: support renaming models
     self.associations = { }
     self.validations = []
     self.fields = { }
     self.options = { }
-    self.routes = [] # of the form [:classname, [:otherclass, :classname], ...]
+    self.routes = (route.clone << self) # of the form [:classname, [:otherclass, :classname], ...]
   end
 
   # here are a list of name-ish methods

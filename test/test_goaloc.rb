@@ -10,6 +10,10 @@ class TestGoaloc < Test::Unit::TestCase
       assert_equal "foobar", @app.name
     end
     
+    should "return nil if called without args" do
+      assert_equal nil, @app.route
+    end
+
     should "route a single symbol" do
       assert @app.respond_to? :route
       assert @app.route(:posts)
@@ -18,11 +22,38 @@ class TestGoaloc < Test::Unit::TestCase
 
     should "route a number of sequential symbols, like :posts, :comments"
     should "route nested arrays of symbols, like [:posts, :comments] or [:users, [:posts, :comments]]"
-    
-    context "#route method" do
-      should "return nil if called without args" do
-        assert_equal nil, @app.route
-        assert_equal nil, @app.route
+
+    context "when routing a single symbol" do
+      setup { @app.route(:posts)}
+
+      should "have a goal named post" do
+        assert !@app.goals.empty?
+        assert_equal @app.goals["post"].class, Goal
+        assert_equal @app.goals["post"].name, "post"
+      end
+    end
+
+    context "when routing many symbols" do
+      setup { @app.route(:posts, :comments, :users) }
+
+      %w{ post comment user }.each do |word|
+        should "have a goal named #{word}" do
+          assert !@app.goals.empty?
+          assert_equal @app.goals[word].class, Goal
+          assert_equal @app.goals[word].name, word
+        end
+      end
+    end
+
+    context "when routing nested arrays of symbols" do
+      setup { @app.route(:users, :names, [:posts, :comments]) }
+
+      %w{ post comment }.each do |word|
+        should "have a goal named #{word}" do
+          assert !@app.goals.empty?
+          assert_equal @app.goals[word].class, Goal
+          assert_equal @app.goals[word].name, word
+        end
       end
     end
   end
