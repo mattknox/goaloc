@@ -25,3 +25,7 @@ def add_attrs(h)
   @app.log << "add_attrs #{h.inspect[1..-2]}"
   @app.add_attrs(h)
 end
+
+def showlog
+  @app.goaloc_log
+end
