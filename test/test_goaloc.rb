@@ -1,6 +1,15 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 class TestGoaloc < Test::Unit::TestCase
+  context "an app" do
+    setup { @app = App.new }
+
+    should "route a single symbol" do
+      assert @app.respond_to? :route
+      assert @app.route(:posts)
+    end
+  end
+  
   context "a Goal" do 
     setup { @goal = Goal.new("goal1") }
     should "have attr_accessor'd attrs" do

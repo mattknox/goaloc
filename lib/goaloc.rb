@@ -3,6 +3,7 @@ $:.unshift(File.dirname(__FILE__)) unless
 
 require "rubygems"
 require "activesupport"
+require "goaloc/app"
 require "goaloc/goal"
 
 module Goaloc

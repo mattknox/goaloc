@@ -16,10 +16,10 @@ class Goal
     self.name + "_id"
   end
 
-  def s self.name;  end
-  def p self.name.pluralize;    end
-  def s self.name.camelize.singularize;    end
-  def s self.name.camelize.pluralize;      end
+  def s; self.name;  end
+  def p; self.name.pluralize; end
+  def cs; self.name.camelize.singularize; end
+  def cp; self.name.camelize.pluralize; end
 
   # association stuff
   def belongs_to(goal)
