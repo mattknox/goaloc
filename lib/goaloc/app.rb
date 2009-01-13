@@ -61,6 +61,24 @@ class App
   def plural?(sym)
     sym.to_s.pluralize == sym.to_s
   end
+
+  def goaloc_log
+    gen = []
+    out = log.clone
+    out.unshift "@app.name = #{self.name}" unless self.name.to_s.match(/goaloc_app20/)
+    gen = [out.pop] if out.last.to_s.match(/^generate/)
+    out << ("route " + self.routes.inspect[1..-2]) unless routes.empty?
+    self.goals.each do |key, goal|
+      goal.associations.each do |name, assoc|
+        if assoc.has_key?(:through)
+          out << "#{goal}.hmt({ :class => #{assoc[:class]}, :through => #{assoc[:through]})"
+        else
+          out << "#{goal.to_s}.#{assoc[:type]}(#{assoc[:goal].name})"
+        end
+      end
+    end
+    out + gen
+  end
 end
 
 #   def build_model(arg, r)
@@ -89,25 +107,4 @@ end
 #     end
 #   end
   
-#   def register_model!(arg, r)
-#     Model.build_and_route(arg, r)
-#   end
-
-#   def goaloc_log
-#     gen = []
-#     out = log.clone
-#     out.unshift "@app.name = #{self.name}" unless self.name.to_s.match(/goaloc_app20/)
-#     gen = [out.pop] if out.last.to_s.match(/^generate/)
-#     out << ("route " + self.routes.inspect[1..-2]) unless routes.empty?
-#     self.models.each do |key, model|
-#       model.associations.each do |name, assoc|
-#         if assoc.has_key?(:through)
-#           out << "#{model}.hmt({ :class => #{assoc[:class]}, :through => #{assoc[:through]})"
-#         else
-#           out << "#{model.to_s}.#{assoc[:type]}(#{assoc[:model].to_s})"
-#         end
-#       end
-#     end
-#     out + gen
-#   end
 # end

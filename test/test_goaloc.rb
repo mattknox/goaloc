@@ -18,6 +18,7 @@ class TestGoaloc < Test::Unit::TestCase
       assert @app.respond_to? :route
       assert @app.route(:posts)
       assert_equal @app.routes, [:posts]
+      assert_match "route :posts", @app.goaloc_log.first
     end
 
     context "when routing a single symbol" do
