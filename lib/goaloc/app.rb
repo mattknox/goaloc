@@ -4,7 +4,7 @@ class App
   def initialize(name = nil)
     self.name = (name or generate_name)
     self.routes = []
-    self.goals = { }
+    self.goals = HashWithIndifferentAccess.new
   end
 
   def generate_name
@@ -13,18 +13,21 @@ class App
 
   def route(*args)
     if valid_routeset?(args)
-      self.routes += args.map { |elt| route_elt(elt, []) }
+      self.routes += args # FIXME: make this so that it just maps over args again
+      args.map { |elt| route_elt(elt, []) }
     end
   end
 
   def route_elt(arg, route_prefix)
     if arg.is_a? Symbol
       goal_for_sym(arg, route_prefix)
-      arg
     elsif arg.is_a? Array
-      res = [route_elt(arg.first, route_prefix)]
+      base = route_elt(arg.first, route_prefix)
+      res = [base]
       arg[1..-1].each do |elt|
-        res << route_elt(elt, route_prefix)
+        goal = route_elt(elt, route_prefix)
+        base.has_many(goal)
+        res << goal
       end
       res
     end

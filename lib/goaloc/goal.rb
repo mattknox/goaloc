@@ -4,9 +4,9 @@ class Goal
 
   def initialize(name, route = [])
     @name = name.underscore.singularize   # TODO: support renaming models
-    self.associations = { }
+    self.associations = HashWithIndifferentAccess.new
     self.validations = []
-    self.fields = { }
+    self.fields = HashWithIndifferentAccess.new
     self.options = { }
     self.routes = (route.clone << self) # of the form [:classname, [:otherclass, :classname], ...]
   end
@@ -44,5 +44,18 @@ class Goal
 
   def default_assoc_name(assoc_type)
     :has_many == assoc_type ? name.pluralize : name
+  end
+
+  def add_attrs(*args)
+    if args.is_a? Array and args.length == 1
+      args.first.split.each do |s|
+        name, field_type = s.split(":")
+        add_attr(name, field_type)
+      end
+    end
+  end
+
+  def add_attr(name, field_type)
+    self.fields[name] = field_type
   end
 end

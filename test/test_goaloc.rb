@@ -20,20 +20,22 @@ class TestGoaloc < Test::Unit::TestCase
       assert_equal @app.routes, [:posts]
     end
 
-    should "route a number of sequential symbols, like :posts, :comments"
-    should "route nested arrays of symbols, like [:posts, :comments] or [:users, [:posts, :comments]]"
-
     context "when routing a single symbol" do
       setup { @app.route(:posts)}
 
       should "have a goal named post" do
         assert !@app.goals.empty?
-        assert_equal @app.goals["post"].class, Goal
-        assert_equal @app.goals["post"].name, "post"
+        assert_equal @app.goals[:post].class, Goal
+        assert_equal @app.goals[:post].name, "post"
+      end
+
+      should "add fields with add_attrs" do
+        assert @app.goals[:post].fields.empty?
+        @app.goals[:post].add_attrs "name:string body:text"
       end
     end
 
-    context "when routing many symbols" do
+    context "route a number of sequential symbols, like :posts, :comments" do
       setup { @app.route(:posts, :comments, :users) }
 
       %w{ post comment user }.each do |word|
@@ -43,9 +45,13 @@ class TestGoaloc < Test::Unit::TestCase
           assert_equal @app.goals[word].name, word
         end
       end
+
+      should "have routes" do
+        assert_equal @app.routes, [:posts, :comments, :users]
+      end
     end
 
-    context "when routing nested arrays of symbols" do
+    context  "route nested arrays of symbols, like [:posts, :comments] or [:users, [:posts, :comments]]" do
       setup { @app.route(:users, :names, [:posts, :comments]) }
 
       %w{ post comment }.each do |word|
@@ -54,6 +60,23 @@ class TestGoaloc < Test::Unit::TestCase
           assert_equal @app.goals[word].class, Goal
           assert_equal @app.goals[word].name, word
         end
+
+        should "have associations defined by the nesting" do
+          assert !@app.goals[:post].associations.blank?
+          assert @app.goals[:post].associations.is_a? Hash
+          assert @app.goals[:post].associations[:comments].is_a? Hash
+          assert @app.goals[:post].associations[:comments]
+        end
+      end
+
+      should "have routes" do
+        assert_equal @app.routes, [:users, :names, [:posts, :comments]]
+      end
+    end
+
+    context "when adding attrs" do
+      setup do
+        @app.route 
       end
     end
   end
