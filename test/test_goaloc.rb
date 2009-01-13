@@ -31,7 +31,7 @@ class TestGoaloc < Test::Unit::TestCase
 
       should "add fields with add_attrs" do
         assert @app.goals[:post].fields.empty?
-        @app.goals[:post].add_attrs "name:string body:text"
+        @app.add_attrs :posts => "name:string body:text"
         assert !@app.goals[:post].fields.empty?
         assert_equal @app.goals[:post].fields[:name], "string"
         assert_equal @app.goals[:post].fields[:body], "text"

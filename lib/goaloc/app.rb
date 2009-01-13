@@ -1,9 +1,10 @@
 class App
-  attr_accessor :name, :routes, :goals, :options
+  attr_accessor :name, :routes, :goals, :options, :log
 
   def initialize(name = nil)
     self.name = (name or generate_name)
     self.routes = []
+    self.log = []
     self.goals = HashWithIndifferentAccess.new
   end
 
@@ -53,15 +54,15 @@ class App
       arg.all? { |x| valid_routeset?(x) }
   end
 
+  def add_attrs(h)
+    h.map {  |k, v| self.goals[k.to_s.singularize].add_attrs v rescue nil }
+  end
+  
   def plural?(sym)
     sym.to_s.pluralize == sym.to_s
   end
 end
 
-#   def add_attrs(h)
-#     h.map {  |k, v| k.to_s.singularize.camelize.constantize.add_attrs v rescue nil }
-#   end
-  
 #   def build_model(arg, r)
 #     if arg.is_a? Symbol
 #       register_model!(arg, r)
