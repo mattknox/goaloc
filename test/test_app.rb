@@ -31,6 +31,8 @@ class TestApp < Test::Unit::TestCase
       should "have a resource tuple" do
         assert_equal @app.goals[:post].resource_tuple, [:posts]
       end
+
+      should "have a generate method"
     end
 
     context "when routing a single symbol" do
