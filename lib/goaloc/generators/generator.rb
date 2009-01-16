@@ -1,7 +1,7 @@
 class Generator
   attr_accessor :app, :opts
 
-  def initialize(app, opts = { })
+  def initialize(app, target, opts = { })
     @app = app
     @opts = opts
   end
@@ -12,7 +12,5 @@ class Generator
     end
   end
   # TODO: move a lot of the duplicated stuff from rails/merb into here.
-  #   then the various generators just have to provide appropriate templates.
-
-  
+  #   then the various generators just have to provide appropriate templates.  
 end
