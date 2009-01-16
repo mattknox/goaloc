@@ -4,6 +4,10 @@ class <%= model.cp %>Controller < ApplicationController
   before_filter :find_<%= model.p %>, :only => :index
   before_filter :new_<%= model.s %>, :only => [:new, :create]
 
+<%= model.rails_find_method %>
+<%= model.rails_find_collection_method %>
+<%= model.rails_new_object_method %>
+
   # GET /<%= model.p %>
   # GET /<%= model.p %>.xml
   def index
@@ -76,8 +80,4 @@ class <%= model.cp %>Controller < ApplicationController
       format.xml  { head :ok }
     end
   end
-
-<%= model.rails_find_method %>
-<%= model.rails_find_collection_method %>
-<%= model.rails_new_object_method %>
 end
