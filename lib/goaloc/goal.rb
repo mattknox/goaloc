@@ -9,6 +9,7 @@ class Goal
     self.fields = HashWithIndifferentAccess.new
     self.options = { }
     self.routes = [] # of the form [:classname, [:otherclass, :classname], ...]
+    Object.const_set self.cs, self
   end
 
   # here are a list of name-ish methods
