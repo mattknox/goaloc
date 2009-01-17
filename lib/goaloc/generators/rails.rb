@@ -140,6 +140,11 @@ class Rails < RubyGenerator
     template_str = File.open("#{File.dirname(__FILE__)}/rails/index.html.erb").read
     ERB.new(template_str).result(binding)
   end
+  
+  def gen_show_str(goal)
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/show.html.erb").read
+    ERB.new(template_str).result(binding)
+  end
 end
 
 #   module RailsModel
@@ -262,11 +267,6 @@ end
 
 #   def gen_form_string(model)
 #     template_str = File.open("#{File.dirname(__FILE__)}/rails/_form.html.erb").read
-#     ERB.new(template_str).result(binding)
-#   end
-
-#   def gen_show_string(model)
-#     template_str = File.open("#{File.dirname(__FILE__)}/rails/show.html.erb").read
 #     ERB.new(template_str).result(binding)
 #   end
   
