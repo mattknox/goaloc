@@ -33,9 +33,9 @@ class App
     self.goals.each do |key, goal|
       goal.associations.each do |name, assoc|
         if assoc.has_key?(:through)
-          out << "#{goal}.hmt({ :class => #{assoc[:class]}, :through => #{assoc[:through]})"
+          out << "#{goal.name}.hmt({ :class => #{assoc[:class]}, :through => #{assoc[:through].name})"
         else
-          out << "#{goal.to_s}.#{assoc[:type]}(#{assoc[:goal].name})"
+          out << "#{goal.name}.#{assoc[:type]}(#{assoc[:goal].name})"
         end
       end
     end

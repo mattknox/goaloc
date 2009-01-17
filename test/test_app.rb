@@ -123,6 +123,18 @@ class TestApp < Test::Unit::TestCase
       end
     end
 
+    context "with routes and hmt assocs" do
+      setup do
+        @app.route [:posts, :comments ], :users
+        @app.goals['user'].hmt(@app.goals['comment'], :through => @app.goals['post'])
+      end
+
+      should "log hmts as 2 has_many and 2 belongs_to" do
+        s = @app.goaloc_log
+        assert_match /user.hmt/, s.join
+        assert_match /comment.hmt/, s.join
+      end
+    end
     context "when adding attrs" do
       setup do
         @app.route :posts

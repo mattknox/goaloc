@@ -16,7 +16,7 @@ class Generator
     if Generator.subclasses.member?(target.to_s)
       target.new(app, opts)
     else
-      raise "don't have that generator."
+      raise RuntimeError
     end
   end
   # TODO: move a lot of the duplicated stuff from rails/merb into here.

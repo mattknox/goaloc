@@ -6,6 +6,12 @@ class TestGenerator < Test::Unit::TestCase
       @app = App.new
       @generator = Generator.new(@app, Rails)
     end
+
+    should "raise an exception if it tries to build a generator for a backend that doesn't exist." do
+      assert_raise RuntimeError do
+        Generator.build(@app, Object)
+      end
+    end
     
     should "have an app" do
       assert @generator.app
