@@ -13,21 +13,28 @@ class Rails < RubyGenerator
   end
   
   def gen_route_string # TODO: add a default route
-    "ActionController::Routing::Routes.draw do |map|\n" + 
-      app.routes.map { |a| gen_route(a)}.join("\n") + "\n" + 
+    "ActionController::Routing::Routes.draw do |map|\n" +
+      default_route.to_s + 
+      app.routes.map { |x| gen_route(x)}.join("\n") + "\n" + 
       "end"
-  end    
-end
+  end
 
-#   def gen_route(x, var = "map", pad = "  ")
-#     if x.is_a? Symbol
-#       pad + "#{var}.resources :#{x.to_s}"
-#     elsif x.is_a? Array
-#       pad + "#{var}.resources :#{x.first.to_s} do |#{x.first.to_s.singularize}|\n" +
-#         x[1..-1].map { |y| gen_route(y, x.first.to_s.singularize, pad + "  ")}.join("\n") + "\n" +
-#       pad + "end"
-#     end
-#   end
+  def gen_route(x, var = "map", pad = "  ") # turn a sym or array into a potentially nested route
+    if x.is_a? Symbol
+      pad + "#{var}.resources :#{x.to_s}"
+    elsif x.is_a? Array
+      pad + "#{var}.resources :#{x.first.to_s} do |#{x.first.to_s.singularize}|\n" +
+        x[1..-1].map { |y| gen_route(y, x.first.to_s.singularize, pad + "  ")}.join("\n") + "\n" +
+        pad + "end"
+    end
+  end
+  
+  def default_route
+    if app.routes.length == 1
+      "  map.root :controller => '#{app.routes.first.to_a.first}'"
+    end
+  end
+end
 
 #   module RailsModel
 #     def rails_ivar_or_array_of_ivars(end_index = -1)

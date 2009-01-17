@@ -16,10 +16,49 @@ class TestRailsGenerator < Test::Unit::TestCase
       assert @generator.respond_to?(:gen_route_string)
     end
     
-    should "produce a valid string for generate routes"
+    should "produce a valid string for generate routes" do
+      assert_match "map.resources :posts", @generator.gen_route_string
+      assert_match "map.root :controller => 'posts'", @generator.gen_route_string
+    end
   end
 
+  context "a rails generator with a nested route " do
+    setup do
+      @app = App.new
+      @app.route [:posts, :comments]
+      @generator = @app.generate(Rails)
+    end
+
+    should "produce a valid route string" do 
+      assert_match "map.resources :posts do |post|", @generator.gen_route_string
+      assert_match "post.resources :comments", @generator.gen_route_string
+      assert_match "map.root :controller => 'posts'", @generator.gen_route_string
+    end
+  end
+
+  context "a rails generator with a rootless route " do
+    setup do
+      @app = App.new
+      @app.route [:posts, :comments], :pictures
+      @generator = @app.generate(Rails)
+    end
+
+    should "produce a valid route string" do 
+      assert_match "map.resources :posts do |post|", @generator.gen_route_string
+      assert_match "map.resources :pictures", @generator.gen_route_string
+      assert_match "post.resources :comments", @generator.gen_route_string
+      assert_no_match /map.root :controller => 'posts'/, @generator.gen_route_string
+    end
+  end
+  
   context "a rails generator with a nontrivial goal" do
+    setup do
+      @app = App.new
+      @app.route [:posts, :comments], :pictures
+      @app.add_attrs :posts => "body:text title:string", :comments => "body:text", :pictures => "rating:integer"
+      @generator = @app.generate(Rails)
+    end
+    
     should "produce a valid string for the model"
     should "produce a valid string for the controller"
     should "produce a valid string for the index view"
