@@ -59,7 +59,11 @@ class TestRailsGenerator < Test::Unit::TestCase
       @generator = @app.generate(Rails)
     end
     
-    should "produce a valid string for the model"
+    should "produce a valid string for the model" do
+      assert_match /class Post < ActiveRecord::Base/, @generator.gen_model_str(@app.goals["post"])
+      assert_match /has_many :comments/, @generator.gen_model_str(@app.goals["post"])
+    end
+    
     should "produce a valid string for the controller"
     should "produce a valid string for the index view"
     should "produce a valid string for the show view"

@@ -6,12 +6,20 @@ class Rails < RubyGenerator
   def initialize(app, opts = { })
     @app = app
     @opts = opts
+    Goal.instance_eval( "include RailsModel" ) unless Goal.new("foobar").respond_to?(:rails_association_string)
+  end
+
+  module RailsModel
+    def rails_association_string(assoc_name, assoc_hash)
+      option_str = ""
+      option_str << ", :through => :#{assoc_hash[:through].p}" if assoc_hash[:through]
+      "#{assoc_hash[:type]} :#{assoc_name + option_str}"
+    end
   end
   
   def generate
-    
   end
-  
+
   def gen_route_string # TODO: add a default route
     "ActionController::Routing::Routes.draw do |map|\n" +
       default_route.to_s + 
@@ -33,6 +41,18 @@ class Rails < RubyGenerator
     if app.routes.length == 1
       "  map.root :controller => '#{app.routes.first.to_a.first}'"
     end
+  end
+
+  def gen_model_str(goal)
+    out = ""
+    out << "class #{goal.cs} < ActiveRecord::Base\n"
+      goal.associations.each do |k, v|
+        out <<  "  #{goal.rails_association_string(k,v)}\n"
+      end
+#      model.validations.each do |k, v|
+#        f.write "  #{v[:type]} :#{v[:target]}\n"
+#      end
+     out <<  "end"
   end
 end
 
