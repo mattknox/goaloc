@@ -120,5 +120,25 @@ class TestRailsGenerator < Test::Unit::TestCase
       @generator.opts[:base_dir_suffix] = true
       assert_equal @generator.app_name, "foobar_rails"
     end
+
+    context "and cleaned out tmp directory" do
+      setup do
+        @tmp_dir = File.join(File.dirname(__FILE__), 'tmp')
+        @generator.root_dir = @tmp_dir
+        FileUtils.rm_rf(@tmp_dir)
+        
+        assert ! File.exists?(@tmp_dir)
+      end
+      
+      teardown do
+        Kernel.sleep(10)
+        FileUtils.rm_rf(@tmp_dir)
+      end
+      
+      should "generate a rails app skeleton" do
+        assert @generator.generate
+        puts @tmp_dir
+      end
+    end
   end
 end

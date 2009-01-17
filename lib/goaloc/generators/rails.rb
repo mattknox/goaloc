@@ -90,7 +90,7 @@ class Rails < RubyGenerator
   
   def generate
     gen_app
-    gen_routes
+#    gen_routes
 #     @app.goals.values.each do |goal|
 #       gen_migration(goal)
 #       gen_goal(goal)
@@ -102,7 +102,13 @@ class Rails < RubyGenerator
   end
 
   def gen_app
-    if File.exists?(app_dir)
+    unless File.exists?(app_dir) #TODO: figure out what to do when there is a directory there.
+      original_dir = FileUtils.pwd
+      Dir.mkdir(root_dir) unless File.exists?(root_dir)
+      FileUtils.cd(root_dir) if root_dir
+      `#{rails_str}`
+      FileUtils.cd(original_dir)
+      true
     end
   end
 
@@ -117,7 +123,15 @@ class Rails < RubyGenerator
   def app_name
     "#{app.name}" + (opts[:base_dir_suffix] ? "_rails" : "")
   end
-  
+
+  def rails_str
+    "rails #{ options} #{app_name}"
+  end
+
+  def options #TODO: make the options handling nontrivial.
+    "-d mysql "
+  end
+    
   def gen_route_string # TODO: add a default route
     "ActionController::Routing::Routes.draw do |map|\n" +
       default_route.to_s + 
