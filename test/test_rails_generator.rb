@@ -131,7 +131,6 @@ class TestRailsGenerator < Test::Unit::TestCase
       end
       
       teardown do
-        Kernel.sleep(10)
         FileUtils.rm_rf(@tmp_dir)
       end
       
