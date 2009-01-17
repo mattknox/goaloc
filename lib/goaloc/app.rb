@@ -68,7 +68,9 @@ class App
 
   def goal_for_sym(sym, route_prefix)
     name = sym.to_s.singularize
-    self.goals[name] ||= Goal.new(name, route_prefix)
+    goal = self.goals[name] ||= Goal.new(name, route_prefix) # dynamic var would be nice here.
+    goal.routes << route_prefix.clone
+    goal
   end
 
   def valid_routeset?(arg)

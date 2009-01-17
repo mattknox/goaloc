@@ -6,6 +6,7 @@ require "activesupport"
 require "goaloc/app"
 require "goaloc/goal"
 require "goaloc/generators/generator"
+require "goaloc/generators/ruby_generator"
 require "goaloc/generators/rails"
 module Goaloc
 end

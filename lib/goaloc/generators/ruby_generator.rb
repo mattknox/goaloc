@@ -9,7 +9,7 @@ class RubyGenerator < Generator
       ruby_ivar_name.pluralize
     end
 
-    def rails_ivar_tuple(end_index = -1)
+    def ruby_ivar_tuple(end_index = -1)
       self.resource_tuple[0..end_index].map {|c| c.rails_symname }
     end
   end

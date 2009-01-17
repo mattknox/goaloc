@@ -1,7 +1,7 @@
 require "erb"
 require "fileutils"
 
-class Rails < Generator
+class Rails < RubyGenerator
   attr_accessor :app, :opts
   def initialize(app, opts = { })
     @app = app
@@ -9,12 +9,25 @@ class Rails < Generator
   end
   
   def generate
+    
   end
-
-  def gen_route_string
-  end
+  
+  def gen_route_string # TODO: add a default route
+    "ActionController::Routing::Routes.draw do |map|\n" + 
+      app.routes.map { |a| gen_route(a)}.join("\n") + "\n" + 
+      "end"
+  end    
 end
 
+#   def gen_route(x, var = "map", pad = "  ")
+#     if x.is_a? Symbol
+#       pad + "#{var}.resources :#{x.to_s}"
+#     elsif x.is_a? Array
+#       pad + "#{var}.resources :#{x.first.to_s} do |#{x.first.to_s.singularize}|\n" +
+#         x[1..-1].map { |y| gen_route(y, x.first.to_s.singularize, pad + "  ")}.join("\n") + "\n" +
+#       pad + "end"
+#     end
+#   end
 
 #   module RailsModel
 #     def rails_ivar_or_array_of_ivars(end_index = -1)
@@ -311,16 +324,6 @@ end
     
 #   end
 
-#   def gen_route(x, var = "map", pad = "  ")
-#     if x.is_a? Symbol
-#       pad + "#{var}.resources :#{x.to_s}"
-#     elsif x.is_a? Array
-#       pad + "#{var}.resources :#{x.first.to_s} do |#{x.first.to_s.singularize}|\n" +
-#         x[1..-1].map { |y| gen_route(y, x.first.to_s.singularize, pad + "  ")}.join("\n") + "\n" +
-#       pad + "end"
-#     end
-#   end
-
 #   def gen_default_route  # this is nasty.  Somehow needs to isolate the route writing from the file clobbering.
 #     if 1 == app.routes.length
 #       unwrappedroute = app.routes.first.to_a
@@ -405,4 +408,18 @@ end
 #     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/bluetrip", "#{app_name}/public/stylesheets")
 #     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/jquery-1.2.6.min.js", "#{app_name}/public/javascripts")
 #     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/shoulda", "#{app_name}/vendor/plugins/")
+#   end
+
+#   def gen_default_route  # this is nasty.  Somehow needs to isolate the route writing from the file clobbering.
+#     if 1 == app.routes.length
+#       unwrappedroute = app.routes.first.to_a
+#       File.delete("#{app_name}/public/index.html") rescue nil
+#       "  map.root :controller => '#{unwrappedroute.first}'"
+#     else
+#       File.open("#{app_name}/public/index.html", "w") do |f|
+#         f.write "this will be the index page of the app.  But it isn't yet."
+#         app.routes.map { |x| sym = (x.is_a?(Array) ? x.first : x) ; f.write "<div><a href=/#{sym}>#{sym}</a><br/></div>" }
+#       end
+#       ""
+#     end
 #   end

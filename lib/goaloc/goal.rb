@@ -8,7 +8,7 @@ class Goal
     self.validations = []
     self.fields = HashWithIndifferentAccess.new
     self.options = { }
-    self.routes = [route.to_a.clone] # of the form [:classname, [:otherclass, :classname], ...]
+    self.routes = [] # of the form [:classname, [:otherclass, :classname], ...]
   end
 
   # here are a list of name-ish methods
