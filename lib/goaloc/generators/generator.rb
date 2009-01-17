@@ -13,7 +13,7 @@ class Generator
   end
 
   def Generator.build(app, target, opts = { })
-    if Generator.subclasses.member(target.to_s)
+    if Generator.subclasses.member?(target.to_s)
       target.new(app, opts)
     else
       raise "don't have that generator."
