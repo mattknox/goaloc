@@ -56,14 +56,14 @@ class TestGoal < Test::Unit::TestCase
 
     context "#has_one method" do
       setup do
-        @goal1 = Goal.new("goal1")
-        @goal2 = Goal.new("goal2")
-        @goal1.has_one @goal2
+        Goal.new("user")
+        Goal.new("profile")
+        User.has_one Profile
       end
       
       should "put an assoc in the associations instance var" do
-        assert !@goal1.associations.empty?
-        assert @goal1.associations[@goal2.name][:goal] == @goal2
+        assert !User.associations.empty?
+        assert User.associations[Profile.name][:goal] == Profile
       end
     end
 
