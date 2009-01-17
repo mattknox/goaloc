@@ -66,8 +66,8 @@ class TestRailsGenerator < Test::Unit::TestCase
       assert_match /validates_presence_of :post/, @generator.gen_model_str(@app.goals["comment"])
     end
     
-    should "produce a valid string for the controller" do
-      
+    should_eventually "produce a valid string for the controller" do
+      assert_match /def find_post/, @generator.gen_controller_str(@app.goals["comment"])
     end
     
     should "produce a valid string for the index view"

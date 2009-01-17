@@ -6,14 +6,36 @@ class Rails < RubyGenerator
   def initialize(app, opts = { })
     @app = app
     @opts = opts
-    Goal.instance_eval( "include RailsModel" ) unless Goal.new("foobar").respond_to?(:rails_association_string)
-  end
+g  end
 
-  module RailsModel
-    def rails_association_string(assoc_name, assoc_hash)
-      option_str = ""
-      option_str << ", :through => :#{assoc_hash[:through].p}" if assoc_hash[:through]
-      "#{assoc_hash[:type]} :#{assoc_name + option_str}"
+  def association_string(assoc_name, assoc_hash)
+    option_str = ""
+    option_str << ", :through => :#{assoc_hash[:through].p}" if assoc_hash[:through]
+    "#{assoc_hash[:type]} :#{assoc_name + option_str}"
+  end
+  
+  def wrap_method(name, arr, indent_string = "  ")
+    indent_string + "def #{name}\n" + arr.map { |s| indent_string + "  " + s }.join("\n") + "\n#{indent_string}end"
+  end
+  
+  # TODO: rethink this "extend the goal object" idea.  could be replaced by putting all the methods in the rails generator, and then passing around the goal.
+  # TODO: right now this doesn't handle routes that have an multiply routed resource in the chain somewhere
+  # eg route :blogs, [:users, [:blogs, :posts]]  It's obvious in posts that blogs is the nested bit.  
+  def rails_find_method
+    wrap_method("find_#{self.s}",
+                self.resource_tuple[0..-2].map { |var| var.rails_finder_string } +
+                [self.rails_finder_string("id")] + 
+                self.nested_resources.map { |k,v| v.rails_new_object_string()})
+  end
+  
+  # this returns @foo = Foo.find(params[:param_name]) or @foo = @bar.foos.find(params[:param_name])
+  def rails_finder_string(id_str = nil)
+    id_str ||= "#{self.s}_id"
+    if self.nested?
+      enclosing_resource = self.resource_tuple[-2]
+      "@#{self.s} = @#{enclosing_resource.s}.#{self.p}.find(params[:#{id_str}])"
+    else
+      "@#{self.s} = #{self.cs}.find(params[:#{id_str}])"
     end
   end
   
@@ -47,7 +69,7 @@ class Rails < RubyGenerator
     out = ""
     out << "class #{goal.cs} < ActiveRecord::Base\n"
     goal.associations.each do |k, v|
-      out <<  "  #{goal.rails_association_string(k,v)}\n"
+      out <<  "  #{association_string(k,v)}\n"
     end
     goal.validations.each do |v|
       out << "  validates_#{v[:val_type]} :#{v[:field]}\n"
@@ -55,7 +77,7 @@ class Rails < RubyGenerator
     out <<  "end"
   end
 
-  def gen_controller_string()
+  def gen_controller_str(goal)
     template_str = File.open("#{File.dirname(__FILE__)}/rails/controller.rb.erb").read
     ERB.new(template_str).result(binding)
   end
@@ -101,17 +123,6 @@ end
 #       self.resource_tuple.length > 1
 #     end
     
-#     # this returns @foo = Foo.find(params[:param_name]) or @foo = @bar.foos.find(params[:param_name])
-#     def rails_finder_string(id_str = nil)
-#       id_str ||= "#{self.s}_id"
-#       if self.nested?
-#         enclosing_resource = self.resource_tuple[-2]
-#         "@#{self.s} = @#{enclosing_resource.s}.#{self.p}.find(params[:#{id_str}])"
-#       else
-#         "@#{self.s} = #{self.cs}.find(params[:#{id_str}])"
-#       end
-#     end
-
 #     def rails_test_var_string
 #       if self.nested?
 #         enclosing_resource = self.resource_tuple[-2]
@@ -139,15 +150,6 @@ end
 #       end
 #     end
     
-#     # TODO: right now this doesn't handle routes that have an multiply routed resource in the chain somewhere
-#     # eg route :blogs, [:users, [:blogs, :posts]]  It's obvious in posts that blogs is the nested bit.  
-#     def rails_find_method
-#       wrap_method("find_#{self.s}",
-#                   self.resource_tuple[0..-2].map { |var| var.rails_finder_string } +
-#                   [self.rails_finder_string("id")] + 
-#                   self.nested_resources.map { |k,v| v.rails_new_object_string()})
-#     end
-
 #     def rails_find_collection_method
 #       wrap_method("find_#{self.p}", (self.resource_tuple[0..-2].map { |var| var.rails_finder_string } +
 #                                      [self.rails_collection_finder_string, self.rails_new_object_string]))
@@ -166,10 +168,6 @@ end
 #       rails_required_nonpath_params.map { |z| ":#{ z.singularize }_id => 1" }.join(", ")
 #     end
     
-#     def wrap_method(name, arr, indent_string = "  ")
-#       indent_string + "def #{name}\n" + arr.map { |s| indent_string + "  " + s }.join("\n") + "\n#{indent_string}end"
-#     end
-
 #     def rails_association_string(assoc_name, assoc_hash)
 #       option_str = ""
 #       option_str << ", :through => :#{assoc_hash[:through].p}" if assoc_hash[:through]
@@ -399,35 +397,6 @@ end
 #     gen_unit_test(model)
 #     gen_controller_test(model)
 #     gen_fixture(model)
-#   end
-
-#   def exemplar_data(data_type)
-#     case data_type
-#     when "integer" then rand(100)
-#     else data_type + rand(100).to_s
-#     end
-#   end
-  
-#   def gen_fixture_string(model, n)
-#     out = ""
-#     (1..n).each do |i|
-#       out << "#{model.s}#{i}:\n"
-#       out << "  id: #{i}\n"
-#       model.fields.each do |k, v|
-#         out << "  #{k}: #{exemplar_data(v)}\n"
-#       end
-#       model.foreign_keys.uniq.each do |key|
-#         out << "  #{key}: #{i}\n"
-#       end
-#       out << "\n"
-#     end
-#     out
-#   end
-
-#   def gen_fixture(model)
-#     File.open("#{app_name}/test/fixtures/#{model.p}.yml", "w") do |f|
-#       f.write gen_fixture_string(model, 100)
-#     end
 #   end
 
 #   def gen_misc # here we put in the layout, the goaloc log, and libraries (blueprint CSS, jquery)
