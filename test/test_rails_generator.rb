@@ -7,10 +7,16 @@ class TestRailsGenerator < Test::Unit::TestCase
       @app.route :posts
       @generator = @app.generate(Rails)
     end
-    
-    should "produce a valid string for generate routes" do
-      assert true
+
+    should "have a generate method" do
+      assert @generator.respond_to?(:generate)
     end
+    
+    should "have a method to produce a route string" do
+      assert @generator.respond_to?(:gen_route_string)
+    end
+    
+    should "produce a valid string for generate routes"
   end
 
   context "a rails generator with a nontrivial goal" do
