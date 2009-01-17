@@ -70,24 +70,52 @@ class Rails < RubyGenerator
   def object_path(goal, str = "@")
     goal.underscore_tuple.join("_") + '_path(' + (goal.ivar_tuple[0..-2]  + ["#{str.to_s + goal.s})"]).join(', ')
   end
+
+  #TODO: see if these can be removed.
+#   def edit_path(goal, str = nil)
+#     if str
+#       "edit_" + object_path(goal, str)
+#     else
+#       "edit_" + object_path(goal)
+#     end
+#   end
   
-  def edit_path(goal, str = nil)
-    if str
-      "edit_" + goal.rails_object_path(str)
-    else
-      "edit_" + goal.rails_object_path
-    end
-  end
-  
-  def new_path(goal)
-    "new_" + (goal.rails_underscore_tuple[0..-2] + ["#{goal.s}"]).join("_") + "_path(" + goal.rails_ivar_tuple(-2).join(', ') + ')'
-  end
+#   def new_path(goal)
+#     "new_" + (goal.rails_underscore_tuple[0..-2] + ["#{goal.s}"]).join("_") + "_path(" + goal.rails_ivar_tuple(-2).join(', ') + ')'
+#   end
   
   def collection_path(goal)
     (goal.underscore_tuple[0..-2] + [goal.p]).join("_") +  "_path(" + goal.ivar_tuple[0..-2].join(', ') + ')'
   end
   
   def generate
+    gen_app
+    gen_routes
+#     @app.goals.values.each do |goal|
+#       gen_migration(goal)
+#       gen_goal(goal)
+#       gen_controller(goal)
+#       gen_view(goal)
+#       gen_tests(goal)
+#       gen_misc
+#     end
+  end
+
+  def gen_app
+    if File.exists?(app_dir)
+    end
+  end
+
+  def app_dir
+    if root_dir
+      "#{root_dir}/#{app_name}"
+    else
+      "#{root_dir}/#{app_name}"
+    end
+  end
+
+  def app_name
+    "#{app.name}" + opts[:include_suffix]
   end
   
   def gen_route_string # TODO: add a default route
@@ -171,7 +199,7 @@ class Rails < RubyGenerator
   end
 
   def gen_new_str(goal)
-    "<%= render :partial => '#{goal.p}/form', :object => @#{goal.s} %>"
+    gen_edit_str(goal)
   end
 
   def field_string(name, type)
@@ -211,16 +239,6 @@ end
 #     end
   
 #   def generate()
-#     gen_app()
-#     @app.models.values.each do |model|
-#       gen_routes
-#       gen_migration(model)
-#       gen_model(model)
-#       gen_controller(model)
-#       gen_view(model)
-#       gen_tests(model)
-#       gen_misc
-#     end
 #   end
 
 #   def gen_routes
