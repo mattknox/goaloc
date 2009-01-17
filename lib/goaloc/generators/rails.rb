@@ -145,6 +145,16 @@ class Rails < RubyGenerator
     template_str = File.open("#{File.dirname(__FILE__)}/rails/show.html.erb").read
     ERB.new(template_str).result(binding)
   end
+
+  def gen_partial_str(goal)
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/_model.html.erb").read
+    ERB.new(template_str).result(binding)
+  end
+
+  def gen_partial_small_str(goal)
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/_model_small.html.erb").read
+    ERB.new(template_str).result(binding)
+  end
 end
 
 #   module RailsModel
@@ -270,16 +280,6 @@ end
 #     ERB.new(template_str).result(binding)
 #   end
   
-#   def gen_partial_string(model)
-#     template_str = File.open("#{File.dirname(__FILE__)}/rails/_model.html.erb").read
-#     ERB.new(template_str).result(binding)
-#   end
-
-#   def gen_small_partial_string(model)
-#     template_str = File.open("#{File.dirname(__FILE__)}/rails/_model_small.html.erb").read
-#     ERB.new(template_str).result(binding)
-#   end
-
 #   def gen_view(model)
 #     cs = model.to_s                      # singular capitalized
 #     cp = model.to_s.pluralize            # singular capitalized

@@ -46,7 +46,7 @@ class Goal
   end
 
   def nested_resources
-    APP.goals.reject { |k, v| v.routes != [(self.resource_tuple + [v])] }
+    APP.goals.reject { |k, v| v.routes != [(self.resource_tuple + [k.pluralize.to_sym])] } # TODO: make this work with singular resources
   end
 
   # validations

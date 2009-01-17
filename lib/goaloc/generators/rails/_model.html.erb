@@ -1,20 +1,20 @@
-<%= "<% div_for(#{model.s}) do %%>" %>
-<%= "<h3>#{model.s}</h3>" %>
-<% model.fields.each do |k, v| %>
+<%= "<% div_for(#{goal.s}) do %%>" %>
+<%= "<h3>#{goal.s}</h3>" %>
+<% goal.fields.each do |k, v| %>
   <div>
     <b><%= k %>:</b>
-    <%= "<%=h #{model.s}.#{k} %%>" %>
+    <%= "<%=h #{goal.s}.#{k} %%>" %>
   </div>
 <% end %>
 <%= "<% end %%>" %>
-<%  model.nested_resources.each do |k, v| %>
+<%  goal.nested_resources.each do |k, v| %>
   
   <div>
     <%= "<h4>list of #{v.p}</h4>" %>
-    <%=  "<%= render :partial => '#{v.p}/#{v.s}_small', :collection => #{model.s}.#{v.p} %%>" %>
+    <%=  "<%= render :partial => '#{v.p}/#{v.s}_small', :collection => #{goal.s}.#{v.p} %%>" %>
   </div>
   <div>
     <%=  "<h4>make a new #{v.s}</h4>" %>
-    <%=  "<%= render :partial => '#{v.p}/form', :object => #{model.s}.#{v.p}.new %%>" %>
+    <%=  "<%= render :partial => '#{v.p}/form', :object => #{goal.s}.#{v.p}.new %%>" %>
   </div>
 <% end %>

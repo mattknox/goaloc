@@ -1,8 +1,8 @@
-<%% div_for(<%= model.s %>_small) do %>
-<% model.fields.each do |k, v| %>
+<%% div_for(<%= goal.s %>_small) do %>
+<% goal.fields.each do |k, v| %>
   <div>
     <span><%= k %>:</span>
-    <%%= <%= "#{model.s}_small.#{k}" %> %>  
+    <%%= <%= "#{goal.s}_small.#{k}" %> %>  
   </div>
 <% end %>
 <%% end %>
