@@ -165,6 +165,10 @@ class Rails < RubyGenerator
     "<%= render :partial => '#{goal.p}/form', :object => @#{goal.s} %>"
   end
 
+  def gen_new_str(goal)
+    "<%= render :partial => '#{goal.p}/form', :object => @#{goal.s} %>"
+  end
+
   def field_string(name, type)
     case type
     when "text" then "    <%= f.text_area :#{name} %" + ">"
