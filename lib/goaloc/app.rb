@@ -62,6 +62,10 @@ class App
     end
   end
 
+  def fetch_goal(x) # this will take in anything stringlike and return a goal
+    self.goals[x.to_s.singularize.underscore]
+  end
+  
   def generate_name
     "goaloc_app" + Time.now.strftime("%Y%m%d%H%M%S")
   end

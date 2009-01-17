@@ -66,6 +66,13 @@ class TestApp < Test::Unit::TestCase
         end
       end
 
+      should "return the right thing for fetch_goal" do
+        assert_equal Post, @app.fetch_goal("post")
+        assert_equal Post, @app.fetch_goal("posts")
+        assert_equal Post, @app.fetch_goal(:post)
+        assert_equal Post, @app.fetch_goal(:posts)
+      end
+      
       should "have routes" do
         assert_equal @app.routes, [:posts, :comments, :users]
         assert_equal @app.goals[:post].routes, [[:posts]]
