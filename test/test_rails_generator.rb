@@ -62,6 +62,8 @@ class TestRailsGenerator < Test::Unit::TestCase
     should "produce a valid string for the model" do
       assert_match /class Post < ActiveRecord::Base/, @generator.gen_model_str(@app.goals["post"])
       assert_match /has_many :comments/, @generator.gen_model_str(@app.goals["post"])
+      assert_match /belongs_to :post/, @generator.gen_model_str(@app.goals["comment"])
+      assert_match /validates_presence_of :post/, @generator.gen_model_str(@app.goals["comment"])
     end
     
     should "produce a valid string for the controller"

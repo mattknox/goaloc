@@ -46,13 +46,13 @@ class Rails < RubyGenerator
   def gen_model_str(goal)
     out = ""
     out << "class #{goal.cs} < ActiveRecord::Base\n"
-      goal.associations.each do |k, v|
-        out <<  "  #{goal.rails_association_string(k,v)}\n"
-      end
-#      model.validations.each do |k, v|
-#        f.write "  #{v[:type]} :#{v[:target]}\n"
-#      end
-     out <<  "end"
+    goal.associations.each do |k, v|
+      out <<  "  #{goal.rails_association_string(k,v)}\n"
+    end
+    goal.validations.each do |v|
+      out << "  validates_#{v[:val_type]} :#{v[:field]}\n"
+    end
+    out <<  "end"
   end
 end
 
