@@ -54,6 +54,11 @@ class Rails < RubyGenerator
     end
     out <<  "end"
   end
+
+  def gen_controller_string()
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/controller.rb.erb").read
+    ERB.new(template_str).result(binding)
+  end
 end
 
 #   module RailsModel

@@ -1,82 +1,82 @@
-class <%= model.cp %>Controller < ApplicationController
+class <%= goal.cp %>Controller < ApplicationController
 
-  before_filter :find_<%= model.s %>, :only => [:show, :destroy, :edit, :update]
-  before_filter :find_<%= model.p %>, :only => :index
-  before_filter :new_<%= model.s %>, :only => [:new, :create]
+  before_filter :find_<%= goal.s %>, :only => [:show, :destroy, :edit, :update]
+  before_filter :find_<%= goal.p %>, :only => :index
+  before_filter :new_<%= goal.s %>, :only => [:new, :create]
 
-<%= model.rails_find_method %>
-<%= model.rails_find_collection_method %>
-<%= model.rails_new_object_method %>
+<%= goal.rails_find_method %>
+<%= goal.rails_find_collection_method %>
+<%= goal.rails_new_object_method %>
 
-  # GET /<%= model.p %>
-  # GET /<%= model.p %>.xml
+  # GET /<%= goal.p %>
+  # GET /<%= goal.p %>.xml
   def index
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @<%= model.p %> }
+      format.xml  { render :xml => @<%= goal.p %> }
     end
   end
 
-  # GET /<%= model.p %>/1
-  # GET /<%= model.p %>/1.xml
+  # GET /<%= goal.p %>/1
+  # GET /<%= goal.p %>/1.xml
   def show
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @<%= model.s %> }
+      format.xml  { render :xml => @<%= goal.s %> }
     end
   end
 
-  # GET /<%= model.p %>/new
-  # GET /<%= model.p %>/new.xml
+  # GET /<%= goal.p %>/new
+  # GET /<%= goal.p %>/new.xml
   def new
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @<%= model.s %> }
+      format.xml  { render :xml => @<%= goal.s %> }
     end
   end
 
-  # GET /<%= model.p %>/1/edit
+  # GET /<%= goal.p %>/1/edit
   def edit
   end
 
-  # POST /<%= model.p %>
-  # POST /<%= model.p %>.xml
+  # POST /<%= goal.p %>
+  # POST /<%= goal.p %>.xml
   def create
     respond_to do |format|
-      if @<%= model.s %>.save
-        flash[:notice] = '<%= model.cs %> was successfully created.'
-        format.html { redirect_to(<%= model.rails_collection_path %>) }
-        format.xml  { render :xml => @<%= model.s %>, :status => :created, :location => @<%= model.s %> }
+      if @<%= goal.s %>.save
+        flash[:notice] = '<%= goal.cs %> was successfully created.'
+        format.html { redirect_to(<%= goal.rails_collection_path %>) }
+        format.xml  { render :xml => @<%= goal.s %>, :status => :created, :location => @<%= goal.s %> }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @<%= model.s %>.errors, :status => :unprocessable_entity }
+        format.xml  { render :xml => @<%= goal.s %>.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # PUT /<%= model.p %>/1
-  # PUT /<%= model.p %>/1.xml
+  # PUT /<%= goal.p %>/1
+  # PUT /<%= goal.p %>/1.xml
   def update
     respond_to do |format|
-      if @<%= model.s %>.update_attributes(params[:<%= model.s %>])
-        flash[:notice] = '<%= model.cs %> was successfully updated.'
-        format.html { redirect_to(<%= model.rails_object_path %>) }
+      if @<%= goal.s %>.update_attributes(params[:<%= goal.s %>])
+        flash[:notice] = '<%= goal.cs %> was successfully updated.'
+        format.html { redirect_to(<%= goal.rails_object_path %>) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @<%= model.s %>.errors, :status => :unprocessable_entity }
+        format.xml  { render :xml => @<%= goal.s %>.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /<%= model.p %>/1
-  # DELETE /<%= model.p %>/1.xml
+  # DELETE /<%= goal.p %>/1
+  # DELETE /<%= goal.p %>/1.xml
   def destroy
-    @<%= model.s %>.destroy
+    @<%= goal.s %>.destroy
 
-    flash[:notice] = '<%= model.cs %> was successfully removed.'
+    flash[:notice] = '<%= goal.cs %> was successfully removed.'
     respond_to do |format|
-      format.html { redirect_to(<%= model.rails_collection_path %>) }
+      format.html { redirect_to(<%= goal.rails_collection_path %>) }
       format.xml  { head :ok }
     end
   end
