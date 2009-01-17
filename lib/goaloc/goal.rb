@@ -33,6 +33,10 @@ class Goal
     end
   end
 
+  def nested?
+    self.resource_tuple.length > 1
+  end
+  
   def nested_resources
     APP.goals.reject { |k, v| v.routes != [(self.resource_tuple + [v])] }
   end
