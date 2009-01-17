@@ -76,6 +76,7 @@ class TestRailsGenerator < Test::Unit::TestCase
     
     should "produce a valid string for the controller" do
       assert_match /def find_comment/, @generator.gen_controller_str(@app.goals["comment"])
+      assert_match /def find_post/, @generator.gen_controller_str(@app.goals["post"])
     end
     
     should "produce a valid string for the index view" do
@@ -104,7 +105,7 @@ class TestRailsGenerator < Test::Unit::TestCase
     end
     
     should "produce a valid string for the new view" do 
-      assert_match /render :partial => 'comments\/form', :object => @comment/, @generator.gen_edit_str(@app.goals["comment"])
+      assert_match /render :partial => 'comments\/form', :object => @comment/, @generator.gen_new_str(@app.goals["comment"])
     end
     
     should "produce a valid string for the view layout" do
@@ -112,6 +113,10 @@ class TestRailsGenerator < Test::Unit::TestCase
       assert_match /<\/html>/, @generator.gen_layout_str
       assert_match /<\/head>/, @generator.gen_layout_str
       assert_match /yield /, @generator.gen_layout_str
+    end
+
+    should "generate an app" do
+      
     end
   end
 end
