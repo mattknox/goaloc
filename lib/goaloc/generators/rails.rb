@@ -110,12 +110,12 @@ class Rails < RubyGenerator
     if root_dir
       "#{root_dir}/#{app_name}"
     else
-      "#{root_dir}/#{app_name}"
+      "#{app_name}"
     end
   end
 
   def app_name
-    "#{app.name}" + opts[:include_suffix]
+    "#{app.name}" + (opts[:base_dir_suffix] ? "_rails" : "")
   end
   
   def gen_route_string # TODO: add a default route

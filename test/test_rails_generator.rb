@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/test_helper'
 class TestRailsGenerator < Test::Unit::TestCase
   context "a rails generator with one empty goal" do
     setup do
-      @app = App.new
+      @app = App.new("foobar")
       @app.route :posts
       @generator = @app.generate(Rails)
     end
@@ -24,7 +24,7 @@ class TestRailsGenerator < Test::Unit::TestCase
 
   context "a rails generator with a nested route " do
     setup do
-      @app = App.new
+      @app = App.new("foobar")
       @app.route [:posts, :comments]
       @generator = @app.generate(Rails)
     end
@@ -38,7 +38,7 @@ class TestRailsGenerator < Test::Unit::TestCase
 
   context "a rails generator with a rootless route " do
     setup do
-      @app = App.new
+      @app = App.new("foobar")
       @app.route [:posts, :comments], :pictures
       @generator = @app.generate(Rails)
     end
@@ -53,7 +53,7 @@ class TestRailsGenerator < Test::Unit::TestCase
   
   context "a rails generator with nested nontrivial goals" do
     setup do
-      @app = App.new
+      @app = App.new("foobar")
       @app.route [:posts, :comments], :pictures
       @app.add_attrs :posts => "body:text title:string", :comments => "body:text", :pictures => "rating:integer"
       @generator = @app.generate(Rails)
@@ -115,8 +115,10 @@ class TestRailsGenerator < Test::Unit::TestCase
       assert_match /yield /, @generator.gen_layout_str
     end
 
-    should "generate an app" do
-      
+    should "generate an app_name, possibly with a suffix" do
+      assert_equal @generator.app_name, "foobar"
+      @generator.opts[:base_dir_suffix] = true
+      assert_equal @generator.app_name, "foobar_rails"
     end
   end
 end
