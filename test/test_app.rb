@@ -125,7 +125,13 @@ class TestApp < Test::Unit::TestCase
 
     context "when adding attrs" do
       setup do
-        @app.route 
+        @app.route :posts
+      end
+
+      should "should put fields on the post goal" do
+        assert @app.goals["post"].fields.blank?
+        @app.add_attrs :posts => "body:text title:string"
+        assert_equal  @app.goals["post"].fields.length, 2
       end
     end
   end
