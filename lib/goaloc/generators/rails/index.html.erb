@@ -1,7 +1,7 @@
-<h1>Listing <%= model.p %></h1>
+<h1>Listing <%= goal.p %></h1>
 
 
-<%=  "<%= render :partial => '#{model.p}/#{model.s}', :collection => @#{model.p} %%>" %>
+<%=  "<%= render :partial => '#{goal.p}/#{goal.s}', :collection => @#{goal.p} %%>" %>
 
-<h2>create a new <%= model.s %></h2>
-<%=  "<%= render :partial => '#{model.p}/form', :object => @#{model.s} %%>" %>
+<h2>create a new <%= goal.s %></h2>
+<%=  "<%= render :partial => '#{goal.p}/form', :object => @#{goal.s} %%>" %>

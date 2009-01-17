@@ -70,13 +70,17 @@ class TestRailsGenerator < Test::Unit::TestCase
       assert_match /def find_comment/, @generator.gen_controller_str(@app.goals["comment"])
     end
     
-    should "produce a valid string for the index view"
+    should "produce a valid string for the index view" do
+      assert_match /render :partial => 'comments\/comment', :collection => @comments/, @generator.gen_index_str(@app.goals["comment"])
+    end
+    
     should "produce a valid string for the show view"
     should "produce a valid string for the _model view"
     should "produce a valid string for the _model_small view"
     should "produce a valid string for the _form view"
     should "produce a valid string for the edit view"
     should "produce a valid string for the new view"
+    
     should "produce a valid string for the view layout" do
       assert_match /<html/, @generator.gen_layout_str
       assert_match /<\/html>/, @generator.gen_layout_str

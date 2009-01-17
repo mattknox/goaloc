@@ -135,6 +135,11 @@ class Rails < RubyGenerator
     template_str = File.open("#{File.dirname(__FILE__)}/rails/application.html.erb").read
     ERB.new(template_str).result(binding)
   end
+  
+  def gen_index_str(goal)
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/index.html.erb").read
+    ERB.new(template_str).result(binding)
+  end
 end
 
 #   module RailsModel
@@ -253,11 +258,6 @@ end
 #     f = File.new("#{app_name}/app/controllers/#{model.nice_name.pluralize}_controller.rb", "w") 
 #     f.write(gen_controller_string(model))
 #     f.close
-#   end
-
-#   def gen_index_string(model)
-#     template_str = File.open("#{File.dirname(__FILE__)}/rails/index.html.erb").read
-#     ERB.new(template_str).result(binding)
 #   end
 
 #   def gen_form_string(model)
