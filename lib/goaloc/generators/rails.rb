@@ -2,10 +2,11 @@ require "erb"
 require "fileutils"
 
 class Rails < RubyGenerator
-  attr_accessor :app, :opts
+  attr_accessor :app, :opts, :generator
   def initialize(app, opts = { })
     @app = app
     @opts = opts
+    @generator = self
   end
 
   def association_string(assoc_name, assoc_hash)
@@ -22,25 +23,73 @@ class Rails < RubyGenerator
   # eg route :blogs, [:users, [:blogs, :posts]]  It's obvious in posts that blogs is the nested bit.  
   def find_method(goal)
     wrap_method("find_#{goal.s}",
-                goal.resource_tuple[0..-2].map { |var| var.rails_finder_string } +
-                [goal.rails_finder_string("id")] + 
-                goal.nested_resources.map { |k,v| v.rails_new_object_string()})
+                goal.resource_tuple[0..-2].map { |var| finder_string(var.to_s.singularize.camelize.constantize) } +
+                [finder_string(goal, "id")] + 
+                goal.nested_resources.map { |k,v| new_object_string(v)})
   end
   
   # this returns @foo = Foo.find(params[:param_name]) or @foo = @bar.foos.find(params[:param_name])
   def finder_string(goal, id_str = nil)
     id_str ||= "#{goal.s}_id"
     if goal.nested?
-      enclosing_resource = goal.resource_tuple[-2]
+      enclosing_resource = @app.fetch_goal(goal.resource_tuple[-2])
       "@#{goal.s} = @#{enclosing_resource.s}.#{goal.p}.find(params[:#{id_str}])"
     else
       "@#{goal.s} = #{goal.cs}.find(params[:#{id_str}])"
     end
   end
   
-  def generate
+  def new_object_string(goal)
+    if goal.nested?
+      enclosing_resource = @app.fetch_goal(goal.resource_tuple[-2])
+      "@#{goal.s} = @#{enclosing_resource.s}.#{goal.p}.new(params[:#{goal.s}])"
+    else
+      "@#{goal.s} = #{goal.cs}.new(params[:#{goal.s}])"
+    end
+  end
+  
+  def collection_finder_string(goal)
+    if goal.nested?
+      enclosing_resource = @app.fetch_goal(goal.resource_tuple[-2])
+      "@#{goal.p} = @#{enclosing_resource.s}.#{goal.p}"
+    else
+      "@#{goal.p} = #{goal.cs}.find(:all)"
+    end
+  end
+  
+  def new_object_method(goal)
+    wrap_method("new_#{goal.s}", (goal.resource_tuple[0..-2].map { |var| finder_string(@app.fetch_goal(var)) } +
+                                  [new_object_string(goal)]))
   end
 
+  def find_collection_method(goal)
+    wrap_method("find_#{goal.p}", (goal.resource_tuple[0..-2].map { |var| finder_string(@app.fetch_goal(var)) } +
+                                   [collection_finder_string(goal), new_object_string(goal)]))
+  end
+
+  def object_path(goal, str = "@")
+    goal.underscore_tuple.join("_") + '_path(' + (goal.ivar_tuple[0..-2]  + ["#{str.to_s + goal.s})"]).join(', ')
+  end
+  
+  def edit_path(goal, str = nil)
+    if str
+      "edit_" + goal.rails_object_path(str)
+    else
+      "edit_" + goal.rails_object_path
+    end
+  end
+  
+  def new_path(goal)
+    "new_" + (goal.rails_underscore_tuple[0..-2] + ["#{goal.s}"]).join("_") + "_path(" + goal.rails_ivar_tuple(-2).join(', ') + ')'
+  end
+  
+  def collection_path(goal)
+    (goal.underscore_tuple[0..-2] + [goal.p]).join("_") +  "_path(" + goal.ivar_tuple[0..-2].join(', ') + ')'
+  end
+  
+  def generate
+  end
+  
   def gen_route_string # TODO: add a default route
     "ActionController::Routing::Routes.draw do |map|\n" +
       default_route.to_s + 
@@ -94,33 +143,6 @@ end
 #       # form.comment.post.user, form.comment.post, form.comment, form
 #       self.resource_tuple[0..-2].map {|c| c.s }.reverse.inject([end_element]) {|acc, x| acc.unshift(acc.first + "." + x )}
 #     end
-#     def rails_underscore_tuple
-#       self.resource_tuple.map {|c| c.s }
-#     end
-    
-#     def rails_object_path(str = "@")
-#       self.rails_underscore_tuple.join("_") + '_path(' + (self.rails_ivar_tuple[0..-2]  + ["#{str.to_s + self.s})"]).join(', ')
-#     end
-    
-#     def rails_edit_path(str = nil)
-#       if str
-#         "edit_" + self.rails_object_path(str)
-#       else
-#         "edit_" + self.rails_object_path
-#       end
-#     end
-    
-#     def rails_new_path
-#       "new_" + (self.rails_underscore_tuple[0..-2] + ["#{self.s}"]).join("_") + "_path(" + self.rails_ivar_tuple(-2).join(', ') + ')'
-#     end
-
-#     def rails_collection_path 
-#       (self.rails_underscore_tuple[0..-2] + [self.p]).join("_") +  "_path(" + self.rails_ivar_tuple(-2).join(', ') + ')'
-#     end
-
-#     def nested?
-#       self.resource_tuple.length > 1
-#     end
     
 #     def rails_test_var_string
 #       if self.nested?
@@ -130,35 +152,7 @@ end
 #         "@#{self.s} = #{self.cs}.find(:first)"
 #       end
 #     end
-    
-#     def rails_collection_finder_string
-#       if self.nested?
-#         enclosing_resource = self.resource_tuple[-2]
-#         "@#{self.p} = @#{enclosing_resource.s}.#{self.p}"
-#       else
-#         "@#{self.p} = #{self.cs}.find(:all)"
-#       end
-#     end
-
-#     def rails_new_object_string
-#       if self.nested?
-#         enclosing_resource = self.resource_tuple[-2]
-#         "@#{self.s} = @#{enclosing_resource.s}.#{self.p}.new(params[:#{self.s}])"
-#       else
-#         "@#{self.s} = #{self.cs}.new(params[:#{self.s}])"
-#       end
-#     end
-    
-#     def rails_find_collection_method
-#       wrap_method("find_#{self.p}", (self.resource_tuple[0..-2].map { |var| var.rails_finder_string } +
-#                                      [self.rails_collection_finder_string, self.rails_new_object_string]))
-#     end
-    
-#     def rails_new_object_method
-#       wrap_method("new_#{self.s}", (self.resource_tuple[0..-2].map { |var| var.rails_finder_string } +
-#                                     [self.rails_new_object_string]))
-#     end
-
+        
 #     def rails_required_nonpath_params
 #       self.associations.reject { |k,v| v[:type] != :belongs_to }.keys.reject {|x| self.resource_tuple.map { |y| y.s }.member?(x) }
 #     end
@@ -253,24 +247,6 @@ end
 #                      # TODO: I should make a migration_order accessor, so people can define the order in which migrations happen.  This would also, coincidentally, allow me to get rid of the Kernel.sleep(1) hack.
 #     f.write gen_migration_string(model)
 #     f.close
-#   end
-  
-#   def gen_model(model)
-#     f = File.new("#{app_name}/app/models/#{model.nice_name}.rb", "w") 
-#     f.write "class #{model.to_s} < ActiveRecord::Base\n"
-#     model.associations.each do |k, v|
-#       f.write "  #{model.rails_association_string(k,v)}\n"
-#     end
-#     model.validations.each do |k, v|
-#       f.write "  #{v[:type]} :#{v[:target]}\n"
-#     end
-#     f.write "end"
-#     f.close
-#   end
-
-#   def gen_controller_string(model)
-#     template_str = File.open("#{File.dirname(__FILE__)}/rails/controller.rb.erb").read
-#     ERB.new(template_str).result(binding)
 #   end
   
 #   def gen_controller(model)              # make this a better controller

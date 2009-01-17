@@ -36,7 +36,15 @@ class Goal
   def nested?
     self.resource_tuple.length > 1
   end
-  
+
+  def underscore_tuple
+    self.resource_tuple.to_a.map { |x| x.to_s.underscore }
+  end
+
+  def ivar_tuple
+    self.resource_tuple.to_a.map { |x| "@" + x.to_s.underscore }
+  end
+
   def nested_resources
     APP.goals.reject { |k, v| v.routes != [(self.resource_tuple + [v])] }
   end

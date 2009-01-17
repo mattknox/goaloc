@@ -4,9 +4,9 @@ class <%= goal.cp %>Controller < ApplicationController
   before_filter :find_<%= goal.p %>, :only => :index
   before_filter :new_<%= goal.s %>, :only => [:new, :create]
 
-<%= goal.rails_find_method %>
-<%= goal.rails_find_collection_method %>
-<%= goal.rails_new_object_method %>
+<%= generator.find_method(goal) %>
+<%= generator.find_collection_method(goal) %>
+<%= generator.new_object_method(goal) %>
 
   # GET /<%= goal.p %>
   # GET /<%= goal.p %>.xml
@@ -45,7 +45,7 @@ class <%= goal.cp %>Controller < ApplicationController
     respond_to do |format|
       if @<%= goal.s %>.save
         flash[:notice] = '<%= goal.cs %> was successfully created.'
-        format.html { redirect_to(<%= goal.rails_collection_path %>) }
+        format.html { redirect_to(<%= generator.collection_path(goal) %>) }
         format.xml  { render :xml => @<%= goal.s %>, :status => :created, :location => @<%= goal.s %> }
       else
         format.html { render :action => "new" }
@@ -60,7 +60,7 @@ class <%= goal.cp %>Controller < ApplicationController
     respond_to do |format|
       if @<%= goal.s %>.update_attributes(params[:<%= goal.s %>])
         flash[:notice] = '<%= goal.cs %> was successfully updated.'
-        format.html { redirect_to(<%= goal.rails_object_path %>) }
+        format.html { redirect_to(<%= generator.object_path(goal) %>) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -76,7 +76,7 @@ class <%= goal.cp %>Controller < ApplicationController
 
     flash[:notice] = '<%= goal.cs %> was successfully removed.'
     respond_to do |format|
-      format.html { redirect_to(<%= goal.rails_collection_path %>) }
+      format.html { redirect_to(<%= generator.collection_path(goal) %>) }
       format.xml  { head :ok }
     end
   end
