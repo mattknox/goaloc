@@ -161,6 +161,10 @@ class Rails < RubyGenerator
     ERB.new(template_str).result(binding)
   end
 
+  def gen_edit_str(goal)
+    "<%= render :partial => '#{goal.p}/form', :object => @#{goal.s} %>"
+  end
+
   def field_string(name, type)
     case type
     when "text" then "    <%= f.text_area :#{name} %" + ">"
@@ -298,7 +302,7 @@ end
 #     f.write "<%= render :partial => '#{p}/form', :object => @#{s} %>"
 #     f.close
 #     f = File.new("#{view_dir}edit.html.erb", "w") 
-#     f.write "<%= render :partial => '#{p}/form', :object => @#{s} %>"
+#     f.write 
 #     f.close
 #     File.open("#{view_dir}_form.html.erb", "w") do |f|
 #       f.write self.gen_form_string(model)
