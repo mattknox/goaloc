@@ -6,7 +6,7 @@ class Rails < RubyGenerator
   def initialize(app, opts = { })
     @app = app
     @opts = opts
-g  end
+  end
 
   def association_string(assoc_name, assoc_hash)
     option_str = ""
@@ -18,24 +18,23 @@ g  end
     indent_string + "def #{name}\n" + arr.map { |s| indent_string + "  " + s }.join("\n") + "\n#{indent_string}end"
   end
   
-  # TODO: rethink this "extend the goal object" idea.  could be replaced by putting all the methods in the rails generator, and then passing around the goal.
   # TODO: right now this doesn't handle routes that have an multiply routed resource in the chain somewhere
   # eg route :blogs, [:users, [:blogs, :posts]]  It's obvious in posts that blogs is the nested bit.  
-  def rails_find_method
-    wrap_method("find_#{self.s}",
-                self.resource_tuple[0..-2].map { |var| var.rails_finder_string } +
-                [self.rails_finder_string("id")] + 
-                self.nested_resources.map { |k,v| v.rails_new_object_string()})
+  def find_method(goal)
+    wrap_method("find_#{goal.s}",
+                goal.resource_tuple[0..-2].map { |var| var.rails_finder_string } +
+                [goal.rails_finder_string("id")] + 
+                goal.nested_resources.map { |k,v| v.rails_new_object_string()})
   end
   
   # this returns @foo = Foo.find(params[:param_name]) or @foo = @bar.foos.find(params[:param_name])
-  def rails_finder_string(id_str = nil)
-    id_str ||= "#{self.s}_id"
-    if self.nested?
-      enclosing_resource = self.resource_tuple[-2]
-      "@#{self.s} = @#{enclosing_resource.s}.#{self.p}.find(params[:#{id_str}])"
+  def finder_string(goal, id_str = nil)
+    id_str ||= "#{goal.s}_id"
+    if goal.nested?
+      enclosing_resource = goal.resource_tuple[-2]
+      "@#{goal.s} = @#{enclosing_resource.s}.#{goal.p}.find(params[:#{id_str}])"
     else
-      "@#{self.s} = #{self.cs}.find(params[:#{id_str}])"
+      "@#{goal.s} = #{goal.cs}.find(params[:#{id_str}])"
     end
   end
   
