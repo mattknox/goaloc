@@ -1,12 +1,13 @@
 class Goal
   attr_reader :name
-  attr_accessor :associations, :validations, :fields, :options, :routes
+  attr_accessor :associations, :validations, :fields, :options, :routes, :foreign_keys
 
   def initialize(name, route = [])
     @name = name.underscore.singularize   # TODO: support renaming models
     self.associations = HashWithIndifferentAccess.new
     self.validations = []
     self.fields = HashWithIndifferentAccess.new
+    self.foreign_keys = HashWithIndifferentAccess.new
     self.options = { }
     self.routes = [] # of the form [:classname, [:otherclass, :classname], ...]
     Object.const_set self.cs, self
@@ -45,6 +46,14 @@ class Goal
     self.resource_tuple.to_a.map { |x| "@" + x.to_s.underscore }
   end
 
+  def backvar_tuple(end_element = "form")
+    # this is intended to grab the list of elements needed to populate a form_for,
+    # propagated back from the named end_element
+    # so for [:users, [:posts, [:comments, :ratings]]] in the rating form it would be:
+    # form.comment.post.user, form.comment.post, form.comment, form
+    self.resource_tuple[0..-2].map {|c| c.s }.reverse.inject([end_element]) {|acc, x| acc.unshift(acc.first + "." + x )}
+  end
+  
   def nested_resources
     APP.goals.reject { |k, v| v.routes != [(self.resource_tuple + [k.pluralize.to_sym])] } # TODO: make this work with singular resources
   end
@@ -57,6 +66,7 @@ class Goal
   # association stuff
   def belongs_to(goal, options = { })
     self.fields[goal.foreign_key] = "reference"
+    self.foreign_keys[goal.foreign_key] = "reference"
     self.validates(:presence_of, goal.foreign_key)
     self.associate(:belongs_to, goal, options)
   end

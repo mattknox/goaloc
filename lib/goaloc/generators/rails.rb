@@ -155,21 +155,25 @@ class Rails < RubyGenerator
     template_str = File.open("#{File.dirname(__FILE__)}/rails/_model_small.html.erb").read
     ERB.new(template_str).result(binding)
   end
+
+  def gen_form_str(goal)
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/_form.html.erb").read
+    ERB.new(template_str).result(binding)
+  end
+
+  def field_string(name, type)
+    case type
+    when "text" then "    <%= f.text_area :#{name} %" + ">"
+    when "foreign_key" then "    <%= f.select :#{name}, #{name[0..-4].camelize}.find(:all).map { |x| ['#{name}' + x.id.to_s, x.id]} %>"
+    else "    <%= f.text_field :#{name} %" + ">"
+    end
+  end
 end
 
-#   module RailsModel
 #     def rails_ivar_or_array_of_ivars(end_index = -1)
 #       "[" + self.resource_tuple[0..end_index].map {|c| c.rails_symname }.join(", ") + "]"
 #     end
-    
-#     def rails_backvar_tuple(end_element = "form")
-#       # this is intended to grab the list of elements needed to populate a form_for,
-#       # propagated back from the named end_element
-#       # so for [:users, [:posts, [:comments, :ratings]]] in the rating form it would be:
-#       # form.comment.post.user, form.comment.post, form.comment, form
-#       self.resource_tuple[0..-2].map {|c| c.s }.reverse.inject([end_element]) {|acc, x| acc.unshift(acc.first + "." + x )}
-#     end
-    
+        
 #     def rails_test_var_string
 #       if self.nested?
 #         enclosing_resource = self.resource_tuple[-2]
@@ -192,15 +196,6 @@ end
 #       option_str << ", :through => :#{assoc_hash[:through].p}" if assoc_hash[:through]
 #       "#{assoc_hash[:type]} :#{assoc_name + option_str}"
 #     end
-
-#     def rails_field_string(name, type)
-#       case type
-#       when "text" then "    <%= f.text_area :#{name} %" + ">"
-#       when "foreign_key" then "    <%= f.select :#{name}, #{name[0..-4].camelize}.find(:all).map { |x| ['#{name}' + x.id.to_s, x.id]} %>"
-#       else "    <%= f.text_field :#{name} %" + ">"
-#       end
-#     end
-#   end
   
 #   def generate()
 #     app.models.values.map { |m| railsify(m) unless m.respond_to?(:rails_find_method) }
@@ -273,11 +268,6 @@ end
 #     f = File.new("#{app_name}/app/controllers/#{model.nice_name.pluralize}_controller.rb", "w") 
 #     f.write(gen_controller_string(model))
 #     f.close
-#   end
-
-#   def gen_form_string(model)
-#     template_str = File.open("#{File.dirname(__FILE__)}/rails/_form.html.erb").read
-#     ERB.new(template_str).result(binding)
 #   end
   
 #   def gen_view(model)
