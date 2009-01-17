@@ -17,14 +17,6 @@ end
 
 
 #   module RailsModel
-#     def rails_plural_symname
-#       '@' + self.p
-#     end
-    
-#     def rails_ivar_tuple(end_index = -1)
-#       self.resource_tuple[0..end_index].map {|c| c.rails_symname }
-#     end
-
 #     def rails_ivar_or_array_of_ivars(end_index = -1)
 #       "[" + self.resource_tuple[0..end_index].map {|c| c.rails_symname }.join(", ") + "]"
 #     end
