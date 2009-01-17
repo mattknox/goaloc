@@ -4,7 +4,7 @@ class TestGenerator < Test::Unit::TestCase
   context "the base generator" do
     setup do
       @app = App.new
-      @generator = Generator.new(@app, Rails)
+      @generator = Generator.build(@app, Rails)
     end
 
     should "raise an exception if it tries to build a generator for a backend that doesn't exist." do
@@ -17,7 +17,7 @@ class TestGenerator < Test::Unit::TestCase
       assert @generator.app
     end
     
-    should_eventually "have a generate method" do
+    should "have a generate method" do
       assert @generator.respond_to?(:generate)
     end
     
