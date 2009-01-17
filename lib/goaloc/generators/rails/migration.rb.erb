@@ -1,10 +1,10 @@
-class Create<%= model.cp %> < ActiveRecord::Migration
+class Create<%= goal.cp %> < ActiveRecord::Migration
   def self.up
-    create_table :<%= model.p %> do |t|
-<% model.fields.map do |k, v| %>
+    create_table :<%= goal.p %> do |t|
+<% goal.fields.map do |k, v| %>
   <%= "      t." + v.to_s + " :" + k.to_s  %>
 <% end %>
-<% model.foreign_keys.map do |k, v| %>
+<% goal.foreign_keys.map do |k, v| %>
   <%= "      t.references :" + k[0..-4] %>
 <% end %>
       t.timestamps
@@ -12,6 +12,6 @@ class Create<%= model.cp %> < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :<%= model.p %>
+    drop_table :<%= goal.p %>
   end
 end

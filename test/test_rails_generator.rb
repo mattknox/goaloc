@@ -58,7 +58,15 @@ class TestRailsGenerator < Test::Unit::TestCase
       @app.add_attrs :posts => "body:text title:string", :comments => "body:text", :pictures => "rating:integer"
       @generator = @app.generate(Rails)
     end
+
+    should "generate valid routes" do
+      assert_match /map.resources :posts/, @generator.gen_route_string
+    end
     
+    should "produce a valid migration"do
+      assert_match /text :body/, @generator.gen_migration_str(Post)
+    end
+
     should "produce a valid string for the model" do
       assert_match /class Post < ActiveRecord::Base/, @generator.gen_model_str(@app.goals["post"])
       assert_match /has_many :comments/, @generator.gen_model_str(@app.goals["post"])

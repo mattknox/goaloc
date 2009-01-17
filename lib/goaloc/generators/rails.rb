@@ -113,6 +113,11 @@ class Rails < RubyGenerator
     end
   end
 
+  def gen_migration_str(goal)
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/migration.rb.erb").read
+    ERB.new(template_str).result(binding)
+  end
+  
   def gen_model_str(goal)
     out = ""
     out << "class #{goal.cs} < ActiveRecord::Base\n"
@@ -206,8 +211,6 @@ end
 #     end
   
 #   def generate()
-#     app.models.values.map { |m| railsify(m) unless m.respond_to?(:rails_find_method) }
-    
 #     gen_app()
 #     @app.models.values.each do |model|
 #       gen_routes
@@ -220,31 +223,6 @@ end
 #     end
 #   end
 
-#   def railsify(model)
-#     model.class_eval( "extend RailsModel" )
-#     model
-#   end
-
-#   def options
-#     "-d mysql "
-#   end
-  
-#   def gen_app  # TODO:  this is just heinous.  Get rid of it.  Ideally make it possible to do a suspecders-like thing.
-#     if opts[:template]
-#       gen_from_suspenders
-#     else
-#       ` #{ rails_str} `
-#     end
-#   end
-
-#   def gen_from_suspenders
-#     raise :not_yet_implemented
-#   end
-
-#   def rails_str
-#     "rails #{ options} #{app_name}"
-#   end
-  
 #   def gen_routes
 #     arr = app.routes
 #     insert_string = arr.map { |a| gen_route(a)}.join("\n") + "\n"
@@ -258,11 +236,6 @@ end
 #     end
 #   end
 
-#   def gen_migration_string(model)
-#     template_str = File.open("#{File.dirname(__FILE__)}/rails/migration.rb.erb").read
-#     ERB.new(template_str).result(binding)
-#   end
-  
 #   def gen_migration(model)
 #     Dir.mkdir "#{app_name}/db/migrate" unless File.exists? "#{app_name}/db/migrate"
 #     f = File.new("#{app_name}/db/migrate/#{ Time.now.strftime("%Y%m%d%H%M%S") }_create_#{model.p}.rb", "w")
@@ -279,10 +252,6 @@ end
 #   end
   
 #   def gen_view(model)
-#     cs = model.to_s                      # singular capitalized
-#     cp = model.to_s.pluralize            # singular capitalized
-#     s  = model.to_s.underscore           # singular lowercase
-#     p  = model.to_s.underscore.pluralize # plural lowercase
 
 #     view_dir = "#{app_name}/app/views/#{p}/"
 #     Dir.mkdir view_dir rescue nil
