@@ -77,6 +77,11 @@ class TestRailsGenerator < Test::Unit::TestCase
     should "produce a valid string for the _form view"
     should "produce a valid string for the edit view"
     should "produce a valid string for the new view"
-    should "produce a valid string for the view layout"
+    should "produce a valid string for the view layout" do
+      assert_match /<html/, @generator.gen_layout_str
+      assert_match /<\/html>/, @generator.gen_layout_str
+      assert_match /<\/head>/, @generator.gen_layout_str
+      assert_match /yield /, @generator.gen_layout_str
+    end
   end
 end

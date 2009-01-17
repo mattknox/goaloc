@@ -129,6 +129,12 @@ class Rails < RubyGenerator
     template_str = File.open("#{File.dirname(__FILE__)}/rails/controller.rb.erb").read
     ERB.new(template_str).result(binding)
   end
+
+  # view stuff
+  def gen_layout_str
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/application.html.erb").read
+    ERB.new(template_str).result(binding)
+  end
 end
 
 #   module RailsModel
@@ -194,12 +200,6 @@ end
 #   def railsify(model)
 #     model.class_eval( "extend RailsModel" )
 #     model
-#   end
-
-#   def app_name
-#     name = app.name.clone
-#     name << "_rails" if opts[:prefix]
-#     name
 #   end
 
 #   def options
