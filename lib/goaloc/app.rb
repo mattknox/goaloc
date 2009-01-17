@@ -21,7 +21,7 @@ class App
   end
 
   def generate(target = Rails)
-    Generator.new(self, target)
+    Generator.build(self, target)
   end
   
   def goaloc_log

@@ -2,7 +2,15 @@ require File.dirname(__FILE__) + '/test_helper'
 
 class TestRailsGenerator < Test::Unit::TestCase
   context "a rails generator with one empty goal" do
-    should "produce a valid string for generate routes"
+    setup do
+      @app = App.new
+      @app.route :posts
+      @generator = @app.generate(Rails)
+    end
+    
+    should "produce a valid string for generate routes" do
+      assert true
+    end
   end
 
   context "a rails generator with a nontrivial goal" do
