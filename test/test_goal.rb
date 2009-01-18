@@ -40,8 +40,8 @@ class TestGoal < Test::Unit::TestCase
       end
 
       should "set a foreign key" do
-        assert !@goal1.fields[@goal2.foreign_key].blank?
-        assert @goal1.fields[@goal2.foreign_key] == "reference"
+        assert !@goal1.foreign_keys[@goal2.foreign_key].blank?
+        assert @goal1.foreign_keys[@goal2.foreign_key] == "references"
       end
     end
 

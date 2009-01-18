@@ -37,11 +37,11 @@ class Goal
   end
 
   def underscore_tuple
-    self.resource_tuple.to_a.map { |x| x.to_s.underscore }
+    self.resource_tuple.to_a.map { |x| x.to_s.underscore.singularize }
   end
 
   def ivar_tuple
-    self.resource_tuple.to_a.map { |x| "@" + x.to_s.underscore }
+    self.resource_tuple.to_a.map { |x| "@" + x.to_s.underscore.singularize }
   end
 
   def backvar_tuple(end_element = "form")
@@ -63,8 +63,8 @@ class Goal
 
   # association stuff
   def belongs_to(goal, options = { })
-    self.fields[goal.foreign_key] = "reference"
-    self.foreign_keys[goal.foreign_key] = "reference"
+#    self.fields[goal.foreign_key] = "references"
+    self.foreign_keys[goal.foreign_key] = "references"
     self.validates(:presence_of, goal.foreign_key)
     self.associate(:belongs_to, goal, options)
   end
