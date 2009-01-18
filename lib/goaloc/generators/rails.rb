@@ -198,7 +198,7 @@ class Rails < RubyGenerator
     # TODO: get shoulda into place.
     gen_unit_test(goal)
     gen_controller_test(goal)
-#    gen_fixture(goal)
+    gen_fixture(goal)
   end
 
   def gen_unit_test_string(goal)
@@ -225,9 +225,38 @@ class Rails < RubyGenerator
     f.close
   end
   
+  def exemplar_data(data_type)
+    case data_type
+    when "integer" then rand(100)
+    else data_type + rand(100).to_s
+    end
+  end
+  
+  def gen_fixture_string(goal, n)
+    out = ""
+    (1..n).each do |i|
+      out << "#{goal.s}#{i}:\n"
+      out << " id: #{i}\n"
+      goal.fields.each do |k, v|
+        out << " #{k}: #{exemplar_data(v)}\n"
+      end
+      goal.foreign_keys.each do |key, value|
+        out << " #{key}: #{i}\n"
+      end
+      out << "\n"
+    end
+    out
+  end
+ 
+  def gen_fixture(goal)
+    File.open("#{app_dir}/test/fixtures/#{goal.p}.yml", "w") do |f|
+      f.write gen_fixture_string(goal, 100)
+    end
+  end
+
   def gen_misc # here we put in the layout, the goaloc log, and libraries (blueprint CSS, jquery)
     File.open("#{app_dir}/app/views/layouts/application.html.erb", "w") do |f|
-      f.write File.open("#{File.dirname(__FILE__)}/rails/application.html.erb").read
+      f.write ERB.new(File.open("#{File.dirname(__FILE__)}/rails/application.html.erb").read).result(binding)
     end
     File.open("#{app_dir}/doc/goaloc_spec", "w") do |f|
       f.write app.goaloc_log.join("\n")
