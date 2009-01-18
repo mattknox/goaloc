@@ -25,7 +25,7 @@ class Rails < RubyGenerator
     wrap_method("find_#{goal.s}",
                 goal.resource_tuple[0..-2].map { |var| finder_string(var.to_s.singularize.camelize.constantize) } +
                 [finder_string(goal, "id")] + 
-                goal.nested_resources.map { |k,v| new_object_string(v)})
+               goal.nested_resources.map { |k,v| new_object_string(v)})
   end
   
   # this returns @foo = Foo.find(params[:param_name]) or @foo = @bar.foos.find(params[:param_name])
@@ -95,7 +95,7 @@ class Rails < RubyGenerator
        gen_migration(goal, i)
        gen_model(goal)
        gen_controller(goal)
-#       gen_view(goal)
+       gen_view(goal)
 #       gen_tests(goal)
 #       gen_misc
     end
@@ -114,6 +114,14 @@ class Rails < RubyGenerator
   end
 
   def gen_routes
+    if default_route.blank? # TODO: maybe extract this into a separate method. 
+      File.delete("#{app_dir}/public/index.html")
+    else
+      File.open("#{app_dir}/public/index.html", "w") do |f|
+        f.write "this will be the index page of the app.  But it isn't yet."
+        app.routes.map { |x| sym = (x.is_a?(Array) ? x.first : x) ; f.write "<div><a href=/#{sym}>#{sym}</a><br/></div>" }
+      end      
+    end
     File.open("#{app_dir}/config/routes.rb", "w") do |f|
       f.write gen_routes_string
     end
@@ -138,6 +146,36 @@ class Rails < RubyGenerator
     f.close
   end
   
+  def gen_view(goal)
+    view_dir = "#{app_dir}/app/views/#{goal.p}/"
+    Dir.mkdir view_dir unless File.exists?(view_dir)
+    File.open("#{view_dir}index.html.erb", "w") do |f|
+      f.write self.gen_index_str(goal)
+    end
+    
+    File.open("#{view_dir}show.html.erb", "w") do |f|
+      f.write self.gen_show_str(goal)
+    end
+    
+    File.open("#{view_dir}_#{goal.s}.html.erb", "w") do |f|
+      f.write self.gen_partial_str(goal)
+    end
+    
+    File.open("#{view_dir}_#{goal.s}_small.html.erb", "w") do |f|
+      f.write self.gen_partial_small_str(goal)
+    end
+    
+    f = File.new("#{view_dir}new.html.erb", "w")
+    f.write "<%= render :partial => '#{goal.p}/form', :object => @#{goal.s} %>"
+    f.close
+    f = File.new("#{view_dir}edit.html.erb", "w") 
+    f.write "<%= render :partial => '#{goal.p}/form', :object => @#{goal.s} %>"
+    f.close
+    File.open("#{view_dir}_form.html.erb", "w") do |f|
+      f.write self.gen_form_str(goal)
+    end
+  end
+  
   def app_dir
     if root_dir
       "#{root_dir}/#{app_name}"
@@ -158,7 +196,7 @@ class Rails < RubyGenerator
     "-d mysql "
   end
     
-  def gen_routes_string # TODO: add a default route
+  def gen_routes_string
     "ActionController::Routing::Routes.draw do |map|\n" +
       default_route.to_s + "\n" +
       app.routes.map { |x| gen_route(x)}.join("\n") + "\n" + 
@@ -294,61 +332,12 @@ end
 #     end
 #   end
   
-#   def gen_view(model)
-
-#     view_dir = "#{app_name}/app/views/#{p}/"
-#     Dir.mkdir view_dir rescue nil
-#     File.open("#{view_dir}index.html.erb", "w") do |f|
-#       f.write self.gen_index_string(model)
-#     end
-    
-#     File.open("#{view_dir}show.html.erb", "w") do |f|
-#       f.write self.gen_show_string(model)
-#     end
-    
-#     File.open("#{view_dir}_#{model.s}.html.erb", "w") do |f|
-#       f.write self.gen_partial_string(model)
-#     end
-    
-#     File.open("#{view_dir}_#{model.s}_small.html.erb", "w") do |f|
-#       f.write self.gen_small_partial_string(model)
-#     end
-    
-#     f = File.new("#{view_dir}new.html.erb", "w")
-#     f.write "<%= render :partial => '#{p}/form', :object => @#{s} %>"
-#     f.close
-#     f = File.new("#{view_dir}edit.html.erb", "w") 
-#     f.write 
-#     f.close
-#     File.open("#{view_dir}_form.html.erb", "w") do |f|
-#       f.write self.gen_form_string(model)
-#     end
-#     "<% form_for(@#{s}) do |f| %>\n  <%= f.error_messages %>"
-#     model.fields.each do |k, v|
-#        "
-#   <div>
-#     <%= f.label :#{k} %><br />
-#     <%= f.text_field :#{k} %>
-#   </div>\n"
-#     end
-#      "
-#   <div>
-#     <%= f.submit 'Update' %>
-#   </div>
-# <% end %>"
-    
-#   end
-
 #   def gen_default_route  # this is nasty.  Somehow needs to isolate the route writing from the file clobbering.
 #     if 1 == app.routes.length
 #       unwrappedroute = app.routes.first.to_a
 #       File.delete("#{app_name}/public/index.html") rescue nil
 #       "  map.root :controller => '#{unwrappedroute.first}'"
 #     else
-#       File.open("#{app_name}/public/index.html", "w") do |f|
-#         f.write "this will be the index page of the app.  But it isn't yet."
-#         app.routes.map { |x| sym = (x.is_a?(Array) ? x.first : x) ; f.write "<div><a href=/#{sym}>#{sym}</a><br/></div>" }
-#       end
 #       ""
 #     end
 #   end

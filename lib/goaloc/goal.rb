@@ -49,7 +49,7 @@ class Goal
     # propagated back from the named end_element
     # so for [:users, [:posts, [:comments, :ratings]]] in the rating form it would be:
     # form.comment.post.user, form.comment.post, form.comment, form
-    self.resource_tuple[0..-2].map {|c| c.s }.reverse.inject([end_element]) {|acc, x| acc.unshift(acc.first + "." + x )}
+    self.resource_tuple[0..-2].map {|sym| sym.to_s.singularize }.reverse.inject([end_element]) {|acc, x| acc.unshift(acc.first + "." + x )}
   end
   
   def nested_resources

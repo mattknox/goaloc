@@ -172,7 +172,7 @@ class TestRailsGenerator < Test::Unit::TestCase
         end
       end
 
-      should_eventually "generate view files" do 
+      should "generate view files" do 
         [:posts, :comments, :pictures].each do |x|
           assert File.exists?("#{@tmp_dir}/foobar/app/views/#{x}/show.html.erb")
           assert File.exists?("#{@tmp_dir}/foobar/app/views/#{x}/index.html.erb")
