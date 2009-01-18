@@ -27,10 +27,8 @@ class Goal
   # thanks to Josh Ladieu for this: it's the array of things needed to get to an instance of this class, if there is a unique set.
   def resource_tuple # this returns the minimal route to this goal, or nothing, if there is no unambiguous minimal route
     routelist = self.routes.sort { |x, y| x.length <=> y.length }
-    if routelist.length == 1 
+    if routelist.length == 1 #TODO: maybe should deal with a case where there's a simplest route that all the others contain.
       routelist.first
-    else #TODO: maybe should deal with a case where there's a simplest route that all the others contain.
-      nil
     end
   end
 
@@ -106,8 +104,6 @@ class Goal
         name, field_type = s.split(":")
         add_attr(name, field_type)
       end
-    else
-      raise "bad arg type in add_attrs"
     end
   end
 

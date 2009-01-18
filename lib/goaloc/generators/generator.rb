@@ -13,9 +13,4 @@ class Generator
       raise RuntimeError
     end
   end
-
-  def app_name
-    name = self.app.name.clone
-    name << "_#{self.class.to_s.underscore}"
-  end
 end

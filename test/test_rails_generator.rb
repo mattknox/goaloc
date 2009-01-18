@@ -121,6 +121,11 @@ class TestRailsGenerator < Test::Unit::TestCase
       assert_equal @generator.app_name, "foobar_rails"
     end
 
+    should "have an app_dir, possibly with a root dir"do
+      assert_equal @generator.app_dir, "foobar"
+      @generator.root_dir = "blah"
+      assert_equal @generator.app_dir, "blah/foobar"
+    end
     context "and cleaned out tmp directory" do
       setup do
         @tmp_dir = File.join(File.dirname(__FILE__), 'tmp')
