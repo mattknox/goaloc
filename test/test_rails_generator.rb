@@ -62,6 +62,10 @@ class TestRailsGenerator < Test::Unit::TestCase
     should "generate valid routes" do
       assert_match /map.resources :posts/, @generator.gen_routes_string
     end
+
+    should "generate correct collection_path" do
+      assert_equal "post_comments_path(@post)", @generator.collection_path(Comment)
+    end
     
     should "produce a valid migration"do
       assert_match /text :body/, @generator.gen_migration_str(Post)
