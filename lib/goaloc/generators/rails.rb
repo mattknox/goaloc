@@ -98,10 +98,10 @@ class Rails < RubyGenerator
 #       gen_view(goal)
 #       gen_tests(goal)
 #       gen_misc
-#     end
+    end
     self
   end
-
+  
   def gen_app
     unless File.exists?(app_dir) #TODO: figure out what to do when there is a directory there.
       original_dir = FileUtils.pwd
