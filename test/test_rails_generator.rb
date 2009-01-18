@@ -135,6 +135,7 @@ class TestRailsGenerator < Test::Unit::TestCase
         
         assert ! File.exists?(@tmp_dir)
         @generator.generate
+        assert File.exists?(@tmp_dir)
       end
       
       teardown do
@@ -146,6 +147,8 @@ class TestRailsGenerator < Test::Unit::TestCase
         assert File.exists?(@tmp_dir + "/foobar") # checking a random selection of generated rails files.
         assert File.exists?(@tmp_dir + "/foobar/config")
         assert File.exists?(@tmp_dir + "/foobar/app")
+        assert File.exists?(@tmp_dir + "/foobar/db")
+        assert File.exists?(@tmp_dir + "/foobar/db/migrate")
       end
       
       should_eventually "generate a bunch of migrations on" do # FIXME: this seems to work already, but the tests don't.
@@ -154,6 +157,30 @@ class TestRailsGenerator < Test::Unit::TestCase
           puts Dir.glob("#{@tmp_dir}/foobar/db/migrate/*#{x.to_s}")
           puts Dir.glob("#{@tmp_dir}/foobar/db/migrate/")
           assert !Dir.glob("#{@tmp_dir}/foobar/db/migrate/*#{x.to_s}").blank?
+        end
+      end
+
+      should "generate model files" do 
+        [:posts, :comments, :pictures].each do |x|
+          assert File.exists?("#{@tmp_dir}/foobar/app/models/#{x.to_s.singularize}.rb")
+        end
+      end
+
+      should "generate controller files" do 
+        [:posts, :comments, :pictures].each do |x|
+          assert File.exists?("#{@tmp_dir}/foobar/app/controllers/#{x}_controller.rb")
+        end
+      end
+
+      should_eventually "generate view files" do 
+        [:posts, :comments, :pictures].each do |x|
+          assert File.exists?("#{@tmp_dir}/foobar/app/views/#{x}/show.html.erb")
+          assert File.exists?("#{@tmp_dir}/foobar/app/views/#{x}/index.html.erb")
+          assert File.exists?("#{@tmp_dir}/foobar/app/views/#{x}/edit.html.erb")
+          assert File.exists?("#{@tmp_dir}/foobar/app/views/#{x}/new.html.erb")
+          assert File.exists?("#{@tmp_dir}/foobar/app/views/#{x}/_form.html.erb")
+          assert File.exists?("#{@tmp_dir}/foobar/app/views/#{x}/_#{x.to_s.singularize}_small.html.erb")
+          assert File.exists?("#{@tmp_dir}/foobar/app/views/#{x}/_#{x.to_s.singularize}.html.erb")
         end
       end
     end

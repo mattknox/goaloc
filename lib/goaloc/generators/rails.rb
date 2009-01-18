@@ -90,11 +90,11 @@ class Rails < RubyGenerator
   
   def generate
     gen_app
-#    gen_routes
+    gen_routes
      @app.goals.values.each_with_index do |goal, i|
        gen_migration(goal, i)
        gen_model(goal)
-#       gen_controller(goal)
+       gen_controller(goal)
 #       gen_view(goal)
 #       gen_tests(goal)
 #       gen_misc
@@ -113,6 +113,12 @@ class Rails < RubyGenerator
     end
   end
 
+  def gen_routes
+    File.open("#{app_dir}/config/routes.rb", "w") do |f|
+      f.write gen_routes_string
+    end
+  end
+
   def gen_migration(goal, i)
     Dir.mkdir "#{app_dir}/db/migrate" unless File.exists? "#{app_dir}/db/migrate"
     f = File.new("#{app_dir}/db/migrate/#{ Time.now.strftime("%Y%m%d%H%M%S").to_i + i }_create_#{goal.p}.rb", "w")
@@ -121,11 +127,17 @@ class Rails < RubyGenerator
   end
 
   def gen_model(goal)
-    File.new("#{app_dir}/app/models/#{goal.s}.rb", "w") do |f|
-      f.write gen_migration_str(goal)
+    File.open("#{app_dir}/app/models/#{goal.s}.rb", "w") do |f|
+      f.write gen_model_str(goal)
     end
   end
 
+  def gen_controller(goal)              # make this a better controller
+    f = File.new("#{app_dir}/app/controllers/#{goal.p}_controller.rb", "w") 
+    f.write(gen_controller_str(goal))
+    f.close
+  end
+  
   def app_dir
     if root_dir
       "#{root_dir}/#{app_name}"
@@ -148,7 +160,7 @@ class Rails < RubyGenerator
     
   def gen_routes_string # TODO: add a default route
     "ActionController::Routing::Routes.draw do |map|\n" +
-      default_route.to_s + 
+      default_route.to_s + "\n" +
       app.routes.map { |x| gen_route(x)}.join("\n") + "\n" + 
       "end"
   end
@@ -280,12 +292,6 @@ end
 #       f.write defroute.to_s
 #       f.write "end"
 #     end
-#   end
-  
-#   def gen_controller(model)              # make this a better controller
-#     f = File.new("#{app_name}/app/controllers/#{model.nice_name.pluralize}_controller.rb", "w") 
-#     f.write(gen_controller_string(model))
-#     f.close
 #   end
   
 #   def gen_view(model)
