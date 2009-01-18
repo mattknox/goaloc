@@ -15,7 +15,11 @@ APP = @app = App.new
 
 def generate(*args)
   @app.log << "generate #{args.inspect[1..-2]}"
-  @app.generate(*args)
+  @app.generator(*args).generate
+end
+
+def generator
+  @app.generator
 end
 
 def route(*args)

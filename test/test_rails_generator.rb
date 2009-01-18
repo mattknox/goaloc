@@ -5,7 +5,7 @@ class TestRailsGenerator < Test::Unit::TestCase
     setup do
       @app = App.new("foobar")
       @app.route :posts
-      @generator = @app.generate(Rails)
+      @generator = @app.generator(Rails)
     end
 
     should "have a generate method" do
@@ -26,7 +26,7 @@ class TestRailsGenerator < Test::Unit::TestCase
     setup do
       @app = App.new("foobar")
       @app.route [:posts, :comments]
-      @generator = @app.generate(Rails)
+      @generator = @app.generator(Rails)
     end
 
     should "produce a valid route string" do 
@@ -40,7 +40,7 @@ class TestRailsGenerator < Test::Unit::TestCase
     setup do
       @app = App.new("foobar")
       @app.route [:posts, :comments], :pictures
-      @generator = @app.generate(Rails)
+      @generator = @app.generator(Rails)
     end
 
     should "produce a valid route string" do 
@@ -56,7 +56,7 @@ class TestRailsGenerator < Test::Unit::TestCase
       @app = App.new("foobar")
       @app.route [:posts, :comments], :pictures
       @app.add_attrs :posts => "body:text title:string", :comments => "body:text", :pictures => "rating:integer"
-      @generator = @app.generate(Rails)
+      @generator = @app.generator(Rails)
     end
 
     should "generate valid routes" do
@@ -126,6 +126,7 @@ class TestRailsGenerator < Test::Unit::TestCase
       @generator.root_dir = "blah"
       assert_equal @generator.app_dir, "blah/foobar"
     end
+    
     context "and cleaned out tmp directory" do
       setup do
         @tmp_dir = File.join(File.dirname(__FILE__), 'tmp')

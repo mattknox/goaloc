@@ -20,8 +20,12 @@ class App
     h.map {  |k, v| self.goals[k.to_s.singularize].add_attrs v rescue nil }
   end
 
-  def generate(target = Rails)
-    Generator.build(self, target)
+  def generator(target = Rails)  #TODO: fix this up a bit.  It should be nicer.  
+    generator = Generator.build(self, target)
+  end
+
+  def generate(*args)
+    generator(*args).generate
   end
   
   def goaloc_log
