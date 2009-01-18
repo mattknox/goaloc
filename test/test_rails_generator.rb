@@ -111,7 +111,12 @@ class TestRailsGenerator < Test::Unit::TestCase
     should "produce a valid string for the new view" do 
       assert_match /render :partial => 'comments\/form', :object => @comment/, @generator.gen_new_str(@app.goals["comment"])
     end
-    
+
+    should "produce a valid string for the unit test"
+    should "produce a valid string for the functional test" do
+      #assert_match /xzy/, @generator.gen_controller_test_string(Comment)
+    end
+
     should "produce a valid string for the view layout" do
       assert_match /<html/, @generator.gen_layout_str
       assert_match /<\/html>/, @generator.gen_layout_str
@@ -143,7 +148,6 @@ class TestRailsGenerator < Test::Unit::TestCase
       end
       
       teardown do
-#        Kernel.sleep(9)
         FileUtils.rm_rf(@tmp_dir)
       end
       
@@ -185,6 +189,13 @@ class TestRailsGenerator < Test::Unit::TestCase
           assert File.exists?("#{@tmp_dir}/foobar/app/views/#{x}/_form.html.erb")
           assert File.exists?("#{@tmp_dir}/foobar/app/views/#{x}/_#{x.to_s.singularize}_small.html.erb")
           assert File.exists?("#{@tmp_dir}/foobar/app/views/#{x}/_#{x.to_s.singularize}.html.erb")
+        end
+      end
+
+      should "generate test files" do
+        [:posts, :comments, :pictures].each do |x|
+          assert File.exists?("#{@tmp_dir}/foobar/test/unit/#{x.to_s.singularize}_test.rb")
+          assert File.exists?("#{@tmp_dir}/foobar/test/functional/#{x}_controller_test.rb")
         end
       end
     end

@@ -57,6 +57,24 @@ class Rails < RubyGenerator
     end
   end
   
+  def test_var_string(sym)
+    goal = app.fetch_goal(sym)
+    if goal.nested?
+      enclosing_resource = app.fetch_goal(goal.resource_tuple[-2])
+      "@#{goal.s} = @#{enclosing_resource.s}.#{goal.p}.find(:first)"
+    else
+      "@#{goal.s} = #{goal.cs}.find(:first)"
+    end
+  end
+
+  def required_nonpath_params(goal)
+    goal.associations.reject { |k,v| v[:type] != :belongs_to }.keys.reject {|x| goal.resource_tuple.map { |y| y.to_s.singularize }.member?(x) }
+  end
+  
+  def required_nonpath_param_string(goal)
+    required_nonpath_params(goal).map { |z| ":#{ z.singularize }_id => 1" }.join(", ")
+  end
+  
   def new_object_method(goal)
     wrap_method("new_#{goal.s}", (goal.resource_tuple[0..-2].map { |var| finder_string(@app.fetch_goal(var)) } +
                                   [new_object_string(goal)]))
@@ -97,7 +115,7 @@ class Rails < RubyGenerator
        gen_controller(goal)
        gen_view(goal)
        gen_tests(goal)
-#       gen_misc
+       gen_misc
     end
     self
   end
@@ -179,7 +197,7 @@ class Rails < RubyGenerator
   def gen_tests(goal)
     # TODO: get shoulda into place.
     gen_unit_test(goal)
-#    gen_controller_test(goal)
+    gen_controller_test(goal)
 #    gen_fixture(goal)
   end
 
@@ -195,29 +213,29 @@ class Rails < RubyGenerator
     f.close
   end
 
-#   def gen_controller_test_string(goal)
-#     template_str = File.open("#{File.dirname(__FILE__)}/rails/controller_test.rb.erb").read
-#     ERB.new(template_str).result(binding)
-#   end
+  def gen_controller_test_string(goal)
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/controller_test.rb.erb").read
+    ERB.new(template_str).result(binding)
+  end
   
-#   def gen_controller_test(goal)
-#     Dir.mkdir "#{app_dir}/test/functional" unless File.exists? "#{app_dir}/test/functional"
-#     f = File.new("#{app_dir}/test/functional/#{ goal.p }_controller_test.rb", "w")
-#     f.write gen_controller_test_string(goal)
-#     f.close
-#   end
+  def gen_controller_test(goal)
+    Dir.mkdir "#{app_dir}/test/functional" unless File.exists? "#{app_dir}/test/functional"
+    f = File.new("#{app_dir}/test/functional/#{ goal.p }_controller_test.rb", "w")
+    f.write gen_controller_test_string(goal)
+    f.close
+  end
   
-#   def gen_misc # here we put in the layout, the goaloc log, and libraries (blueprint CSS, jquery)
-#     File.open("#{app_dir}/app/views/layouts/application.html.erb", "w") do |f|
-#       f.write File.open("#{File.dirname(__FILE__)}/rails/application.html.erb").read
-#     end
-#     File.open("#{app_dir}/doc/goaloc_spec", "w") do |f|
-#       f.write app.goaloc_log.join("\n")
-#     end
-#     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/bluetrip", "#{app_dir}/public/stylesheets")
-#     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/jquery-1.2.6.min.js", "#{app_dir}/public/javascripts")
-#     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/shoulda", "#{app_dir}/vendor/plugins/")
-#   end
+  def gen_misc # here we put in the layout, the goaloc log, and libraries (blueprint CSS, jquery)
+    File.open("#{app_dir}/app/views/layouts/application.html.erb", "w") do |f|
+      f.write File.open("#{File.dirname(__FILE__)}/rails/application.html.erb").read
+    end
+    File.open("#{app_dir}/doc/goaloc_spec", "w") do |f|
+      f.write app.goaloc_log.join("\n")
+    end
+    FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/bluetrip", "#{app_dir}/public/stylesheets")
+    FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/jquery-1.2.6.min.js", "#{app_dir}/public/javascripts")
+    FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/shoulda", "#{app_dir}/vendor/plugins/")
+  end
 
   def app_dir
     if root_dir
@@ -335,24 +353,7 @@ end
 #     def rails_ivar_or_array_of_ivars(end_index = -1)
 #       "[" + self.resource_tuple[0..end_index].map {|c| c.rails_symname }.join(", ") + "]"
 #     end
-        
-#     def rails_test_var_string
-#       if self.nested?
-#         enclosing_resource = self.resource_tuple[-2]
-#         "@#{self.s} = @#{enclosing_resource.s}.#{self.p}.find(:first)"
-#       else
-#         "@#{self.s} = #{self.cs}.find(:first)"
-#       end
-#     end
-        
-#     def rails_required_nonpath_params
-#       self.associations.reject { |k,v| v[:type] != :belongs_to }.keys.reject {|x| self.resource_tuple.map { |y| y.s }.member?(x) }
-#     end
-
-#     def rails_required_nonpath_param_string
-#       rails_required_nonpath_params.map { |z| ":#{ z.singularize }_id => 1" }.join(", ")
-#     end
-    
+                
 #     def rails_association_string(assoc_name, assoc_hash)
 #       option_str = ""
 #       option_str << ", :through => :#{assoc_hash[:through].p}" if assoc_hash[:through]
