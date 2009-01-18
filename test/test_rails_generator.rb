@@ -135,8 +135,10 @@ class TestRailsGenerator < Test::Unit::TestCase
       end
       
       should "generate a rails app skeleton" do
-        assert @generator.generate
-        puts @tmp_dir
+        @generator.generate
+        assert File.exists?(@tmp_dir + "/foobar") # checking a random selection of generated rails files.
+        assert File.exists?(@tmp_dir + "/foobar/config")
+        assert File.exists?(@tmp_dir + "/foobar/app")
       end
     end
   end
