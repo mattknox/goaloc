@@ -96,7 +96,7 @@ class Rails < RubyGenerator
        gen_model(goal)
        gen_controller(goal)
        gen_view(goal)
-#       gen_tests(goal)
+       gen_tests(goal)
 #       gen_misc
     end
     self
@@ -176,6 +176,49 @@ class Rails < RubyGenerator
     end
   end
   
+  def gen_tests(goal)
+    # TODO: get shoulda into place.
+    gen_unit_test(goal)
+#    gen_controller_test(goal)
+#    gen_fixture(goal)
+  end
+
+  def gen_unit_test_string(goal)
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/model_test.rb.erb").read
+    ERB.new(template_str).result(binding)
+  end
+  
+  def gen_unit_test(goal)
+    Dir.mkdir "#{app_dir}/test/unit" unless File.exists? "#{app_dir}/test/unit"
+    f = File.new("#{app_dir}/test/unit/#{ goal.s }_test.rb", "w")
+    f.write gen_unit_test_string(goal)
+    f.close
+  end
+
+#   def gen_controller_test_string(goal)
+#     template_str = File.open("#{File.dirname(__FILE__)}/rails/controller_test.rb.erb").read
+#     ERB.new(template_str).result(binding)
+#   end
+  
+#   def gen_controller_test(goal)
+#     Dir.mkdir "#{app_dir}/test/functional" unless File.exists? "#{app_dir}/test/functional"
+#     f = File.new("#{app_dir}/test/functional/#{ goal.p }_controller_test.rb", "w")
+#     f.write gen_controller_test_string(goal)
+#     f.close
+#   end
+  
+#   def gen_misc # here we put in the layout, the goaloc log, and libraries (blueprint CSS, jquery)
+#     File.open("#{app_dir}/app/views/layouts/application.html.erb", "w") do |f|
+#       f.write File.open("#{File.dirname(__FILE__)}/rails/application.html.erb").read
+#     end
+#     File.open("#{app_dir}/doc/goaloc_spec", "w") do |f|
+#       f.write app.goaloc_log.join("\n")
+#     end
+#     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/bluetrip", "#{app_dir}/public/stylesheets")
+#     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/jquery-1.2.6.min.js", "#{app_dir}/public/javascripts")
+#     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/shoulda", "#{app_dir}/vendor/plugins/")
+#   end
+
   def app_dir
     if root_dir
       "#{root_dir}/#{app_name}"
@@ -342,48 +385,6 @@ end
 #     end
 #   end
   
-#   def gen_unit_test_string(model)
-#     template_str = File.open("#{File.dirname(__FILE__)}/rails/model_test.rb.erb").read
-#     ERB.new(template_str).result(binding)
-#   end
-  
-#   def gen_unit_test(model)
-#     Dir.mkdir "#{app_name}/test/unit" unless File.exists? "#{app_name}/test/unit"
-#     f = File.new("#{app_name}/test/unit/#{ model.s }_test.rb", "w")
-#     f.write gen_unit_test_string(model)
-#     f.close
-#   end
-
-#   def gen_controller_test_string(model)
-#     template_str = File.open("#{File.dirname(__FILE__)}/rails/controller_test.rb.erb").read
-#     ERB.new(template_str).result(binding)
-#   end
-  
-#   def gen_controller_test(model)
-#     Dir.mkdir "#{app_name}/test/functional" unless File.exists? "#{app_name}/test/functional"
-#     f = File.new("#{app_name}/test/functional/#{ model.p }_controller_test.rb", "w")
-#     f.write gen_controller_test_string(model)
-#     f.close
-#   end
-  
-#   def gen_tests(model)
-#     # TODO: get shoulda into place.
-#     gen_unit_test(model)
-#     gen_controller_test(model)
-#     gen_fixture(model)
-#   end
-
-#   def gen_misc # here we put in the layout, the goaloc log, and libraries (blueprint CSS, jquery)
-#     File.open("#{app_name}/app/views/layouts/application.html.erb", "w") do |f|
-#       f.write File.open("#{File.dirname(__FILE__)}/rails/application.html.erb").read
-#     end
-#     File.open("#{app_name}/doc/goaloc_spec", "w") do |f|
-#       f.write app.goaloc_log.join("\n")
-#     end
-#     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/bluetrip", "#{app_name}/public/stylesheets")
-#     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/jquery-1.2.6.min.js", "#{app_name}/public/javascripts")
-#     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/shoulda", "#{app_name}/vendor/plugins/")
-#   end
 
 #   def gen_default_route  # this is nasty.  Somehow needs to isolate the route writing from the file clobbering.
 #     if 1 == app.routes.length
