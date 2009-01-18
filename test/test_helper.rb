@@ -1,6 +1,6 @@
 require 'test/unit'
 require File.dirname(__FILE__) + '/../lib/goaloc'
-require "Shoulda"
+require "shoulda"
 require 'rubygems'
 require 'mocha'
 
