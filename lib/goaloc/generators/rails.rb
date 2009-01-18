@@ -132,7 +132,7 @@ class Rails < RubyGenerator
     "-d mysql "
   end
     
-  def gen_route_string # TODO: add a default route
+  def gen_routes_string # TODO: add a default route
     "ActionController::Routing::Routes.draw do |map|\n" +
       default_route.to_s + 
       app.routes.map { |x| gen_route(x)}.join("\n") + "\n" + 
