@@ -263,7 +263,6 @@ class Rails < RubyGenerator
     end
     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/bluetrip", "#{app_dir}/public/stylesheets")
     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/jquery-1.2.6.min.js", "#{app_dir}/public/javascripts")
-    FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/shoulda", "#{app_dir}/vendor/plugins/")
   end
 
   def app_dir

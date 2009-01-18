@@ -1,7 +1,7 @@
 require 'test/unit'
 require File.dirname(__FILE__) + '/../lib/goaloc'
-require "shoulda"
 require 'rubygems'
+require "shoulda"
 require 'mocha'
 
 def self.should_create_directory(directory)
