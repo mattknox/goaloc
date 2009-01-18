@@ -91,14 +91,14 @@ class Rails < RubyGenerator
   def generate
     gen_app
 #    gen_routes
-#     @app.goals.values.each do |goal|
-#       gen_migration(goal)
-#       gen_goal(goal)
+     @app.goals.values.each_with_index do |goal, i|
+       gen_migration(goal, i)
+       gen_model(goal)
 #       gen_controller(goal)
 #       gen_view(goal)
 #       gen_tests(goal)
 #       gen_misc
-    #     end
+#     end
     self
   end
 
@@ -110,6 +110,19 @@ class Rails < RubyGenerator
       `#{rails_str}`
       FileUtils.cd(original_dir)
       true
+    end
+  end
+
+  def gen_migration(goal, i)
+    Dir.mkdir "#{app_dir}/db/migrate" unless File.exists? "#{app_dir}/db/migrate"
+    f = File.new("#{app_dir}/db/migrate/#{ Time.now.strftime("%Y%m%d%H%M%S").to_i + i }_create_#{goal.p}.rb", "w")
+    f.write gen_migration_str(goal)
+    f.close
+  end
+
+  def gen_model(goal)
+    File.new("#{app_dir}/app/models/#{goal.s}.rb", "w") do |f|
+      f.write gen_migration_str(goal)
     end
   end
 
@@ -267,15 +280,6 @@ end
 #       f.write defroute.to_s
 #       f.write "end"
 #     end
-#   end
-
-#   def gen_migration(model)
-#     Dir.mkdir "#{app_name}/db/migrate" unless File.exists? "#{app_name}/db/migrate"
-#     f = File.new("#{app_name}/db/migrate/#{ Time.now.strftime("%Y%m%d%H%M%S") }_create_#{model.p}.rb", "w")
-#     Kernel.sleep(1)  # FIXME: get rid of this nasty hack.
-#                      # TODO: I should make a migration_order accessor, so people can define the order in which migrations happen.  This would also, coincidentally, allow me to get rid of the Kernel.sleep(1) hack.
-#     f.write gen_migration_string(model)
-#     f.close
 #   end
   
 #   def gen_controller(model)              # make this a better controller

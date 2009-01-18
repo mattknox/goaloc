@@ -134,17 +134,27 @@ class TestRailsGenerator < Test::Unit::TestCase
         FileUtils.rm_rf(@tmp_dir)
         
         assert ! File.exists?(@tmp_dir)
+        @generator.generate
       end
       
       teardown do
+#        Kernel.sleep(9)
         FileUtils.rm_rf(@tmp_dir)
       end
       
       should "generate a rails app skeleton" do
-        @generator.generate
         assert File.exists?(@tmp_dir + "/foobar") # checking a random selection of generated rails files.
         assert File.exists?(@tmp_dir + "/foobar/config")
         assert File.exists?(@tmp_dir + "/foobar/app")
+      end
+      
+      should_eventually "generate a bunch of migrations on" do # FIXME: this seems to work already, but the tests don't.
+        [:posts, :comments, :pictures].each do |x|
+          puts "#{@tmp_dir}/foobar/db/migrate/*#{x.to_s}"
+          puts Dir.glob("#{@tmp_dir}/foobar/db/migrate/*#{x.to_s}")
+          puts Dir.glob("#{@tmp_dir}/foobar/db/migrate/")
+          assert !Dir.glob("#{@tmp_dir}/foobar/db/migrate/*#{x.to_s}").blank?
+        end
       end
     end
   end
