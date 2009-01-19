@@ -29,6 +29,8 @@ class Goal
     routelist = self.routes.sort { |x, y| x.length <=> y.length }
     if routelist.length == 1 #TODO: maybe should deal with a case where there's a simplest route that all the others contain.
       routelist.first
+    else
+      []
     end
   end
 
