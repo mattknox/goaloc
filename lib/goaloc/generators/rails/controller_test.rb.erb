@@ -14,6 +14,7 @@ class <%= goal.cp %>ControllerTest < ActionController::TestCase
     should_assign_to :<%= goal.s %>
     should_render_template :index
     should_not_set_the_flash
+    should_not_change "<%= goal.cs%>.count"
   end
 
   context "on GET to <%= goal.cp %>Controller#show" do
@@ -25,6 +26,7 @@ class <%= goal.cp %>ControllerTest < ActionController::TestCase
     should_respond_with :success
     should_render_template :show
     should_not_set_the_flash
+    should_not_change "<%= goal.cs%>.count"
     should "set <%= generator.ivar_name(goal) %> to requested instance" do
       assert_equal <%= generator.ivar_name(goal) %>, assigns(:<%= goal.s %>)
     end
@@ -40,6 +42,7 @@ class <%= goal.cp %>ControllerTest < ActionController::TestCase
     should_not_set_the_flash
     should_render_template :new
     should_render_a_form
+    should_not_change "<%= goal.cs%>.count"
   end
 
   context "on GET to <%= goal.cp %>Controller#edit" do
@@ -53,6 +56,7 @@ class <%= goal.cp %>ControllerTest < ActionController::TestCase
     should_render_template :edit
     should_not_set_the_flash
     should_render_a_form
+    should_not_change "<%= goal.cs%>.count"
     should "set <%= generator.ivar_name(goal) %> to requested instance" do
       assert_equal <%= generator.ivar_name(goal) %>, assigns(:<%= goal.s %>)
     end
@@ -69,6 +73,7 @@ class <%= goal.cp %>ControllerTest < ActionController::TestCase
     should "not have errors on <%= generator.ivar_name(goal) %>" do 
       assert assigns(:<%= goal.s %>).errors.blank?
     end
+    should_change "Post.count", :by => 1
   end
 
   context "on PUT to <%= goal.cp %>Controller#update with" do
@@ -79,6 +84,7 @@ class <%= goal.cp %>ControllerTest < ActionController::TestCase
     should_assign_to :<%= goal.s %>
     should_set_the_flash_to(/updated/i)
     should_redirect_to "<%= object_path(goal) %>"
+    should_not_change "<%= goal.cs%>.count"
     should "not have errors on <%= generator.ivar_name(goal) %>" do
       assert assigns(:<%= goal.s %>).errors.empty?
     end
