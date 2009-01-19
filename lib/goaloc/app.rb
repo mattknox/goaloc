@@ -31,7 +31,7 @@ class App
   def goaloc_log
     gen = []
     out = log.clone
-    out.unshift "@app.name = #{self.name}" unless self.name.to_s.match(/goaloc_app20/)
+    out.unshift "@app.name = '#{self.name}'" unless self.name.to_s.match(/goaloc_app20/)
     gen = [out.pop] if out.last.to_s.match(/^generate/)
     out << ("route " + self.routes.inspect[1..-2]) unless routes.empty?
     self.goals.each do |key, goal|
