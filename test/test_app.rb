@@ -87,6 +87,24 @@ class TestApp < Test::Unit::TestCase
       end
     end
 
+    context "with highly complex multiply nested routes" do
+      setup { @app.route  [:posts, :comments, [:surveys, :targets, [:survey_responses, :insights], [:questions, [:answers, :votes]]]], [:users, :insights, [:posts, :surveys], :answers, :comments, [:survey_responses, :votes]], :specialties }
+
+      should "have associations defined by the nesting" do
+        assert !@app.goals[:post].associations.blank?
+        assert @app.goals[:post].associations.is_a? Hash
+        assert @app.goals[:post].associations[:comments].is_a? Hash
+        assert_equal @app.goals[:post].associations[:comments][:goal], @app.goals[:comment]
+        assert_equal @app.goals[:post].associations[:comments][:type], :has_many
+        assert_equal @app.goals[:comment].associations[:post][:goal], @app.goals[:post]
+        assert_equal @app.goals[:comment].associations[:post][:type], :belongs_to
+        assert_equal @app.goals[:insight].associations[:user][:goal], @app.goals[:user]
+        assert_equal @app.goals[:insight].associations[:user][:type], :belongs_to        
+        assert_equal @app.goals[:insight].associations[:survey_response][:goal].name, @app.goals[:survey_response].name
+        assert_equal @app.goals[:insight].associations[:survey_response][:type], :belongs_to        
+      end
+    end
+
     context  "route nested arrays of symbols, like [:posts, :comments] or [:users, [:posts, :comments]]" do
       setup { @app.route(:users, :names, [:posts, :comments, :postbundle]) }
 

@@ -54,13 +54,14 @@ class App
       base = route_elt(arg.first, route_prefix)
       res = [base]
       arg[1..-1].each do |elt|
-        goal = route_elt(elt, route_prefix.clone << arg.first)
+        route_frag = route_elt(elt, route_prefix.clone << arg.first)
+        goal = ( route_frag.is_a?(Array) ? route_frag.first : route_frag )
         if plural?(elt)
           base.has_many(goal)
         else
           base.has_one(goal)
         end
-        res << goal
+        res << route_frag
       end
       res
     end
