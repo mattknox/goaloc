@@ -49,14 +49,19 @@ class App
     h.map {  |k, v| self.goals[k.to_s.singularize].add_attrs v rescue nil }
   end
 
-  def generator(target = Rails)  #TODO: fix this up a bit.  It should be nicer.  
+  # Returns a generator for the given target output format.  Currently Rails and Merb are supported.
+  def generator(target = Rails)  
     generator = Generator.build(self, target)
   end
 
+  #gets a generator and calls the generate method on it. 
   def generate(*args)
     generator(*args).generate
   end
-  
+
+  # generate a log of the commands that goaloc would have to recieve to reach its current state.
+  # this currently double-counts some commands, and might miss others, for instance if one got
+  # a goal object and poked at it's internal state directly. 
   def goaloc_log
     gen = []
     out = log.clone
