@@ -1,7 +1,21 @@
 class App
   attr_accessor :name, :routes, :goals, :options, :log
 
-  # public interface
+  # This is Generate on a Lot of Crack, which aims to speed and extend the initial definition of a rails app.
+  # It was motivated by the fact that to make a nested resource (ie, to get  /posts/1/comments to resolve),
+  # one must specify the relation between post and comment in 4 places:  the routes, the migration, and in
+  # both models.  That's silly, and not so DRY.  Enter GoaLoC, and the "blog in 15 minutes" talk essentially
+  # reduces to:
+  # goaloc
+  # >> @app.name = "myblog"
+  # >> route [:posts, :comments]
+  # >> add_attrs :posts => "body:text title:string", :comments => "body:text"
+  # >> generate
+
+  # generate presently only knows how to make rails apps, and part of merb apps, but in principle, any
+  # REST-centric MVC app could be targeted comfortably, and even PHP apps could be done.
+
+  
   def initialize(name = nil)
     self.name = (name or generate_name)
     self.routes = []
@@ -46,7 +60,11 @@ class App
     out + gen
   end
 
-  # private stuff.  
+  def fetch_goal(x) # this will take in anything stringlike and return a goal
+    self.goals[x.to_s.singularize.underscore]
+  end
+  
+  private
   def route_elt(arg, route_prefix)
     if arg.is_a? Symbol
       goal_for_sym(arg, route_prefix.clone << arg)
@@ -67,10 +85,6 @@ class App
     end
   end
 
-  def fetch_goal(x) # this will take in anything stringlike and return a goal
-    self.goals[x.to_s.singularize.underscore]
-  end
-  
   def generate_name
     "goaloc_app" + Time.now.strftime("%Y%m%d%H%M%S")
   end
