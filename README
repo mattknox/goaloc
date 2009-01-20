@@ -18,8 +18,6 @@ it should:
 -handle singular resources
 -handle enums, so you can do some of the constraint stuff from PicoLisp
 -do haml for views (maybe?)
--TODO: generate tests for the generated app
--TODO: make nice semantic HTML for the views
 -make it serve goaloc directly (this is maybe really hard)
 -handle chained resources better
 -include a javascripty interface, so that one can go up the post-comment-rating chain in one page.
