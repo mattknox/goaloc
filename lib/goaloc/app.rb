@@ -1,21 +1,24 @@
+# This is Generate on a Lot of Crack, which aims to speed and extend the initial definition of a rails app.
+# It was motivated by the fact that to make a nested resource (ie, to get  /posts/1/comments to resolve),
+# one must specify the relation between post and comment in 4 places:  the routes, the migration, and in
+# both models.  That's silly, and not so DRY.  Enter GoaLoC, and the "blog in 15 minutes" talk essentially
+# reduces to:
+# goaloc
+# >> @app.name = "myblog"
+# >> route [:posts, :comments]
+# >> add_attrs :posts => "body:text title:string", :comments => "body:text"
+# >> generate
+
+# generate presently only knows how to make rails apps, and part of merb apps, but in principle, any
+# REST-centric MVC app could be targeted comfortably, and even PHP apps could be done.
+
+# Author::    Matt Knox  (mailto:matthewknox@gmail.com)
+# Copyright:: Copyright (c) 2009 Matt Knox
+# License::   Distributes under the same terms as Ruby
+
 class App
   attr_accessor :name, :routes, :goals, :options, :log
 
-  # This is Generate on a Lot of Crack, which aims to speed and extend the initial definition of a rails app.
-  # It was motivated by the fact that to make a nested resource (ie, to get  /posts/1/comments to resolve),
-  # one must specify the relation between post and comment in 4 places:  the routes, the migration, and in
-  # both models.  That's silly, and not so DRY.  Enter GoaLoC, and the "blog in 15 minutes" talk essentially
-  # reduces to:
-  # goaloc
-  # >> @app.name = "myblog"
-  # >> route [:posts, :comments]
-  # >> add_attrs :posts => "body:text title:string", :comments => "body:text"
-  # >> generate
-
-  # generate presently only knows how to make rails apps, and part of merb apps, but in principle, any
-  # REST-centric MVC app could be targeted comfortably, and even PHP apps could be done.
-
-  
   def initialize(name = nil)
     self.name = (name or generate_name)
     self.routes = []
