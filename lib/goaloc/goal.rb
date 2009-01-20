@@ -1,3 +1,8 @@
+# This is the core of goaloc:  the goal object.
+# A goal object is intended to be a vertical slice of an MVC app, with information about its model, views,
+# controllers, and routes.  It needs to be extended so that it can handle generating plugins/stylesheets/js/etc.
+# Generators call a number of methods on goals that allow them to hook into their code generation process and
+# customize the output.
 class Goal
   attr_reader :name
   attr_accessor :associations, :validations, :fields, :options, :routes, :foreign_keys
@@ -13,7 +18,8 @@ class Goal
     Object.const_set self.cs, self
   end
 
-  # here are a list of name-ish methods
+  # === here are a list of name-ish methods
+  # This returns the name of the foreign key used to refer to this goal.
   def foreign_key
     self.name + "_id"
   end
@@ -23,7 +29,7 @@ class Goal
   def cs; self.name.camelize.singularize; end
   def cp; self.name.camelize.pluralize; end
 
-  # stuff used to introspect on the goal
+  # === stuff used to introspect on the goal
   # thanks to Josh Ladieu for this: it's the array of things needed to get to an instance of this class, if there is a unique set.
   def resource_tuple # this returns the minimal route to this goal, or nothing, if there is no unambiguous minimal route
     routelist = self.routes.sort { |x, y| x.length <=> y.length }
@@ -46,11 +52,11 @@ class Goal
     self.resource_tuple.to_a.map { |x| "@" + x.to_s.underscore.singularize }
   end
 
+  # this is intended to grab the list of elements needed to populate a form_for,
+  # propagated back from the named end_element
+  # so for [:users, [:posts, [:comments, :ratings]]] in the rating form it would be:
+  # form.comment.post.user, form.comment.post, form.comment, form
   def backvar_tuple(end_element = "form")
-    # this is intended to grab the list of elements needed to populate a form_for,
-    # propagated back from the named end_element
-    # so for [:users, [:posts, [:comments, :ratings]]] in the rating form it would be:
-    # form.comment.post.user, form.comment.post, form.comment, form
     self.resource_tuple[0..-2].map {|sym| sym.to_s.singularize }.reverse.inject([end_element]) {|acc, x| acc.unshift(acc.first + "." + x )}
   end
   
@@ -64,8 +70,8 @@ class Goal
   end
 
   # association stuff
+  # set a belongs_to association
   def belongs_to(goal, options = { })
-#    self.fields[goal.foreign_key] = "references"
     self.foreign_keys[goal.foreign_key] = "references"
     self.validates(:presence_of, goal.foreign_key)
     self.associate(:belongs_to, goal, options)
