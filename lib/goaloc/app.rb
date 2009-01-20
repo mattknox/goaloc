@@ -39,6 +39,10 @@ class App
     end
   end
 
+  # add_attrs takes in a hash of symbol => string pairs, and attaches to the goal named by the key the
+  # attributes named in the string.  For example:
+  # add_attrs :posts => "body:text title:string", :ratings => "score:integer" adds an integer field named
+  # score to Rating, a text field called body to Post, and a string field called title to Post.
   def add_attrs(h)
     h.map {  |k, v| self.goals[k.to_s.singularize].add_attrs v rescue nil }
   end
