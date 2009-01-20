@@ -26,6 +26,12 @@ class App
     self.goals = HashWithIndifferentAccess.new
   end
 
+  # take in any number of ruby expressions, (presently limited to symbols and nested arrays of symbols),
+  # and define those expressions as valid routes.  If the routed resources don't exist, define them,
+  # and the relations with other resources implied by the route expression.  For instance, route :posts
+  # implies that you'll want a model Post.  More interestingly, route [:posts, :comments, :wiki]
+  # implies that there must be Post, Comment, and Wiki models, and that a Post has many comments and
+  # has one wiki.  
   def route(*args)
     if valid_routeset?(args)
       self.routes += args # FIXME: make this so that it just maps over args again
