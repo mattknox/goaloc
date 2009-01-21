@@ -6,6 +6,7 @@ class Generator
 #     end
 #   end
 
+  # this builds an app for the target platform
   def Generator.build(app, target, opts = { })
     if Generator.subclasses.member?(target.to_s)
       target.new(app, opts)
