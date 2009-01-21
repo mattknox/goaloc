@@ -60,6 +60,7 @@ class Goal
     self.resource_tuple[0..-2].map {|sym| sym.to_s.singularize }.reverse.inject([end_element]) {|acc, x| acc.unshift(acc.first + "." + x )}
   end
   
+  # this returns the set of resources that are nested under this resource.
   def nested_resources
     APP.goals.reject { |k, v| (v.routes != [(self.resource_tuple + [k.pluralize.to_sym])]) and (v.routes != [(self.resource_tuple + [k.singularize.to_sym])]) } # TODO: see if this can be cleaned up a bit.
   end
