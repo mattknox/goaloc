@@ -35,3 +35,7 @@ end
 def showlog
   @app.goaloc_log
 end
+
+def reset
+  @app = App.new
+end

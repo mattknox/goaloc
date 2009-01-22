@@ -24,6 +24,7 @@ it should:
 ==DONE:
 -include jquery for js
 -include bluetrip css framework
+-some rdoc
 
 == SYNOPSIS:
 
