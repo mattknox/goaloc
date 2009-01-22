@@ -13,6 +13,8 @@ end
 
 APP = @app = App.new
 
+# this causes the app that has been described so far to be generated.  It takes
+# the classname (as a constant) of the generator needed.
 def generate(*args)
   @app.log << "generate #{args.inspect[1..-2]}"
   @app.generator(*args).generate
