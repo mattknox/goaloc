@@ -20,10 +20,13 @@ def generate(*args)
   @app.generator(*args).generate
 end
 
+# this returns a freshly made generator for the app.  
 def generator
   @app.generator
 end
 
+# this is the primary interface to goaloc.  It allows one to route nested arrays of symbols, generating
+# goals, routes, etc., as it goes.  
 def route(*args)
   @app.log << "route #{args.inspect[1..-2]}"
   @app.route(*args)
