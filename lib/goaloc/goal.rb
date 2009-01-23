@@ -70,7 +70,7 @@ class Goal
     self.validations << opts.merge({ :val_type => validation_type, :field => field})
   end
 
-  # association stuff
+  # === association stuff
   # set a belongs_to association
   def belongs_to(goal, options = { })
     self.foreign_keys[goal.foreign_key] = "references"
@@ -78,16 +78,19 @@ class Goal
     self.associate(:belongs_to, goal, options)
   end
 
+  # sets a has-many association from this goal to the target goal.  Also sets up a returning belongs_to association
   def has_many(goal, options = { })
     goal.belongs_to(self) unless options[:skip_belongs_to]
     self.associate(:has_many, goal, options)
   end
 
+  # sets up the little-used has-one association, and the returning belongs_to.
   def has_one(goal, options = { })
     goal.belongs_to(self) unless options[:skip_belongs_to]
     self.associate(:has_one, goal, options)
   end
 
+  # this sets a has-many through association, and by default, the reciprocal hmt.
   def hmt(goal, options)
     thru = options[:through]
     self.has_many(thru)
@@ -107,6 +110,8 @@ class Goal
     :has_many == assoc_type ? name.pluralize : name
   end
 
+  # this method adds attributes to the goal, in the format name1:type1 name2:type2
+  # TODO: this is somewhat fragile, in that if someone includes a comma in the string, it'll probably break.
   def add_attrs(*args)
     if args.is_a? Array and args.length == 1
       args.first.split.each do |s|
