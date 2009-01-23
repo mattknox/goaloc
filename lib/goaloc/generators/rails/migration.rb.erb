@@ -1,12 +1,8 @@
 class Create<%= goal.cp %> < ActiveRecord::Migration
   def self.up
     create_table :<%= goal.p %> do |t|
-<% goal.fields.map do |k, v| %>
-  <%= "    t." + v.to_s + " :" + k.to_s  %>
-<% end %>
-<% goal.foreign_keys.map do |k, v| %>
-  <%= "    t.references :" + k[0..-4] %>
-<% end %>
+<%= goal.fields.map { |k, v| "      t.#{v} :#{k}" }.join("\n") %> 
+<% goal.foreign_keys.map { |k, v| "      t.#{v} :#{k[0..-4]}" }.join("\n") %> 
       t.timestamps
     end
   end
