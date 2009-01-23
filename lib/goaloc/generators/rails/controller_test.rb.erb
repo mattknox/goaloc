@@ -73,7 +73,7 @@ class <%= goal.cp %>ControllerTest < ActionController::TestCase
     should "not have errors on <%= generator.ivar_name(goal) %>" do 
       assert assigns(:<%= goal.s %>).errors.blank?
     end
-    should_change "Post.count", :by => 1
+    should_change "<%= goal.cs %>.count", :by => 1
   end
 
   context "on PUT to <%= goal.cp %>Controller#update with" do
@@ -110,7 +110,7 @@ class <%= goal.cp %>ControllerTest < ActionController::TestCase
     should_respond_with :success
     should_respond_with_content_type 'application/xml'
 
-    should "return <<%= goal.p %>/> as the root element" do 
+    should "return <<%= goal.p %>/> as the root element" do
     end
 
     should_assign_to :<%= goal.p %>
@@ -124,10 +124,7 @@ class <%= goal.cp %>ControllerTest < ActionController::TestCase
     should_assign_to :<%= goal.s %>
     should_respond_with :success
 
-    should_respond_with_content_type 'application/xml'
-
-    should "return <<%= goal.s %>/> as the root element" do 
-    end
+    should_respond_with_xml_for('<%= goal.s %>')
   end
 
   context "on POST to <%= goal.cp %>Controller#create as xml" do
@@ -157,7 +154,9 @@ class <%= goal.cp %>ControllerTest < ActionController::TestCase
       delete <%= [[":destroy, :id => #{generator.ivar_name(goal)}.to_param"] + goal.resource_tuple[0..-2].map {|m| ":#{m.to_s.singularize}_id => @#{m.to_s.singularize}.to_param" }].join(", ")  %>
     end
 
-    should "destroy record" do 
+    should_change "<%= goal.cs %>.count", :by => -1
+
+    should "destroy record" do
     end
   end
 end
