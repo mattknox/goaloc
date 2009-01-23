@@ -32,6 +32,8 @@ def route(*args)
   @app.route(*args)
 end
 
+# add_attrs takes in a hash of names and strings denoting fields, of this form:
+# :comments => "body:text", 'post' => "score:integer title:string" etc.
 def add_attrs(h)
   @app.log << "add_attrs #{h.inspect[1..-2]}"
   @app.add_attrs(h)
