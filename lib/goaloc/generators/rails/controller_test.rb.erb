@@ -97,9 +97,7 @@ class <%= goal.cp %>ControllerTest < ActionController::TestCase
 
     should_set_the_flash_to(/removed/i)
     should_redirect_to "<%= collection_path(goal) %>"
-    should "destroy record" do
-      
-    end
+    should_change "<%= goal.cs %>.count", :by => -1
   end
 
   context "on GET to <%= goal.cp %>Controller#index as xml" do
@@ -108,10 +106,7 @@ class <%= goal.cp %>ControllerTest < ActionController::TestCase
     end
 
     should_respond_with :success
-    should_respond_with_content_type 'application/xml'
-
-    should "return <<%= goal.p %>/> as the root element" do
-    end
+    should_respond_with_xml_for('<%= goal.p %>')
 
     should_assign_to :<%= goal.p %>
   end
@@ -155,8 +150,5 @@ class <%= goal.cp %>ControllerTest < ActionController::TestCase
     end
 
     should_change "<%= goal.cs %>.count", :by => -1
-
-    should "destroy record" do
-    end
   end
 end
