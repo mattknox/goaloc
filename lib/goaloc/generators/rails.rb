@@ -115,15 +115,20 @@ class Rails < RubyGenerator
   def generate
     gen_app
     gen_routes
-     @app.goals.values.each_with_index do |goal, i|
-       gen_migration(goal, i)
-       gen_model(goal)
-       gen_controller(goal)
-       gen_view(goal)
-       gen_tests(goal)
-       gen_misc
+    @app.goals.values.each_with_index do |goal, i|
+      gen_goal(goal, i)
     end
+    gen_misc
     self
+  end
+
+  # this does all of the generation for a given goal
+  def gen_goal(goal, index)
+    gen_migration(goal, index)
+    gen_model(goal)
+    gen_controller(goal)
+    gen_view(goal)
+    gen_tests(goal)
   end
 
   # this currently shells out to rails, and perhaps that's the right thing to do.  
