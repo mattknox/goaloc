@@ -9,6 +9,7 @@ class Rails < RubyGenerator
     @generator = self
   end
 
+  # returns the rails string defining an association.  Supports belongs_to, has_many, hmt
   def association_string(assoc_name, assoc_hash)
     option_str = ""
     option_str << ", :through => :#{assoc_hash[:through].p}" if assoc_hash[:through]
