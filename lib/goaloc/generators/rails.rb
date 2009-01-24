@@ -111,7 +111,7 @@ class Rails < RubyGenerator
     (goal.underscore_tuple[0..-2] + [goal.p]).join("_") +  "_path(" + goal.ivar_tuple[0..-2].join(', ') + ')'
   end
 
-  
+  # the core method that generates the whole app.  
   def generate
     gen_app
     gen_routes
