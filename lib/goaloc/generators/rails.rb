@@ -15,7 +15,8 @@ class Rails < RubyGenerator
     option_str << ", :through => :#{assoc_hash[:through].p}" if assoc_hash[:through]
     "#{assoc_hash[:type]} :#{assoc_name + option_str}"
   end
-  
+
+  # wraps an array of lines in a method call, with a given name, using a given indentation.
   def wrap_method(name, arr, indent_string = "  ")
     indent_string + "def #{name}\n" + arr.map { |s| indent_string + "  " + s }.join("\n") + "\n#{indent_string}end"
   end
@@ -40,6 +41,7 @@ class Rails < RubyGenerator
     end
   end
   
+  # returns the string necessary to assign a newly created instance of goal to an instance variable.  
   def new_object_string(goal)
     if goal.nested?
       enclosing_resource = @app.fetch_goal(goal.resource_tuple[-2])
@@ -48,7 +50,8 @@ class Rails < RubyGenerator
       "@#{goal.s} = #{goal.cs}.new(params[:#{goal.s}])"
     end
   end
-  
+
+  #returns a string assigning a collection of goal elements to an instance variable.
   def collection_finder_string(goal)
     if goal.nested?
       enclosing_resource = @app.fetch_goal(goal.resource_tuple[-2])
@@ -68,6 +71,7 @@ class Rails < RubyGenerator
     end
   end
 
+  # returns a list of all the params that are required for a goal but not inferrable from the path in which it is encountered.  
   def required_nonpath_params(goal)
     goal.associations.reject { |k,v| v[:type] != :belongs_to }.keys.reject {|x| goal.resource_tuple.map { |y| y.to_s.singularize }.member?(x) }
   end
@@ -106,6 +110,7 @@ class Rails < RubyGenerator
   def collection_path(goal)
     (goal.underscore_tuple[0..-2] + [goal.p]).join("_") +  "_path(" + goal.ivar_tuple[0..-2].join(', ') + ')'
   end
+
   
   def generate
     gen_app
