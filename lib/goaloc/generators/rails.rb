@@ -123,7 +123,7 @@ class Rails < RubyGenerator
   end
 
   # this does all of the generation for a given goal
-  def gen_goal(goal, index)
+  def gen_goal(goal, index = 0)
     gen_migration(goal, index)
     gen_model(goal)
     gen_controller(goal)
