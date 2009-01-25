@@ -157,7 +157,7 @@ class Rails < RubyGenerator
     end
   end
 
-  def gen_migration(goal, i)  # TODO:  make this not write extra whitespace
+  def gen_migration(goal, i)
     Dir.mkdir "#{app_dir}/db/migrate" unless File.exists? "#{app_dir}/db/migrate"
     f = File.new("#{app_dir}/db/migrate/#{ Time.now.strftime("%Y%m%d%H%M%S").to_i + i }_create_#{goal.p}.rb", "w")
     f.write gen_migration_str(goal)
