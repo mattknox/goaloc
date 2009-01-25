@@ -110,8 +110,7 @@ class Goal
     :has_many == assoc_type ? name.pluralize : name
   end
 
-  # this method adds attributes to the goal, in the format name1:type1 name2:type2
-  # TODO: this is somewhat fragile, in that if someone includes a comma in the string, it'll probably break.
+  # this method adds attributes to the goal, in the format name1:type1 name2:type2.  Type names have unsociable chars like . , - etc. stripped
   def add_attrs(*args)
     if args.is_a? Array and args.length == 1
       args.first.gsub(/[-.,]/, '').split.each do |s|
