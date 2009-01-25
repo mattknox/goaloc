@@ -109,5 +109,15 @@ class TestGoal < Test::Unit::TestCase
         assert_equal @goal3.associations[:goal2][:goal], @goal2
       end
     end
+
+    context "add_attrs method" do
+      %w{ - , . }.each_with_index do |str, i|
+        should "strip a #{str} char out of a call to add_attrs" do
+          keyname = ("attrname" + ("x" * i))
+          @goal.add_attrs "#{keyname}:string#{str}"
+          assert_equal @goal.fields[keyname], "string"
+        end
+      end
+    end
   end
 end

@@ -114,7 +114,7 @@ class Goal
   # TODO: this is somewhat fragile, in that if someone includes a comma in the string, it'll probably break.
   def add_attrs(*args)
     if args.is_a? Array and args.length == 1
-      args.first.split.each do |s|
+      args.first.gsub(/[-.,]/, '').split.each do |s|
         name, field_type = s.split(":")
         add_attr(name, field_type)
       end
