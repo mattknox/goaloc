@@ -89,13 +89,13 @@ class App
   private
   def route_elt(arg, route_prefix)
     if arg.is_a? Symbol
-      goal_for_sym(arg, route_prefix.clone << arg)
+      goal_for_sym(arg, route_prefix.clone) and arg
     elsif arg.is_a? Array
-      base = route_elt(arg.first, route_prefix)
-      res = [base]
+      base = goal_for_sym(route_elt(arg.first, route_prefix), route_prefix.clone)
+      res = [arg.first]
       arg[1..-1].each do |elt|
         route_frag = route_elt(elt, route_prefix.clone << arg.first)
-        goal = ( route_frag.is_a?(Array) ? route_frag.first : route_frag )
+        goal = goal_for_sym(( route_frag.is_a?(Array) ? route_frag.first : route_frag ), (route_prefix.clone << arg.first))
         if plural?(elt)
           base.has_many(goal)
         else
@@ -114,7 +114,7 @@ class App
   def goal_for_sym(sym, route_prefix)
     name = sym.to_s.singularize
     goal = self.goals[name] ||= Goal.new(name, route_prefix) # dynamic var would be nice here.
-    goal.routes << route_prefix.clone
+    goal.ensure_route(route_prefix.clone << sym)
     goal
   end
 

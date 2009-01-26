@@ -29,6 +29,14 @@ class Goal
   def cs; self.name.camelize.singularize; end
   def cp; self.name.camelize.pluralize; end
 
+  # ensure that this goal has the given route.
+  def ensure_route(route)
+    unless self.routes.member?(route) or route.blank?
+      self.routes << route
+    end
+  end
+
+  
   # === stuff used to introspect on the goal
   # thanks to Josh Ladieu for this: it's the array of things needed to get to an instance of this class, if there is a unique set.
   def resource_tuple # this returns the minimal route to this goal, or nothing, if there is no unambiguous minimal route
