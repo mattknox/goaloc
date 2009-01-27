@@ -35,8 +35,7 @@ class App
   # has one wiki.  
   def route(*args)
     if valid_routeset?(args)
-      self.routes += args # FIXME: make this so that it just maps over args again
-      args.map { |elt| route_elt(elt, []) }
+      self.routes += args.map { |elt| route_elt(elt, []) }
     end
   end
 
