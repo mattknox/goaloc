@@ -120,9 +120,11 @@ class Rails < RubyGenerator
     gen_tests(goal)
   end
 
-  # this currently shells out to rails, and perhaps that's the right thing to do.  
+  # gen_app will generate a rails skeleton, using a shell-out to the rails command
+  # if the directory already exists, it will do nothing, which means that it will silently
+  # overwrite files in an existing directory.  So far, that's the best thing I can think of to do.
   def gen_app
-    unless File.exists?(app_dir) #TODO: figure out what to do when there is a directory there.
+    unless File.exists?(app_dir) 
       original_dir = FileUtils.pwd
       Dir.mkdir(root_dir) unless (!root_dir or File.exists?(root_dir))
       FileUtils.cd(root_dir) if root_dir
@@ -133,7 +135,7 @@ class Rails < RubyGenerator
   end
 
   def gen_routes
-    if default_route.blank? # TODO: maybe extract this into a separate method. 
+    if !default_route.blank? # TODO: maybe extract this into a separate method. 
       File.delete("#{app_dir}/public/index.html")
     else
       File.open("#{app_dir}/public/index.html", "w") do |f|
