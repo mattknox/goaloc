@@ -79,7 +79,8 @@ class Rails < RubyGenerator
   def required_nonpath_param_string(goal)
     required_nonpath_params(goal).map { |z| ":#{ z.singularize }_id => 1" }.join(", ")
   end
-  
+
+  # TODO: extract the commonality out of this pair of methods.
   def new_object_method(goal)
     wrap_method("new_#{goal.s}", (goal.resource_tuple[0..-2].map { |var| finder_string(@app.fetch_or_create_goal(var)) } +
                                   [new_object_string(goal)]))
