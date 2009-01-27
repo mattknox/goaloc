@@ -96,19 +96,6 @@ class Rails < RubyGenerator
     goal.underscore_tuple.join("_") + '_path(' + (goal.ivar_tuple[0..-2]  + ["#{str.to_s + goal.s})"]).join(', ')
   end
 
-  #TODO: see if these can be removed.
-#   def edit_path(goal, str = nil)
-#     if str
-#       "edit_" + object_path(goal, str)
-#     else
-#       "edit_" + object_path(goal)
-#     end
-#   end
-  
-#   def new_path(goal)
-#     "new_" + (goal.rails_underscore_tuple[0..-2] + ["#{goal.s}"]).join("_") + "_path(" + goal.rails_ivar_tuple(-2).join(', ') + ')'
-#   end
-  
   def collection_path(goal)
     (goal.underscore_tuple[0..-2] + [goal.p]).join("_") +  "_path(" + goal.ivar_tuple[0..-2].join(', ') + ')'
   end
