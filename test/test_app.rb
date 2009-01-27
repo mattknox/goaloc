@@ -79,11 +79,11 @@ class TestApp < Test::Unit::TestCase
         end
       end
 
-      should "return the right thing for fetch_goal" do
-        assert_equal Post, @app.fetch_goal("post")
-        assert_equal Post, @app.fetch_goal("posts")
-        assert_equal Post, @app.fetch_goal(:post)
-        assert_equal Post, @app.fetch_goal(:posts)
+      should "return the right thing for fetch_or_create_goal" do
+        assert_equal Post, @app.fetch_or_create_goal("post")
+        assert_equal Post, @app.fetch_or_create_goal("posts")
+        assert_equal Post, @app.fetch_or_create_goal(:post)
+        assert_equal Post, @app.fetch_or_create_goal(:posts)
       end
       
       should "have routes" do

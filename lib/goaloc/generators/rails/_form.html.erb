@@ -7,7 +7,7 @@
   </div>
 <% end %>
 
-<% keys_in_path = goal.resource_tuple.map {|x| generator.app.fetch_goal(x).s + "_id" } %>
+<% keys_in_path = goal.resource_tuple.map {|x| generator.app.fetch_or_create_goal(x).s + "_id" } %>
 <% goal.foreign_keys.reject {|x, v| keys_in_path.member?(x) }.each do |key, value| %>
   <div>
     <%= "    <%= f.label :#{key[0..-4]} %%>" %>
