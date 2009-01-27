@@ -9,6 +9,7 @@ class Rails < RubyGenerator
     @generator = self
   end
 
+  # TODO: seperate out the activeRecord and actionview parts, in prep for Rails3
   # returns the rails string defining an association.  Supports belongs_to, has_many, hmt
   def association_string(assoc_name, assoc_hash)
     option_str = ""
@@ -326,7 +327,10 @@ class Rails < RubyGenerator
     template_str = File.open("#{File.dirname(__FILE__)}/rails/migration.rb.erb").read
     ERB.new(template_str).result(binding)
   end
-  
+
+  # TODO: make a thing that returns the innards of the class, preferably organized into
+  # validations, associations, requires/acts_as clauses, class, instance, and private methods.
+  # also add something that tells a goal not to generate any combo of model/view/controller.
   def gen_model_str(goal)
     out = ""
     out << "class #{goal.cs} < ActiveRecord::Base\n"
@@ -345,6 +349,10 @@ class Rails < RubyGenerator
   end
 
   # view stuff
+  # TODO:  get some method_missing action going on here, to make it so that I don't have to
+  # have all these boilerplate methods.  Probably it's enough to have a hash of hashes,
+  # keyed on things like "layout", with a name of a file to read and the name of a file to
+  # render to.
   def gen_layout_str
     template_str = File.open("#{File.dirname(__FILE__)}/rails/application.html.erb").read
     ERB.new(template_str).result(binding)
