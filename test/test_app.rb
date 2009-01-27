@@ -35,6 +35,19 @@ class TestApp < Test::Unit::TestCase
       should "have a generate method" do
         assert @app.respond_to?(:generate)
       end
+
+      should "respond with the post goal to all reasonable calls to fetch_or_create_goal" do
+        assert_equal @app.goals[:post], Post
+        assert_equal @app.fetch_or_create_goal(:post), Post
+        assert_equal @app.fetch_or_create_goal(:posts), Post
+        assert_equal @app.fetch_or_create_goal(:Post), Post
+        assert_equal @app.fetch_or_create_goal(:Posts), Post
+        assert_equal @app.fetch_or_create_goal('post'), Post
+        assert_equal @app.fetch_or_create_goal('posts'), Post
+        assert_equal @app.fetch_or_create_goal('Post'), Post
+        assert_equal @app.fetch_or_create_goal('Posts'), Post
+        assert_equal @app.send(:goal_for_sym, Post, []), Post
+      end
     end
 
     context "when routing a single symbol" do

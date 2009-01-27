@@ -7,7 +7,7 @@ class Goal
   attr_reader :name
   attr_accessor :associations, :validations, :fields, :options, :routes, :foreign_keys
 
-  def initialize(name, route = [])
+  def initialize(name, route = nil)
     @name = name.underscore.singularize   # TODO: support renaming models
     self.associations = HashWithIndifferentAccess.new
     self.validations = []
