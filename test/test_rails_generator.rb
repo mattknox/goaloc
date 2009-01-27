@@ -159,7 +159,7 @@ class TestRailsGenerator < Test::Unit::TestCase
         assert File.exists?(@tmp_dir + "/foobar/db/migrate")
       end
       
-      should "generate a bunch of migrations on" do # FIXME: this seems to work already, but the tests don't.
+      should "generate a bunch of migrations on" do
         [:posts, :comments, :pictures].each do |x|
           assert !Dir.glob("#{@tmp_dir}/foobar/db/migrate/*#{x.to_s}*").blank?
         end
