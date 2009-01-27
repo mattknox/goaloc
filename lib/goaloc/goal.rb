@@ -21,6 +21,15 @@ class Goal
     Object.const_set self.cs, self
   end
 
+#   # this is a bad thing to do until it actually supports pervasive renaming (assocs, etc.)
+#   def name=(name)
+#     if Object.const_defined? self.cs and name != self.name
+#       Object.send(:remove_const, self.cs)
+#     end
+#     @name = name
+#     Object.const_set self.cs, self
+#   end
+
   # === here are a list of name-ish methods
   # This returns the name of the foreign key used to refer to this goal.
   def foreign_key
