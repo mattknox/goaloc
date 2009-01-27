@@ -15,6 +15,9 @@ class Goal
     self.foreign_keys = HashWithIndifferentAccess.new
     self.options = { }
     self.routes = [] # of the form [:classname, [:otherclass, :classname], ...]
+    if Object.const_defined? self.cs
+      Object.send(:remove_const, self.cs)
+    end
     Object.const_set self.cs, self
   end
 

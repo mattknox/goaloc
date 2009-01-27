@@ -3,7 +3,6 @@ require File.dirname(__FILE__) + '/test_helper'
 class TestGoal < Test::Unit::TestCase
   context "a Goal" do 
     setup { @goal = Goal.new("foo") }
-    teardown { Object.send(:remove_const, "Foo")}
     
     should "have attr_accessor'd attrs" do
       [:associations, :validations, :fields, :options, :routes].each do |sym|
@@ -31,8 +30,6 @@ class TestGoal < Test::Unit::TestCase
         @goal2 = Goal.new("goal2")
         @goal1.belongs_to @goal2
       end
-      teardown { ["Goal1", "Goal2"].map { |s| Object.send(:remove_const, s)}}
-
       
       should "put an assoc in the associations instance var" do
         assert !@goal1.associations[@goal2.name].blank?
@@ -51,7 +48,6 @@ class TestGoal < Test::Unit::TestCase
         @goal2 = Goal.new("goal2")
         @goal1.has_many @goal2
       end
-      teardown { ["Goal1", "Goal2"].map { |s| Object.send(:remove_const, s)}}
 
       should "put an assoc in the associations instance var" do
         assert !@goal1.associations.empty?
@@ -65,8 +61,6 @@ class TestGoal < Test::Unit::TestCase
         Goal.new("profile")
         User.has_one Profile
       end
-      teardown { ["User", "Profile"].map { |s| Object.send(:remove_const, s)}}
-
       
       should "put an assoc in the associations instance var" do
         assert !User.associations.empty?
@@ -81,7 +75,6 @@ class TestGoal < Test::Unit::TestCase
         @goal3 = Goal.new("goal3")
         @goal1.hmt @goal2, :through => @goal3
       end
-      teardown { ["Goal1", "Goal2", "Goal3"].map { |s| Object.send(:remove_const, s)}}
 
       should "put has_many, belongs_to, and has_many :through assocs in place" do
         assert !@goal1.associations.blank?
