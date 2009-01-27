@@ -44,12 +44,20 @@ class App
   # are always singular, so it allows for singular or plural variants of anything that responds to #to_s
   # as a degenerate case, if one passes in a goal, it will merely be returned.
   def fetch_or_create_goal(x)
+    fetch_goal(x) or create_goal(x)
+  end
+
+  def fetch_goal(x) # should I perhaps make Post.to_s == "Post" or some such?  that would make this method tiny...
     if x.is_a? Goal
       x
     else
-      name = x.to_s.singularize.underscore
-      self.goals[name] ||= Goal.new(name) # dynamic var would be nice here.
+      self.goals[x.to_s.singularize.underscore] 
     end    
+  end
+
+  def create_goal(x)
+    name = x.to_s.singularize.underscore
+    self.goals[name] ||= Goal.new(name) # dynamic var would be nice here.
   end
   
   # add_attrs takes in a hash of symbol => string pairs, and attaches to the goal named by the key the
