@@ -52,7 +52,8 @@ class Goal
   
   # === stuff used to introspect on the goal
   # thanks to Josh Ladieu for this: it's the array of things needed to get to an instance of this class, if there is a unique set.
-  def resource_tuple # this returns the minimal route to this goal, or nothing, if there is no unambiguous minimal route
+  # this returns the minimal route to this goal, or nothing, if there is no unambiguous minimal route
+  def resource_tuple 
     routelist = self.routes.sort { |x, y| x.length <=> y.length }
     if routelist.length == 1 #TODO: maybe should deal with a case where there's a simplest route that all the others contain.
       routelist.first
@@ -61,10 +62,22 @@ class Goal
     end
   end
 
+  # if a resource has a resource_tuple, and it is not the first element of that
+  # tuple, this will return true.
   def nested?
     self.resource_tuple.length > 1
   end
 
+  # enclosing_resource returns the resource that most directly encloses this resource
+  def enclosing_resource
+    self.resource_tuple[-2]
+  end
+
+  # enclosing_resources returns the whole chain of resources up to but not including this one.
+  def enclosing_resources
+    self.resource_tuple[0..-2]
+  end
+  
   def underscore_tuple
     self.resource_tuple.to_a.map { |x| x.to_s.underscore.singularize }
   end
