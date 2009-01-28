@@ -8,7 +8,7 @@ class Goal
   attr_accessor :associations, :validations, :fields, :options, :routes, :foreign_keys
 
   def initialize(name, route = nil)
-    @name = name.underscore.singularize   # TODO: support renaming models
+    @name = name.underscore.singularize   
     self.associations = HashWithIndifferentAccess.new
     self.validations = []
     self.fields = HashWithIndifferentAccess.new
@@ -21,6 +21,7 @@ class Goal
     Object.const_set self.cs, self
   end
 
+# TODO: support renaming models
 #   # this is a bad thing to do until it actually supports pervasive renaming (assocs, etc.)
 #   def name=(name)
 #     if Object.const_defined? self.cs and name != self.name

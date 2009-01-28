@@ -23,7 +23,8 @@ class Rails < RubyGenerator
   end
   
   # TODO: right now this doesn't handle routes that have an multiply routed resource in the chain somewhere
-  # eg route :blogs, [:users, [:blogs, :posts]]  It's obvious in posts that blogs is the nested bit.  
+  # eg route :blogs, [:users, [:blogs, :posts]]  It's obvious in posts that blogs is the nested bit.
+  # to fix this, I'll need to pass the context to find_method.  
   def find_method(goal)
     wrap_method("find_#{goal.s}",
                 goal.resource_tuple[0..-2].map { |var| finder_string(var.to_s.singularize.camelize.constantize) } +
