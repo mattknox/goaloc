@@ -77,6 +77,14 @@ class Goal
   def enclosing_resources
     self.resource_tuple[0..-2]
   end
+
+  def enclosing_goal
+    self.enclosing_resource.to_s.singularize.camelize.constantize
+  end
+
+  def enclosing_goals
+    self.enclosing_resources.map { |r| r.to_s.singularize.camelize.constantize }
+  end
   
   def underscore_tuple
     self.resource_tuple.to_a.map { |x| x.to_s.underscore.singularize }

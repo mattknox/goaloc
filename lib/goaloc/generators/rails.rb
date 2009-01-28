@@ -35,8 +35,7 @@ class Rails < RubyGenerator
   def finder_string(goal, id_str = nil)
     id_str ||= "#{goal.s}_id"
     if goal.nested?
-      enclosing_resource = @app.fetch_or_create_goal(goal.resource_tuple[-2])
-      "@#{goal.s} = @#{enclosing_resource.s}.#{goal.p}.find(params[:#{id_str}])"
+      "@#{goal.s} = @#{goal.enclosing_goal.s}.#{goal.p}.find(params[:#{id_str}])"
     else
       "@#{goal.s} = #{goal.cs}.find(params[:#{id_str}])"
     end
@@ -45,8 +44,7 @@ class Rails < RubyGenerator
   # returns the string necessary to assign a newly created instance of goal to an instance variable.  
   def new_object_string(goal)
     if goal.nested?
-      enclosing_resource = @app.fetch_or_create_goal(goal.resource_tuple[-2])
-      "@#{goal.s} = @#{enclosing_resource.s}.#{goal.p}.new(params[:#{goal.s}])"
+      "@#{goal.s} = @#{goal.enclosing_goal.s}.#{goal.p}.new(params[:#{goal.s}])"
     else
       "@#{goal.s} = #{goal.cs}.new(params[:#{goal.s}])"
     end
@@ -55,8 +53,7 @@ class Rails < RubyGenerator
   #returns a string assigning a collection of goal elements to an instance variable.
   def collection_finder_string(goal)
     if goal.nested?
-      enclosing_resource = @app.fetch_or_create_goal(goal.resource_tuple[-2])
-      "@#{goal.p} = @#{enclosing_resource.s}.#{goal.p}"
+      "@#{goal.p} = @#{goal.enclosing_goal.s}.#{goal.p}"
     else
       "@#{goal.p} = #{goal.cs}.find(:all)"
     end
@@ -65,8 +62,7 @@ class Rails < RubyGenerator
   def test_var_string(sym)
     goal = app.fetch_or_create_goal(sym)
     if goal.nested?
-      enclosing_resource = app.fetch_or_create_goal(goal.resource_tuple[-2])
-      "@#{goal.s} = @#{enclosing_resource.s}.#{goal.p}.find(:first)"
+      "@#{goal.s} = @#{goal.enclosing_goal.s}.#{goal.p}.find(:first)"
     else
       "@#{goal.s} = #{goal.cs}.find(:first)"
     end
@@ -391,10 +387,4 @@ end
 
 #     def rails_ivar_or_array_of_ivars(end_index = -1)
 #       "[" + self.resource_tuple[0..end_index].map {|c| c.rails_symname }.join(", ") + "]"
-#     end
-                
-#     def rails_association_string(assoc_name, assoc_hash)
-#       option_str = ""
-#       option_str << ", :through => :#{assoc_hash[:through].p}" if assoc_hash[:through]
-#       "#{assoc_hash[:type]} :#{assoc_name + option_str}"
 #     end
