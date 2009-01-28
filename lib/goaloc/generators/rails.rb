@@ -43,18 +43,18 @@ class Rails < RubyGenerator
 
   #returns a string assigning a collection of goal elements to an instance variable.
   def collection_finder_string(goal)
-    ivar_assignment_string(goal, "", ".find(:all)")
+    ivar_assignment_string(goal, "", ".find(:all)", "p")
   end
   
   def test_var_string(sym)
     ivar_assignment_string(app.fetch_or_create_goal(sym), ".find(:first)", ".find(:first)")
   end
 
-  def ivar_assignment_string(goal, nested_str, unnested_str)
+  def ivar_assignment_string(goal, nested_str, unnested_str, string_meth_for_ivar = "s")
     if goal.nested?
-      "@#{goal.s} = @#{goal.enclosing_goal.s}.#{goal.p}" + nested_str
+      "@#{goal.send(string_meth_for_ivar)} = @#{goal.enclosing_goal.s}.#{goal.p}" + nested_str
     else
-      "@#{goal.s} = #{goal.cs}" + unnested_str
+      "@#{goal.send(string_meth_for_ivar)} = #{goal.cs}" + unnested_str
     end
   end
 
@@ -69,12 +69,12 @@ class Rails < RubyGenerator
 
   # TODO: extract the commonality out of this pair of methods.
   def new_object_method(goal)
-    wrap_method("new_#{goal.s}", (goal.resource_tuple[0..-2].map { |var| finder_string(@app.fetch_or_create_goal(var)) } +
+    wrap_method("new_#{goal.s}", (goal.enclosing_goals.map { |g| finder_string(g) } +
                                   [new_object_string(goal)]))
   end
 
   def find_collection_method(goal)
-    wrap_method("find_#{goal.p}", (goal.resource_tuple[0..-2].map { |var| finder_string(@app.fetch_or_create_goal(var)) } +
+    wrap_method("find_#{goal.p}", (goal.enclosing_goals.map { |g| finder_string(g) } +
                                    [collection_finder_string(goal), new_object_string(goal)]))
   end
 
@@ -90,9 +90,7 @@ class Rails < RubyGenerator
   def generate
     gen_app
     gen_routes
-    @app.goals.values.each_with_index do |goal, i|
-      gen_goal(goal, i)
-    end
+    @app.goals.values.each_with_index { |goal, i| gen_goal(goal, i) }
     gen_misc
     self
   end
@@ -122,7 +120,7 @@ class Rails < RubyGenerator
 
   def gen_routes
     if !default_route.blank? # TODO: maybe extract this into a separate method. 
-      File.delete("#{app_dir}/public/index.html")
+      File.delete("#{app_dir}/public/index.html") rescue nil
     else
       File.open("#{app_dir}/public/index.html", "w") do |f|
         f.write "this will be the index page of the app.  But it isn't yet."
@@ -256,11 +254,7 @@ class Rails < RubyGenerator
   end
 
   def app_dir
-    if root_dir
-      "#{root_dir}/#{app_name}"
-    else
-      "#{app_name}"
-    end
+    [root_dir, app_name].compact.join("/")
   end
 
   def app_name
