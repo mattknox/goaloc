@@ -26,45 +26,35 @@ class Rails < RubyGenerator
   # to fix this, I'll need to pass the context to find_method.  
   def find_method(goal)
     wrap_method("find_#{goal.s}",
-                goal.resource_tuple[0..-2].map { |var| finder_string(var.to_s.singularize.camelize.constantize) } +
+                goal.enclosing_goals.map { |goal| finder_string(goal) } +
                 [finder_string(goal, "id")] + 
                goal.nested_resources.map { |k,v| new_object_string(v)})
   end
   
   # this returns @foo = Foo.find(params[:param_name]) or @foo = @bar.foos.find(params[:param_name])
-  def finder_string(goal, id_str = nil)
-    id_str ||= "#{goal.s}_id"
-    if goal.nested?
-      "@#{goal.s} = @#{goal.enclosing_goal.s}.#{goal.p}.find(params[:#{id_str}])"
-    else
-      "@#{goal.s} = #{goal.cs}.find(params[:#{id_str}])"
-    end
+  def finder_string(goal, id_str = "#{goal.s}_id")
+    ivar_assignment_string(goal, ".find(params[:#{id_str}])", ".find(params[:#{id_str}])")
   end
   
   # returns the string necessary to assign a newly created instance of goal to an instance variable.  
   def new_object_string(goal)
-    if goal.nested?
-      "@#{goal.s} = @#{goal.enclosing_goal.s}.#{goal.p}.new(params[:#{goal.s}])"
-    else
-      "@#{goal.s} = #{goal.cs}.new(params[:#{goal.s}])"
-    end
+    ivar_assignment_string(goal, ".new(params[:#{goal.s}])", ".new(params[:#{goal.s}])")
   end
 
   #returns a string assigning a collection of goal elements to an instance variable.
   def collection_finder_string(goal)
-    if goal.nested?
-      "@#{goal.p} = @#{goal.enclosing_goal.s}.#{goal.p}"
-    else
-      "@#{goal.p} = #{goal.cs}.find(:all)"
-    end
+    ivar_assignment_string(goal, "", ".find(:all)")
   end
   
   def test_var_string(sym)
-    goal = app.fetch_or_create_goal(sym)
+    ivar_assignment_string(app.fetch_or_create_goal(sym), ".find(:first)", ".find(:first)")
+  end
+
+  def ivar_assignment_string(goal, nested_str, unnested_str)
     if goal.nested?
-      "@#{goal.s} = @#{goal.enclosing_goal.s}.#{goal.p}.find(:first)"
+      "@#{goal.s} = @#{goal.enclosing_goal.s}.#{goal.p}" + nested_str
     else
-      "@#{goal.s} = #{goal.cs}.find(:first)"
+      "@#{goal.s} = #{goal.cs}" + unnested_str
     end
   end
 
