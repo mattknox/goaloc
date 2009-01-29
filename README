@@ -20,6 +20,11 @@ it should:
 -handle chained resources better
 -include a javascripty interface, so that one can go up the post-comment-rating chain in one page.
 -rdoc the whole thing.
+-write backend for datamapper
+-write backend for haml
+-write a merb target
+-support singular resources
+-write the plugin architecture.
 
 ==DONE:
 -include jquery for js
