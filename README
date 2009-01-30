@@ -26,7 +26,7 @@ it should:
 -support singular resources
 -write the plugin architecture
 -extend goals such that they can be told not to make a controller, or view, or model.
-
+-must make it serve apps next, and then make that compile to other web frameworks.  
 
 ==DONE:
 -include jquery for js
