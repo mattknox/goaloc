@@ -1,6 +1,10 @@
-class <%= model.to_s -%>
-# TODO: make this actually produce a datamapper model.
-<% model.associations.each do |k, v| -%>
-  <%= model.rails_association_string(k, v)  -%>
+class <%= goal.cs -%>
+  include DataMapper::Resource
+
+  property :id, Serial
+<%= goal.fields.map { |k, v | DmModel.property_string(k,v) }.join("\n") %> 
+
+<% goal.associations.each do |k, v| -%>
+  <%= DmModel.association_string(k, v)  -%>
 <% end -%>
 end
