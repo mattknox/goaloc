@@ -118,27 +118,35 @@ class Rails < RubyGenerator
     end
   end
 
-  def gen_routes
-    if !default_route.blank? # TODO: maybe extract this into a separate method. 
+  def need_public_index?
+    default_route.blank?
+  end
+
+  def handle_public_index
+    if !need_public_index?
       File.delete("#{app_dir}/public/index.html") rescue nil
     else
       File.open("#{app_dir}/public/index.html", "w") do |f|
         f.write "this will be the index page of the app.  But it isn't yet."
         app.routes.map { |x| sym = (x.is_a?(Array) ? x.first : x) ; f.write "<div><a href=/#{sym}>#{sym}</a><br/></div>" }
-      end      
-    end
+      end
+    end    
+  end
+  
+  def gen_routes
+    handle_public_index
     File.open("#{app_dir}/config/routes.rb", "w") do |f|
       f.write gen_routes_string
     end
   end
-
+  
   def gen_migration(goal, i)
     Dir.mkdir "#{app_dir}/db/migrate" unless File.exists? "#{app_dir}/db/migrate"
     f = File.new("#{app_dir}/db/migrate/#{ Time.now.strftime("%Y%m%d%H%M%S").to_i + i }_create_#{goal.p}.rb", "w")
     f.write gen_migration_str(goal)
     f.close
   end
-
+  
   def gen_model(goal)
     File.open("#{app_dir}/app/models/#{goal.s}.rb", "w") do |f|
       f.write gen_model_str(goal)
@@ -265,26 +273,13 @@ class Rails < RubyGenerator
     "rails #{ options} #{app_name}"
   end
 
-  # goaloc supports all of the various options that one might wish to set when generating a rails app
-  # this is the set of options that the rails command supports:
-  #     -r, --ruby=path                  Path to the Ruby binary of your choice (otherwise scripts use env, dispatchers current path).
-  #                                      Default: /opt/local/bin/ruby
-  #     -d, --database=name              Preconfigure for selected database (options: mysql/oracle/postgresql/sqlite2/sqlite3/frontbase/ibm_db).
-  #                                      Default: sqlite3
-  #     -f, --freeze                     Freeze Rails in vendor/rails from the gems generating the skeleton
-  #                                      Default: false
-  # General Options:
-  #         --force                      Overwrite files that already exist.
-  #     -s, --skip                       Skip files that already exist.
-  #     -q, --quiet                      Suppress normal output.
-  #     -c, --svn                        Modify files with subversion. (Note: svn must be in path)
-  #     -g, --git                        Modify files with git. (Note: git must be in path)
+  # goaloc supports all of the various options that one might wish to set when
+  # generating a rails app, by either the long or short name, with or without dashes
   def options
-    db = opts["-d"] or opts["d"] or opts["--database"] or opts["database"] or "mysql"
-    rubypath = opts["-r"] or opts["r"] or opts["--ruby"] or opts["ruby"] 
+    db = (opts["-d"] or opts["d"] or opts["--database"] or opts["database"] or "mysql")
+    rubypath = (opts["-r"] or opts["r"] or opts["--ruby"] or opts["ruby"] )
     rubypath = "--ruby=#{rubypath}" if rubypath
     nullary_opts = %w{ -f --freeze --force -s --skip -q --quiet -c --svn -g --git }.reject { |x| !opts.has_key?(x) and !opts.has_key?(x.gsub(/-/, ""))}
-
     "-d #{db} #{rubypath}" + nullary_opts.join(" ")
   end
     
