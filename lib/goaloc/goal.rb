@@ -3,6 +3,11 @@
 # controllers, and routes.  It needs to be extended so that it can handle generating plugins/stylesheets/js/etc.
 # Generators call a number of methods on goals that allow them to hook into their code generation process and
 # customize the output.
+
+# TODO: how should I let a goal know that it should generate, eg, its models with datamapper and views with haml?
+# it would be nice to have prototypical inheritance here, where I'd make a generator object that inherits all
+# of the state of the model, and has extra logic to tell it to generate datamapper files.
+
 class Goal
   attr_reader :name
   attr_accessor :associations, :validations, :fields, :options, :routes, :foreign_keys
