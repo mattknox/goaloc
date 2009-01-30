@@ -24,7 +24,9 @@ it should:
 -write backend for haml
 -write a merb target
 -support singular resources
--write the plugin architecture.
+-write the plugin architecture
+-extend goals such that they can be told not to make a controller, or view, or model.
+
 
 ==DONE:
 -include jquery for js
