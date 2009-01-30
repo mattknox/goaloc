@@ -9,7 +9,7 @@ class Rails < RubyGenerator
     @generator = self
   end
 
-  # TODO: seperate out the activeRecord and actionview parts, in prep for Rails3
+  # TODO: seperate out the actionview parts, in prep for Rails3
   # returns the rails string defining an association.  Supports belongs_to, has_many, hmt
   def association_string(assoc_name, assoc_hash)
     option_str = assoc_hash[:through] ? ", :through => :#{assoc_hash[:through].p}"  : ""

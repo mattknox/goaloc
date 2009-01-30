@@ -8,6 +8,7 @@ require "goaloc/goal"
 require "goaloc/generators/generator"
 require "goaloc/generators/ruby_generator"
 require "goaloc/generators/rails"
+require "goaloc/generators/dm_model"
 module Goaloc
 end
 
