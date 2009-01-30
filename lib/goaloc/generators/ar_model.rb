@@ -1,0 +1,2 @@
+class ArModel
+end
