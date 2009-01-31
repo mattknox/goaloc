@@ -9,6 +9,7 @@ require "goaloc/generators/generator"
 require "goaloc/generators/ruby_generator"
 require "goaloc/generators/rails"
 require "goaloc/generators/dm_model"
+require "goaloc/generators/ar_model"
 module Goaloc
 end
 

@@ -1,19 +1,13 @@
 require "erb"
 require "fileutils"
 
+# TODO: seperate out the actionview parts, in prep for Rails3
 class Rails < RubyGenerator
   attr_accessor :app, :opts, :generator
   def initialize(app, opts = { })
     @app = app
     @opts = opts
     @generator = self
-  end
-
-  # TODO: seperate out the actionview parts, in prep for Rails3
-  # returns the rails string defining an association.  Supports belongs_to, has_many, hmt
-  def association_string(assoc_name, assoc_hash)
-    option_str = assoc_hash[:through] ? ", :through => :#{assoc_hash[:through].p}"  : ""
-    "#{assoc_hash[:type]} :#{assoc_name + option_str}"
   end
 
   # wraps an array of lines in a method call, with a given name, using a given indentation.
@@ -273,8 +267,8 @@ class Rails < RubyGenerator
     "rails #{ options} #{app_name}"
   end
 
-  # goaloc supports all of the various options that one might wish to set when
-  # generating a rails app, by either the long or short name, with or without dashes
+  # goaloc supports all of the various options that one can set when generating
+  # a rails app, by either the long or short name, with or without dashes
   def options
     db = (opts["-d"] or opts["d"] or opts["--database"] or opts["database"] or "mysql")
     rubypath = (opts["-r"] or opts["r"] or opts["--ruby"] or opts["ruby"] )
@@ -318,7 +312,7 @@ class Rails < RubyGenerator
     out = ""
     out << "class #{goal.cs} < ActiveRecord::Base\n"
     goal.associations.each do |k, v|
-      out <<  "  #{association_string(k,v)}\n"
+      out <<  "  #{ArModel.association_string(k,v)}\n"
     end
     goal.validations.each do |v|
       out << "  validates_#{v[:val_type]} :#{v[:field]}\n"
@@ -382,7 +376,3 @@ class Rails < RubyGenerator
     end
   end
 end
-
-#     def rails_ivar_or_array_of_ivars(end_index = -1)
-#       "[" + self.resource_tuple[0..end_index].map {|c| c.rails_symname }.join(", ") + "]"
-#     end
