@@ -79,3 +79,26 @@ do I need to add the ability to do continuation-based apps?
 how soon should I make this able to serve itself?
 
 It'd be nice to rename something and have that rename propagate to all the places it might be needed.
+
+
+
+
+Web App golf:
+
+CoC is a great idea.  What is the minimum that I could possibly write to get the following apps:
+
+hello-world(something that generates a page that says 'hello world')
+unauth'd blog(just 2 models, standard REST actions)
+
+
+I think the hello-world one is:
+
+(defresp / "hello")
+
+
+and that the blog one is:
+
+(route (:posts :comments))
+(add_attrs { 'posts => "body:text title:string", 'comments => "body:text" })
+
+There should be a console in which one can start a repl, with a live server attached, so one can flip back and forth effortlessly.
