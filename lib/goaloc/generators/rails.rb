@@ -17,12 +17,22 @@ class Rails < RubyGenerator
   
   # TODO: right now this doesn't handle routes that have an multiply routed resource in the chain somewhere
   # eg route :blogs, [:users, [:blogs, :posts]]  It's obvious in posts that blogs is the nested bit.
-  # to fix this, I'll need to pass the context to find_method.  
-  def find_method(goal)
-    wrap_method("find_#{goal.s}",
-                goal.enclosing_goals.map { |goal| finder_string(goal) } +
-                [finder_string(goal, "id")] + 
-               goal.nested_resources.map { |k,v| new_object_string(v)})
+  # to fix this, I'll need to pass the context to find_object_method.
+  def find_object_method(goal)
+    wrap_method("find_#{goal.s}", ["setup_enclosing_resources", finder_string(goal, "id")] + goal.nested_resources.map { |k,v| new_object_string(v)})
+  end
+  
+  # TODO: extract the commonality out of this pair of methods.
+  def new_object_method(goal)
+    wrap_method("new_#{goal.s}", ["setup_enclosing_resources", new_object_string(goal)])
+  end
+
+  def find_collection_method(goal)
+    wrap_method("find_#{goal.p}", ["setup_enclosing_resources", collection_finder_string(goal)])
+  end
+
+  def setup_enclosing_resources_method(goal)  #TODO:  make this not be there, and not be called, if it's not needed.  
+    wrap_method("setup_enclosing_resources", goal.enclosing_goals.map { |goal| finder_string(goal) })
   end
   
   # this returns @foo = Foo.find(params[:param_name]) or @foo = @bar.foos.find(params[:param_name])
@@ -59,17 +69,6 @@ class Rails < RubyGenerator
   
   def required_nonpath_param_string(goal)
     required_nonpath_params(goal).map { |z| ":#{ z.singularize }_id => 1" }.join(", ")
-  end
-
-  # TODO: extract the commonality out of this pair of methods.
-  def new_object_method(goal)
-    wrap_method("new_#{goal.s}", (goal.enclosing_goals.map { |g| finder_string(g) } +
-                                  [new_object_string(goal)]))
-  end
-
-  def find_collection_method(goal)
-    wrap_method("find_#{goal.p}", (goal.enclosing_goals.map { |g| finder_string(g) } +
-                                   [collection_finder_string(goal), new_object_string(goal)]))
   end
 
   def object_path(goal, str = "@")

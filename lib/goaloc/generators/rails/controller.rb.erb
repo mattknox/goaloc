@@ -4,7 +4,8 @@ class <%= goal.cp %>Controller < ApplicationController
   before_filter :find_<%= goal.p %>, :only => :index
   before_filter :new_<%= goal.s %>, :only => [:new, :create]
 
-<%= generator.find_method(goal) %>
+<%= generator.setup_enclosing_resources_method(goal) %>
+<%= generator.find_object_method(goal) %>
 <%= generator.find_collection_method(goal) %>
 <%= generator.new_object_method(goal) %>
 
