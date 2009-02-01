@@ -195,6 +195,18 @@ class TestRailsGenerator < Test::Unit::TestCase
           assert File.exists?("#{@tmp_dir}/foobar/test/functional/#{x}_controller_test.rb")
         end
       end
+
+      should "make a rails project that passes tests" do
+        current_dir = `pwd`.chomp
+        FileUtils.cd @generator.app_dir
+        `rake db:drop:all`
+        `rake db:create:all`
+        `rake db:migrate`
+        s = `rake test`
+        assert_match /0 failures, 0 errors/, s
+        `rake db:drop:all`
+        FileUtils.cd current_dir
+      end
     end
   end
 end
