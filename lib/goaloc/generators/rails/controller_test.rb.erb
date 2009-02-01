@@ -11,7 +11,7 @@ class <%= goal.cp %>ControllerTest < ActionController::TestCase
     end
 
     should_respond_with :success
-    should_assign_to :<%= goal.s %>
+    should_assign_to :<%= goal.p %>
     should_render_template :index
     should_not_set_the_flash
     should_not_change "<%= goal.cs%>.count"
