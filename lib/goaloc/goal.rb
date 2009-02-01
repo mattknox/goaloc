@@ -92,11 +92,11 @@ class Goal
   end
   
   def underscore_tuple
-    self.resource_tuple.to_a.map { |x| x.to_s.underscore.singularize }
+    self.resource_tuple.map { |x| x.to_s.underscore.singularize }
   end
 
   def ivar_tuple
-    self.resource_tuple.to_a.map { |x| "@" + x.to_s.underscore.singularize }
+    self.resource_tuple.map { |x| "@" + x.to_s.underscore.singularize }
   end
 
   # this is intended to grab the list of elements needed to populate a form_for,
