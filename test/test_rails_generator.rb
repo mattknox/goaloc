@@ -199,7 +199,6 @@ class TestRailsGenerator < Test::Unit::TestCase
       should "make a rails project that passes tests" do
         current_dir = `pwd`.chomp
         FileUtils.cd @generator.app_dir
-        `rake db:drop:all`
         `rake db:create:all`
         `rake db:migrate`
         s = `rake test`
