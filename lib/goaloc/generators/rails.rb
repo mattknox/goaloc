@@ -309,7 +309,7 @@ class Rails < RubyGenerator
   # also add something that tells a goal not to generate any combo of model/view/controller.
   def gen_model_str(goal)
     out = ""
-    out << "class #{goal.cs} < ActiveRecord::Base\n"
+    out << "class #{goal.cs} < ActiveRecord::Base\n"   # TODO:  make this restrict access to attributes that shouldn't be accessible
     goal.associations.each do |k, v|
       out <<  "  #{ArModel.association_string(k,v)}\n"
     end
