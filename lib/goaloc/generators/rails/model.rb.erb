@@ -1,5 +1,0 @@
-class <%= model.to_s -%> < ActiveRecord::Base <% # TODO:  make this restrict access to attributes that shouldn't be accessible %>
-<% model.associations.each do |k, v| -%>
-  <%= model.rails_association_string(k, v)  -%>
-<% end -%>
-end
