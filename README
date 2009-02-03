@@ -27,6 +27,7 @@ it should:
 -extend goals such that they can be told not to make a controller, or view, or model.
 -must make it serve apps next, and then make that compile to other web frameworks.
 -must make it pick a directory back up, so you can regenerate over an existing dir.  
+-add cucumber features as high-level specs
 
 ==DONE:
 -include jquery for js
