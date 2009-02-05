@@ -48,3 +48,7 @@ end
 def reset
   @app = App.new
 end
+
+def models(*args)
+  # TODO: make this actually create a bunch of models.
+end
