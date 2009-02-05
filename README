@@ -8,7 +8,6 @@ This is Generate on a Lot of Crack, which started its life as a more powerful sc
 
 == FEATURES/PROBLEMS:
 
--currently supports only rails and some merb
 it should:
 -be easier to remove, rename, etc., attributes.
 -support using a rails app specifier like Jeremy McAnally's rg
@@ -28,6 +27,8 @@ it should:
 -must make it serve apps next, and then make that compile to other web frameworks.
 -must make it pick a directory back up, so you can regenerate over an existing dir.  
 -add cucumber features as high-level specs
+-support polymorphic resources (has_many :polymorphs type stuff)
+-add syntax for guaranteeing that something is in-session(so that you can specify that the user is logged in, eg.)
 
 ==DONE:
 -include jquery for js
@@ -46,7 +47,7 @@ goaloc
 
 generate presently only knows how to make rails apps, and part of merb apps, but in principle, any REST-centric MVC app could be targeted comfortably, and even PHP apps could be done.
 
-route [:causes, { :class => :users, :through => :memberships }, :tasks, ]
+route [:causes, { :class => :users, :through => :memberships }, :tasks ]
 
 will set up causes has many users through memberships
 
@@ -60,6 +61,13 @@ could make a blog that is accessible through the user object.  Each goal-generat
 This would allow people to make individual web components, possibly including views.
 
 This almost suggests a need for a gem-like system for "goals" (might need a better name for it and for the project as a whole), and really points up the importance of making this servable on its own-it would be great to be able to toss in a component, look at the resulting app, and then change it.
+
+need to be able to specify that things belong to the current user, and to specify that there must be a current user in scope for some set of routes.
+
+So the blog should be 
+route [authenticated_user, [:posts, :comments]]
+...
+
 
 
 
