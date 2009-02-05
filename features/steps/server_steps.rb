@@ -1,7 +1,7 @@
 require "rubygems"
 require "spec"
 
-Given /^an? ([a-zA-Z]*) app$/ do |desc|
+Given /^an? (.*) app$/ do |desc|
 end
 
 When /^I GET the "([^"]+). page$/ do |page|

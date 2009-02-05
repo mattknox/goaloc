@@ -8,6 +8,6 @@ Feature: Server
     Then I should see an html page
 
   Scenario: Show Page
-    Given a simple,populated app
+    Given a simple populated app
     When I GET the "/posts/1" page
     Then I should see an html page
