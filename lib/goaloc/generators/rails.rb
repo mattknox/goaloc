@@ -249,7 +249,6 @@ class Rails < RubyGenerator
     File.open("#{app_dir}/doc/goaloc_spec", "w") do |f|
       f.write app.goaloc_log.join("\n")
     end
-    FileUtils.cp_r("#{File.dirname(__FILE__)}/rails/test_helper.rb", "#{app_dir}/test/")
     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/bluetrip", "#{app_dir}/public/stylesheets")
     FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/jquery-1.2.6.min.js", "#{app_dir}/public/javascripts")
     FileUtils.cp("#{File.dirname(__FILE__)}/resources/test_helper.rb", "#{app_dir}/test/")
