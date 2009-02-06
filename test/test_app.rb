@@ -169,8 +169,8 @@ class TestApp < Test::Unit::TestCase
 
       should "log hmts as 2 has_many and 2 belongs_to" do
         s = @app.goaloc_log
-        assert_match /user.hmt/, s.join
-        assert_match /comment.hmt/, s.join
+        assert_match /User.hmt/, s.join
+        assert_match /Comment.hmt/, s.join
       end
     end
     context "when adding attrs" do

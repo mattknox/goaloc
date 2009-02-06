@@ -110,11 +110,11 @@ class Rails < RubyGenerator
       true
     end
   end
-
+  
   def need_public_index?
     default_route.blank?
   end
-
+  
   def handle_public_index
     if !need_public_index?
       File.delete("#{app_dir}/public/index.html") rescue nil

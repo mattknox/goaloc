@@ -2,3 +2,5 @@
 
 
 <%=  "<%= render :partial => '#{goal.p}/#{goal.s}', :collection => @#{goal.p} %%>" %>
+
+<%= "<%= link_to 'new #{goal.s}', new_#{generator.object_path(goal)} %%>" %>
