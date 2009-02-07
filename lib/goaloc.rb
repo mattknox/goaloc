@@ -50,5 +50,5 @@ def reset
 end
 
 def models(*args)
-  # TODO: make this actually create a bunch of models.
+  args.map { |x| @app.fetch_or_create_goal(x) }
 end
