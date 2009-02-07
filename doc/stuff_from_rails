@@ -1,0 +1,54 @@
+This is the part of the rails source base (looted from /opt/local/lib/ruby/gems/1.8/gems/rails-2.2.2/lib/rails_generator/lookup.rb )
+that handles going out to look for generators in rubygems.  I will need to do something like this so that people can write goals for
+goaloc.  But not yet.  At first I'll just build them in.  I might want to rip off the code generator from rails, also, or perhaps
+build my own.  
+
+
+    class AbstractGemSource < Source
+      def initialize
+        super :RubyGems
+      end
+    end
+
+    # GemGeneratorSource hits the mines to quarry for generators.  The latest versions
+    # of gems named *_generator are selected.
+    class GemGeneratorSource < AbstractGemSource
+      # Yield latest versions of generator gems.
+      def each
+        dependency = Gem::Dependency.new(/_generator$/, Gem::Requirement.default)
+        Gem::cache.search(dependency).inject({}) { |latest, gem|
+          hem = latest[gem.name]
+          latest[gem.name] = gem if hem.nil? or gem.version > hem.version
+          latest
+        }.values.each { |gem|
+          yield Spec.new(gem.name.sub(/_generator$/, ''), gem.full_gem_path, label)
+        }
+      end
+    end
+
+    # GemPathSource looks for generators within any RubyGem's /rails_generators/<generator_name>_generator.rb file.
+    class GemPathSource < AbstractGemSource
+      # Yield each generator within rails_generator subdirectories.
+      def each
+        generator_full_paths.each do |generator|
+          yield Spec.new(File.basename(generator).sub(/_generator.rb$/, ''), File.dirname(generator), label)
+        end
+      end
+
+      private
+        def generator_full_paths
+          @generator_full_paths ||=
+            Gem::cache.inject({}) do |latest, name_gem|
+              name, gem = name_gem
+              hem = latest[gem.name]
+              latest[gem.name] = gem if hem.nil? or gem.version > hem.version
+              latest
+            end.values.inject([]) do |mem, gem|
+              Dir[gem.full_gem_path + '/{rails_,}generators/**/*_generator.rb'].each do |generator|
+                mem << generator
+              end
+              mem
+            end
+        end
+    end
+
