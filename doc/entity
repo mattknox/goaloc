@@ -113,3 +113,13 @@ add_attrs { 'posts => "body:text title:string", 'comments => "body:text" }
 
 
 There should be a console in which one can start a repl, with a live server attached, so one can flip back and forth effortlessly.
+
+
+need a code generation framework.  It must be capable of the following:
+-copy file or dir from one place to another
+-render an ERB file with some vars set and put that someplace
+-delete a file
+-stick stuff into a file
+
+all of these should check to see if the file already exists and is ask before throwing any content away
+(putting new things in a file without asking is ok)

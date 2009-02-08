@@ -21,6 +21,9 @@ it should:
 -write backend for datamapper
 -write backend for haml
 -write a merb target
+-write an erlyweb target
+-decide whether I should target the clojure web framework
+-decide whether I should target the factor web framework
 -support singular resources
 -write the plugin architecture
 -extend goals such that they can be told not to make a controller, or view, or model.
