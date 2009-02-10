@@ -4,6 +4,8 @@ require 'test_help'
 require "rubygems"
 require "shoulda"
 
+
+# If you're running rails < 2.3.0 , you might need to change this into "class Test::Unit::TestCase"
 class ActiveSupport::TestCase
   # Transactional fixtures accelerate your tests by wrapping each test method
   # in a transaction that's rolled back on completion.  This ensures that the
