@@ -23,6 +23,17 @@ class TestGoal < Test::Unit::TestCase
       assert_equal @goal.validations.first[:val_type], :presence_of
       assert_equal @goal.validations.first[:field], :foobar
     end
+
+    context "" do
+      setup do
+        @goal.routes << [:frob, :bar]
+        @goal.routes << [:frob, :baz]
+      end
+
+      should "have a blank " do
+        assert_equal @goal.resource_tuple, []
+      end
+    end
     
     context "#belongs_to method" do
       setup do

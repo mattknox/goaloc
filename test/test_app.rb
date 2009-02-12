@@ -186,6 +186,18 @@ class TestApp < Test::Unit::TestCase
     end
   end
 
+  context "the #generate method on app " do
+    setup { @app = App.new("foobaz") }
+    
+    teardown { FileUtils.rm_rf("foobaz") }
+    
+    should "generate a skeleton rails app" do
+      assert !File.exists?("foobaz")
+      @app.generate
+      assert File.exists?("foobaz")
+    end
+  end
+  
   context "a named app" do
     setup { @app = App.new("foobar")}
 
