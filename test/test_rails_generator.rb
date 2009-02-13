@@ -21,7 +21,7 @@ class TestRailsGenerator < Test::Unit::TestCase
       assert_match "map.root :controller => 'posts'", @generator.gen_routes_string
     end
   end
-
+  
   context "a rails generator with a nested route " do
     setup do
       @app = App.new("foobar")

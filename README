@@ -34,6 +34,7 @@ it should:
 -add syntax for guaranteeing that something is in-session(so that you can specify that the user is logged in, eg.)
 -change the default test_helper so that it inherits from ActiveSupport::TestCase rather than Test::Unit::TestCase
 -look at cloudkit: http://getcloudkit.com/  it exposes RESTful json apis  really easily
+-shoulda will now support rspec, so maybe I should generate RSpec/shoulda and Test::Unit/shoulda?
 
 ==DONE:
 -include jquery for js
