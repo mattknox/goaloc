@@ -4,6 +4,7 @@ class Merb < Generator
   cattr_accessor :merb_models
   self.merb_models = []
 
+  NAMES_PATHS = { }
   module MerbModel
     def merb_symname
       '@' + self.s
@@ -84,6 +85,22 @@ Merb::Router.prepare do' + "\n"  +
   end
   
   def gen_migration(model)
+  end
+
+  def method_missing(meth, *args)
+    if (match = meth.to_s.match(/gen_(.*)_str/))
+      name = match[1]
+      model = args.first
+      template_str = File.open("#{File.dirname(__FILE__)}/merb/#{name}.rb.erb").read
+      ERB.new(template_str).result(binding)
+    elsif (match = meth.to_s.match(/gen_(.*)/))
+      name = match[1]
+      model = args.first
+      File.open("#{app_name}/app/#{name.pluralize}/#{model.nice_name.pluralize}.rb", "w") do |f|
+        str = send("gen_#{name}_str", model)
+        f.write str
+      end
+    end
   end
   
   def gen_model_str(model)
