@@ -140,12 +140,6 @@ class Rails < RubyGenerator
     f.close
   end
   
-  def gen_model(goal)
-    File.open("#{app_dir}/app/models/#{goal.s}.rb", "w") do |f|
-      f.write gen_model_str(goal)
-    end
-  end
-
   def gen_controller(goal)              # make this a better controller
     f = File.new("#{app_dir}/app/controllers/#{goal.p}_controller.rb", "w") 
     f.write(gen_controller_str(goal))
@@ -187,6 +181,23 @@ class Rails < RubyGenerator
     gen_unit_test(goal)
     gen_controller_test(goal)
     gen_fixture(goal)
+  end
+
+  # this is intended to wipe out all of the gen_.*_str and gen_.* methods
+  def method_missing(meth, *args)
+    if (match = meth.to_s.match(/gen_(.*)_str/))
+      name = match[1]
+      model = args.first
+      template_str = File.open("#{File.dirname(__FILE__)}/rails/#{name}.rb.erb").read
+      ERB.new(template_str).result(binding)
+    elsif (match = meth.to_s.match(/gen_(.*)/))
+      name = match[1]
+      model = args.first
+      File.open("#{app_dir}/app/#{name.pluralize}/#{model.s}.rb", "w") do |f|
+        str = send("gen_#{name}_str", model)
+        f.write str
+      end
+    end
   end
 
   def gen_unit_test_string(goal)
