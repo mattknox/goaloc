@@ -36,6 +36,7 @@ it should:
 -look at cloudkit: http://getcloudkit.com/  it exposes RESTful json apis  really easily
 -shoulda will now support rspec, so maybe I should generate RSpec/shoulda and Test::Unit/shoulda?
 -need to rename/split/join models.
+-steal the rails code generator framework, or make my own.  
 
 ==DONE:
 -include jquery for js
