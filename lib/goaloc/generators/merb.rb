@@ -4,7 +4,12 @@ class Merb < Generator
   cattr_accessor :merb_models
   self.merb_models = []
 
-  NAMES_PATHS = { }
+  NAMES_PATHS = { "model" => lambda { |goal| "#{app_name}/app/models/#{goal.s}.rb" }}
+  
+  def app_name
+    "#{app.name}" + (opts[:base_dir_suffix] ? "_rails" : "")
+  end
+
   module MerbModel
     def merb_symname
       '@' + self.s
@@ -96,7 +101,7 @@ Merb::Router.prepare do' + "\n"  +
     elsif (match = meth.to_s.match(/gen_(.*)/))
       name = match[1]
       model = args.first
-      File.open("#{app_name}/app/#{name.pluralize}/#{model.nice_name.pluralize}.rb", "w") do |f|
+      File.open(NAMES_PATHS[name][model], "w") do |f|
         str = send("gen_#{name}_str", model)
         f.write str
       end

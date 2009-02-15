@@ -3,13 +3,6 @@ require "fileutils"
 
 # TODO: seperate out the actionview parts, in prep for Rails3
 class Rails < RubyGenerator
-  attr_accessor :app, :opts, :generator
-  def initialize(app, opts = { })
-    @app = app
-    @opts = opts
-    @generator = self
-  end
-
   # NAMES_PATHS is a hash of template filename => destination filename pairs
   # the destination filenmaes need to be lambdas so they can insert the goal
   # name into destination filename as appropriate.

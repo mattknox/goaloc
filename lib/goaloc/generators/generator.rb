@@ -1,5 +1,12 @@
 class Generator
   attr_accessor :root_dir  # this is the directory in which the app will be generated
+  attr_accessor :app, :opts, :generator
+  def initialize(app, opts = { })
+    @app = app
+    @opts = opts
+    @generator = self
+  end
+
 #   def Generator.generate_all(opts = { })
 #     self.subclasses.each do |str|
 #       str.constantize.new(app, opts.merge(:prefix => true)).generate
