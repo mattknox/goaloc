@@ -103,20 +103,10 @@ Merb::Router.prepare do' + "\n"  +
     end
   end
   
-  def gen_model_str(model)
-    template_str = File.open("#{File.dirname(__FILE__)}/merb/model.rb.erb").read
-    ERB.new(template_str).result(binding)
-  end
-
   def gen_model(model)
     File.open("#{app_name}/app/models/#{model.nice_name.pluralize}.rb", "w") do |f|
       f.write gen_model_str(model)
     end
-  end
-
-  def gen_controller_str(model)
-    template_str = File.open("#{File.dirname(__FILE__)}/merb/controller.rb.erb").read
-    ERB.new(template_str).result(binding)
   end
 
   def gen_controller(model)
