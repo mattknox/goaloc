@@ -200,11 +200,6 @@ class Rails < RubyGenerator
     end
   end
 
-  def gen_unit_test_string(goal)
-    template_str = File.open("#{File.dirname(__FILE__)}/rails/model_test.rb.erb").read
-    ERB.new(template_str).result(binding)
-  end
-  
   def gen_unit_test(goal)
     Dir.mkdir "#{app_dir}/test/unit" unless File.exists? "#{app_dir}/test/unit"
     f = File.new("#{app_dir}/test/unit/#{ goal.s }_test.rb", "w")
@@ -305,11 +300,6 @@ class Rails < RubyGenerator
     end
   end
 
-  def gen_migration_str(goal)
-    template_str = File.open("#{File.dirname(__FILE__)}/rails/migration.rb.erb").read
-    ERB.new(template_str).result(binding)
-  end
-
   # TODO: make a thing that returns the innards of the class, preferably organized into
   # validations, associations, requires/acts_as clauses, class, instance, and private methods.
   # also add something that tells a goal not to generate any combo of model/view/controller.
@@ -323,11 +313,6 @@ class Rails < RubyGenerator
       out << "  validates_#{v[:val_type]} :#{v[:field]}\n"
     end
     out <<  "end"
-  end
-
-  def gen_controller_str(goal)
-    template_str = File.open("#{File.dirname(__FILE__)}/rails/controller.rb.erb").read
-    ERB.new(template_str).result(binding)
   end
 
   # view stuff
