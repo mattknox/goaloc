@@ -14,4 +14,21 @@ class Generator
       raise RuntimeError
     end
   end
+  
+  # this is intended to wipe out all of the gen_.*_str and gen_.* methods
+  def method_missing(meth, *args)
+    if (match = meth.to_s.match(/gen_(.*)_str/))
+      name = match[1]
+      goal = args.first
+      template_str = File.open("#{File.dirname(__FILE__)}/#{self.class.to_s.underscore}/#{name}.rb.erb").read
+      ERB.new(template_str).result(binding)
+    elsif (match = meth.to_s.match(/gen_(.*)/))
+      name = match[1]
+      goal = args.first
+      File.open("#{app_dir}/app/#{name.pluralize}/#{goal.s}.rb", "w") do |f|
+        str = send("gen_#{name}_str", goal)
+        f.write str
+      end
+    end
+  end
 end

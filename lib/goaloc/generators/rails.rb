@@ -188,23 +188,6 @@ class Rails < RubyGenerator
     gen_fixture(goal)
   end
 
-  # this is intended to wipe out all of the gen_.*_str and gen_.* methods
-  def method_missing(meth, *args)
-    if (match = meth.to_s.match(/gen_(.*)_str/))
-      name = match[1]
-      goal = args.first
-      template_str = File.open("#{File.dirname(__FILE__)}/rails/#{name}.rb.erb").read
-      ERB.new(template_str).result(binding)
-    elsif (match = meth.to_s.match(/gen_(.*)/))
-      name = match[1]
-      goal = args.first
-      File.open("#{app_dir}/app/#{name.pluralize}/#{goal.s}.rb", "w") do |f|
-        str = send("gen_#{name}_str", goal)
-        f.write str
-      end
-    end
-  end
-
   def gen_unit_test(goal)
     Dir.mkdir "#{app_dir}/test/unit" unless File.exists? "#{app_dir}/test/unit"
     f = File.new("#{app_dir}/test/unit/#{ goal.s }_test.rb", "w")
