@@ -187,14 +187,14 @@ class Rails < RubyGenerator
   def method_missing(meth, *args)
     if (match = meth.to_s.match(/gen_(.*)_str/))
       name = match[1]
-      model = args.first
+      goal = args.first
       template_str = File.open("#{File.dirname(__FILE__)}/rails/#{name}.rb.erb").read
       ERB.new(template_str).result(binding)
     elsif (match = meth.to_s.match(/gen_(.*)/))
       name = match[1]
-      model = args.first
-      File.open("#{app_dir}/app/#{name.pluralize}/#{model.s}.rb", "w") do |f|
-        str = send("gen_#{name}_str", model)
+      goal = args.first
+      File.open("#{app_dir}/app/#{name.pluralize}/#{goal.s}.rb", "w") do |f|
+        str = send("gen_#{name}_str", goal)
         f.write str
       end
     end
@@ -212,11 +212,6 @@ class Rails < RubyGenerator
     f.close
   end
 
-  def gen_controller_test_string(goal)
-    template_str = File.open("#{File.dirname(__FILE__)}/rails/controller_test.rb.erb").read
-    ERB.new(template_str).result(binding)
-  end
-  
   def gen_controller_test(goal)
     Dir.mkdir "#{app_dir}/test/functional" unless File.exists? "#{app_dir}/test/functional"
     f = File.new("#{app_dir}/test/functional/#{ goal.p }_controller_test.rb", "w")
