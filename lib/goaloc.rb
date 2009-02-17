@@ -10,6 +10,7 @@ require "goaloc/generators/rails"
 require "goaloc/generators/merb"
 require "goaloc/generators/dm_model"
 require "goaloc/generators/ar_model"
+
 module Goaloc
 end
 
