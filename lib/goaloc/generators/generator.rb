@@ -28,9 +28,9 @@ class Generator
     ERB.new(template_str).result(binding)
   end
 
-  def gen_file(name, *args)
+  def gen_file(path, name, *args)
     goal = args.first
-    File.open("#{app_dir}/app/#{name.pluralize}/#{goal.s}.rb", "w") do |f|
+    File.open("#{app_dir}/#{path}", "w") do |f|
       f.write gen_string(name, *args)
     end
   end
