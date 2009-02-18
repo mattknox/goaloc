@@ -21,6 +21,19 @@ class Generator
       raise RuntimeError
     end
   end
+
+  def gen_string(name, *args)
+    goal = args.first
+    template_str = File.open("#{File.dirname(__FILE__)}/#{self.class.to_s.underscore}/#{name}.rb.erb").read
+    ERB.new(template_str).result(binding)
+  end
+
+  def gen_file(name, *args)
+    goal = args.first
+    File.open("#{app_dir}/app/#{name.pluralize}/#{goal.s}.rb", "w") do |f|
+      f.write gen_string(name, *args)
+    end
+  end
   
   # this is intended to wipe out all of the gen_.*_str and gen_.* methods
   def method_missing(meth, *args)
