@@ -24,7 +24,7 @@ class Generator
 
   def gen_string(name, *args)
     goal = args.first
-    template_str = File.open("#{File.dirname(__FILE__)}/#{self.class.to_s.underscore}/#{name}.rb.erb").read
+    template_str = File.open("#{File.dirname(__FILE__)}/#{self.class.to_s.underscore}/#{name}.erb").read
     ERB.new(template_str).result(binding)
   end
 
@@ -40,7 +40,7 @@ class Generator
     if (match = meth.to_s.match(/gen_(.*)_str/))
       name = match[1]
       goal = args.first
-      template_str = File.open("#{File.dirname(__FILE__)}/#{self.class.to_s.underscore}/#{name}.rb.erb").read
+      template_str = File.open("#{File.dirname(__FILE__)}/#{self.class.to_s.underscore}/#{name}.erb").read
       ERB.new(template_str).result(binding)
     elsif (match = meth.to_s.match(/gen_(.*)/))
       name = match[1]
