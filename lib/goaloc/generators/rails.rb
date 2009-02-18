@@ -226,7 +226,7 @@ class Rails < RubyGenerator
 
   def gen_misc # here we put in the layout, the goaloc log, and libraries (blueprint CSS, jquery)
     File.open("#{app_dir}/app/views/layouts/application.html.erb", "w") do |f|
-      f.write ERB.new(File.open("#{File.dirname(__FILE__)}/rails/application.html.erb").read).result(binding)
+      f.write ERB.new(File.open("#{File.dirname(__FILE__)}/rails/application.erb").read).result(binding)
     end
     File.open("#{app_dir}/doc/goaloc_spec", "w") do |f|
       f.write app.goaloc_log.join("\n")
@@ -302,32 +302,32 @@ class Rails < RubyGenerator
   # keyed on things like "layout", with a name of a file to read and the name of a file to
   # render to.
   def gen_layout_str
-    template_str = File.open("#{File.dirname(__FILE__)}/rails/application.html.erb").read
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/application.erb").read
     ERB.new(template_str).result(binding)
   end
   
   def gen_index_str(goal)
-    template_str = File.open("#{File.dirname(__FILE__)}/rails/index.html.erb").read
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/index.erb").read
     ERB.new(template_str).result(binding)
   end
   
   def gen_show_str(goal)
-    template_str = File.open("#{File.dirname(__FILE__)}/rails/show.html.erb").read
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/show.erb").read
     ERB.new(template_str).result(binding)
   end
 
   def gen_partial_str(goal)
-    template_str = File.open("#{File.dirname(__FILE__)}/rails/_model.html.erb").read
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/_model.erb").read
     ERB.new(template_str).result(binding)
   end
 
   def gen_partial_small_str(goal)
-    template_str = File.open("#{File.dirname(__FILE__)}/rails/_model_small.html.erb").read
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/_model_small.erb").read
     ERB.new(template_str).result(binding)
   end
 
   def gen_form_str(goal)
-    template_str = File.open("#{File.dirname(__FILE__)}/rails/_form.html.erb").read
+    template_str = File.open("#{File.dirname(__FILE__)}/rails/_form.erb").read
     ERB.new(template_str).result(binding)
   end
 
