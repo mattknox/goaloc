@@ -306,16 +306,6 @@ class Rails < RubyGenerator
     ERB.new(template_str).result(binding)
   end
   
-  def gen_index_str(goal)
-    template_str = File.open("#{File.dirname(__FILE__)}/rails/index.erb").read
-    ERB.new(template_str).result(binding)
-  end
-  
-  def gen_show_str(goal)
-    template_str = File.open("#{File.dirname(__FILE__)}/rails/show.erb").read
-    ERB.new(template_str).result(binding)
-  end
-
   def gen_partial_str(goal)
     template_str = File.open("#{File.dirname(__FILE__)}/rails/_model.erb").read
     ERB.new(template_str).result(binding)
