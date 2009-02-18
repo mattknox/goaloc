@@ -134,13 +134,13 @@ class Rails < RubyGenerator
   def gen_migration(goal, i)
     Dir.mkdir "#{app_dir}/db/migrate" unless File.exists? "#{app_dir}/db/migrate"
     f = File.new("#{app_dir}/db/migrate/#{ Time.now.strftime("%Y%m%d%H%M%S").to_i + i }_create_#{goal.p}.rb", "w")
-    f.write gen_migration_str(goal)
+    f.write gen_string("migration", goal)
     f.close
   end
   
   def gen_controller(goal)              # make this a better controller
     f = File.new("#{app_dir}/app/controllers/#{goal.p}_controller.rb", "w") 
-    f.write(gen_controller_str(goal))
+    f.write(gen_string("controller", goal))
     f.close
   end
   
