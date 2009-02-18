@@ -101,7 +101,7 @@ class TestRailsGenerator < Test::Unit::TestCase
     end
     
     should "produce a valid string for the _form view" do 
-      assert_match /form_for..form/, @generator.gen_form_str(@app.goals["post"])
+      assert_match /form_for..form/, @generator.gen_string("_form", @app.goals["post"])
     end
 
     should "produce a valid string for the edit view" do 

@@ -148,11 +148,11 @@ class Rails < RubyGenerator
     view_dir = "#{app_dir}/app/views/#{goal.p}/"
     Dir.mkdir view_dir unless File.exists?(view_dir)
     File.open("#{view_dir}index.html.erb", "w") do |f|
-      f.write self.gen_index_str(goal)
+      f.write self.gen_string("index", goal)
     end
     
     File.open("#{view_dir}show.html.erb", "w") do |f|
-      f.write self.gen_show_str(goal)
+      f.write self.gen_string("show", goal)
     end
     
     File.open("#{view_dir}_#{goal.s}.html.erb", "w") do |f|
@@ -170,7 +170,7 @@ class Rails < RubyGenerator
     f.write "<%= render :partial => '#{goal.p}/form', :object => @#{goal.s} %>"
     f.close
     File.open("#{view_dir}_form.html.erb", "w") do |f|
-      f.write self.gen_form_str(goal)
+      f.write self.gen_string("_form", goal)
     end
   end
   
@@ -323,11 +323,6 @@ class Rails < RubyGenerator
 
   def gen_partial_small_str(goal)
     template_str = File.open("#{File.dirname(__FILE__)}/rails/_model_small.erb").read
-    ERB.new(template_str).result(binding)
-  end
-
-  def gen_form_str(goal)
-    template_str = File.open("#{File.dirname(__FILE__)}/rails/_form.erb").read
     ERB.new(template_str).result(binding)
   end
 
