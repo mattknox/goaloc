@@ -1,0 +1,9 @@
+class <%= goal.cs %> < ActiveRecord::Base
+<% goal.associations.each do |k, v| %>
+  <%= ArModel.association_string(k,v) %>
+<% end %>
+
+<% goal.validations.each do |v| %>
+  <%= "  validates_#{v[:val_type]} :#{v[:field]}" %>
+<% end %>
+end
