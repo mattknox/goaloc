@@ -6,10 +6,6 @@ class Merb < Generator
 
   NAMES_PATHS = { "model" => lambda { |goal| "#{app_name}/app/models/#{goal.s}.rb" }}
   
-  def app_name
-    "#{app.name}" + (opts[:base_dir_suffix] ? "_rails" : "")
-  end
-
   module MerbModel
     def merb_symname
       '@' + self.s

@@ -30,10 +30,20 @@ class Generator
     ERB.new(template_str).result(binding)
   end
 
+  def app_dir
+    [root_dir, app_name].compact.join("/")
+  end
+
+  def app_name
+    "#{app.name}" + (opts[:base_dir_suffix] ? "_#{self.class.to_s.underscore}" : "")
+  end
+
   def gen_file(path, name, *args)
     goal = args.first
-    FileUtils.mkdir_p path unless File.exists? path
-    File.open("#{app_dir}/#{path}", "w") do |f|
+    fullpath = "#{app_dir}/#{path}"
+    dir = fullpath.split("/")[0..-2].join("/")
+    FileUtils.mkdir_p dir unless File.exists? dir
+    File.open("#{fullpath}", "w") do |f|
       f.write gen_string(name, *args)
     end
   end

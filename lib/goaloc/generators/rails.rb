@@ -143,24 +143,14 @@ class Rails < RubyGenerator
   end
   
   def gen_view(goal)
-    view_dir = "/app/views/#{goal.p}/"
-    full_view_dir = app_dir + view_dir
-    FileUtils.mkdir_p full_view_dir unless File.exists?(full_view_dir)
+    view_dir = "app/views/#{goal.p}/"
+
     gen_file("#{view_dir}index.html.erb", "index", goal)
-    
     gen_file("#{view_dir}show.html.erb", "show", goal)
-
+    gen_file("#{view_dir}edit.html.erb", "edit", goal)
+    gen_file("#{view_dir}new.html.erb", "edit", goal)
     gen_file("#{view_dir}_#{goal.s}.html.erb", "_model", goal)
-
     gen_file("#{view_dir}_#{goal.s}_small.html.erb", "_model_small", goal)
-
-    f = File.new("#{full_view_dir}new.html.erb", "w")
-    f.write "<%= render :partial => '#{goal.p}/form', :object => @#{goal.s} %>"
-    f.close
-    f = File.new("#{full_view_dir}edit.html.erb", "w") 
-    f.write "<%= render :partial => '#{goal.p}/form', :object => @#{goal.s} %>"
-    f.close
-
     gen_file("#{view_dir}_form.html.erb", "_form", goal)
   end
   
@@ -212,14 +202,6 @@ class Rails < RubyGenerator
     FileUtils.cp("#{File.dirname(__FILE__)}/resources/test_helper.rb", "#{app_dir}/test/")
   end
 
-  def app_dir
-    [root_dir, app_name].compact.join("/")
-  end
-
-  def app_name
-    "#{app.name}" + (opts[:base_dir_suffix] ? "_rails" : "")
-  end
-
   def rails_str
     "rails #{ options} #{app_name}"
   end
@@ -255,14 +237,6 @@ class Rails < RubyGenerator
     if app.routes.length == 1
       "  map.root :controller => '#{app.routes.first.to_a.first}'"
     end
-  end
-
-  def gen_edit_str(goal)
-    "<%= render :partial => '#{goal.p}/form', :object => @#{goal.s} %>"
-  end
-
-  def gen_new_str(goal)
-    gen_edit_str(goal)
   end
 
   def field_string(name, type)

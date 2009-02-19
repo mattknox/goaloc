@@ -104,11 +104,11 @@ class TestRailsGenerator < Test::Unit::TestCase
       assert_match /form_for..form/, @generator.gen_string("_form", @app.goals["post"])
     end
 
-    should "produce a valid string for the edit view" do 
+    should_eventually "produce a valid string for the edit view" do 
       assert_match /render :partial => 'comments\/form', :object => @comment/, @generator.gen_edit_str(@app.goals["comment"])
     end
     
-    should "produce a valid string for the new view" do 
+    should_eventually "produce a valid string for the new view" do 
       assert_match /render :partial => 'comments\/form', :object => @comment/, @generator.gen_new_str(@app.goals["comment"])
     end
 
