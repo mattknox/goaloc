@@ -15,7 +15,6 @@ class Rails < RubyGenerator
     wrap_method("find_#{goal.s}", ["setup_enclosing_resources", finder_string(goal, "id")] + goal.nested_resources.map { |k,v| new_object_string(v)})
   end
   
-  # TODO: extract the commonality out of this pair of methods.
   def new_object_method(goal)
     wrap_method("new_#{goal.s}", ["setup_enclosing_resources", new_object_string(goal)])
   end
@@ -55,13 +54,8 @@ class Rails < RubyGenerator
     end
   end
 
-  # returns a list of all the params that are required for a goal but not inferrable from the path in which it is encountered.  
-  def required_nonpath_params(goal)
-    goal.associations.reject { |k,v| v[:type] != :belongs_to }.keys.reject {|x| goal.resource_tuple.map { |y| y.to_s.singularize }.member?(x) }
-  end
-  
   def required_nonpath_param_string(goal)
-    required_nonpath_params(goal).map { |z| ":#{ z.singularize }_id => 1" }.join(", ")
+    goal.required_nonpath_params.map { |z| ":#{ z.singularize }_id => 1" }.join(", ")
   end
 
   def object_path(goal, str = "@")

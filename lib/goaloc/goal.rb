@@ -67,6 +67,11 @@ class Goal
     end
   end
 
+  # returns a list of all the params that are required for a goal but not inferrable from the path in which it is encountered.  
+  def required_nonpath_params
+    self.associations.reject { |k,v| v[:type] != :belongs_to }.keys.reject {|x| self.resource_tuple.map { |y| y.to_s.singularize }.member?(x) }
+  end
+
   # if a resource has a resource_tuple, and it is not the first element of that
   # tuple, this will return true.
   def nested?
