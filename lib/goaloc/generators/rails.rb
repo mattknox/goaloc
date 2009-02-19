@@ -77,8 +77,8 @@ class Rails < RubyGenerator
 
   # this does all of the generation for a given goal
   def gen_goal(goal, index = 0)
-    gen_migration(goal, index)
-    
+    gen_file("db/migrate/#{ Time.now.strftime("%Y%m%d%H%M%S").to_i + index }_create_#{goal.p}.rb", "migration", goal)
+
     # TODO: make a thing that returns the innards of the class, preferably organized into
     # validations, associations, requires/acts_as clauses, class, instance, and private methods.
     # also add something that tells a goal not to generate any combo of model/view/controller.
@@ -122,13 +122,6 @@ class Rails < RubyGenerator
     File.open("#{app_dir}/config/routes.rb", "w") do |f|
       f.write gen_routes_string
     end
-  end
-  
-  def gen_migration(goal, i)
-    Dir.mkdir "#{app_dir}/db/migrate" unless File.exists? "#{app_dir}/db/migrate"
-    f = File.new("#{app_dir}/db/migrate/#{ Time.now.strftime("%Y%m%d%H%M%S").to_i + i }_create_#{goal.p}.rb", "w")
-    f.write gen_string("migration", goal)
-    f.close
   end
   
   def gen_view(goal)
