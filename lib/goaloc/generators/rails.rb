@@ -174,25 +174,11 @@ class Rails < RubyGenerator
   
   def gen_tests(goal)
     # TODO: get shoulda into place.
-    gen_unit_test(goal)
-    gen_controller_test(goal)
+    gen_file("/test/unit/#{goal.s}_test.rb", "unit_test", goal)
+    gen_file("/test/functional/#{goal.p}_controller_test.rb", "controller_test", goal)
     gen_fixture(goal)
   end
 
-  def gen_unit_test(goal)
-    Dir.mkdir "#{app_dir}/test/unit" unless File.exists? "#{app_dir}/test/unit"
-    f = File.new("#{app_dir}/test/unit/#{ goal.s }_test.rb", "w")
-    f.write gen_string("unit_test", goal)
-    f.close
-  end
-
-  def gen_controller_test(goal)
-    Dir.mkdir "#{app_dir}/test/functional" unless File.exists? "#{app_dir}/test/functional"
-    f = File.new("#{app_dir}/test/functional/#{ goal.p }_controller_test.rb", "w")
-    f.write gen_string("controller_test", goal)
-    f.close
-  end
-  
   def exemplar_data(data_type)
     case data_type
     when "integer" then rand(100)
