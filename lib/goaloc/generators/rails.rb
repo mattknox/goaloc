@@ -143,33 +143,25 @@ class Rails < RubyGenerator
   end
   
   def gen_view(goal)
-    view_dir = "#{app_dir}/app/views/#{goal.p}/"
-    Dir.mkdir view_dir unless File.exists?(view_dir)
-    File.open("#{view_dir}index.html.erb", "w") do |f|
-      f.write self.gen_string("index", goal)
-    end
+    view_dir = "/app/views/#{goal.p}/"
+    full_view_dir = app_dir + view_dir
+    FileUtils.mkdir_p full_view_dir unless File.exists?(full_view_dir)
+    gen_file("#{view_dir}index.html.erb", "index", goal)
     
-    File.open("#{view_dir}show.html.erb", "w") do |f|
-      f.write self.gen_string("show", goal)
-    end
-    
-    File.open("#{view_dir}_#{goal.s}.html.erb", "w") do |f|
-      f.write self.gen_string("_model", goal)
-    end
-    
-    File.open("#{view_dir}_#{goal.s}_small.html.erb", "w") do |f|
-      f.write self.gen_string("_model_small", goal)
-    end
-    
-    f = File.new("#{view_dir}new.html.erb", "w")
+    gen_file("#{view_dir}show.html.erb", "show", goal)
+
+    gen_file("#{view_dir}_#{goal.s}.html.erb", "_model", goal)
+
+    gen_file("#{view_dir}_#{goal.s}_small.html.erb", "_model_small", goal)
+
+    f = File.new("#{full_view_dir}new.html.erb", "w")
     f.write "<%= render :partial => '#{goal.p}/form', :object => @#{goal.s} %>"
     f.close
-    f = File.new("#{view_dir}edit.html.erb", "w") 
+    f = File.new("#{full_view_dir}edit.html.erb", "w") 
     f.write "<%= render :partial => '#{goal.p}/form', :object => @#{goal.s} %>"
     f.close
-    File.open("#{view_dir}_form.html.erb", "w") do |f|
-      f.write self.gen_string("_form", goal)
-    end
+
+    gen_file("#{view_dir}_form.html.erb", "_form", goal)
   end
   
   def gen_tests(goal)
