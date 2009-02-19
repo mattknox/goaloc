@@ -24,13 +24,11 @@ it should:
 -support singular resources
 -write the plugin architecture
 -extend goals such that they can be told not to make a controller, or view, or model.
--must make it serve apps next, and then make that compile to other web frameworks.
--must make it pick a directory back up, so you can regenerate over an existing dir.  
+-must make it serve apps next
 -add cucumber features as high-level specs
 -support polymorphic resources (has_many :polymorphs type stuff)
 -add syntax for guaranteeing that something is in-session(so that you can specify that the user is logged in, eg.)
--change the default test_helper so that it inherits from ActiveSupport::TestCase rather than Test::Unit::TestCase
--look at cloudkit: http://getcloudkit.com/  it exposes RESTful json apis  really easily
+-look at cloudkit: http://getcloudkit.com/  it exposes RESTful json apis really easily
 -shoulda will now support rspec, so maybe I should generate RSpec/shoulda and Test::Unit/shoulda?
 -need to rename/split/join models.
 -steal the rails code generator framework, or make my own.  
