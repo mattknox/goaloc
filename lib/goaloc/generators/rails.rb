@@ -137,7 +137,6 @@ class Rails < RubyGenerator
   end
   
   def gen_tests(goal)
-    # TODO: get shoulda into place.
     gen_file("/test/unit/#{goal.s}_test.rb", "unit_test", goal)
     gen_file("/test/functional/#{goal.p}_controller_test.rb", "controller_test", goal)
     gen_fixture(goal)
