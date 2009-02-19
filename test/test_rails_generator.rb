@@ -68,7 +68,7 @@ class TestRailsGenerator < Test::Unit::TestCase
     end
     
     should "produce a valid migration"do
-      assert_match /text :body/, @generator.gen_migration_str(Post)
+      assert_match /text :body/, @generator.gen_string("migration", Post)
     end
 
     should "produce a valid string for the model" do
@@ -79,8 +79,8 @@ class TestRailsGenerator < Test::Unit::TestCase
     end
     
     should "produce a valid string for the controller" do
-      assert_match /def find_comment/, @generator.gen_controller_str(@app.goals["comment"])
-      assert_match /def find_post/, @generator.gen_controller_str(@app.goals["post"])
+      assert_match /def find_comment/, @generator.gen_string("controller", @app.goals["comment"])
+      assert_match /def find_post/, @generator.gen_string("controller", @app.goals["post"])
     end
     
     should "produce a valid string for the index view" do
@@ -92,12 +92,12 @@ class TestRailsGenerator < Test::Unit::TestCase
     end
     
     should "produce a valid string for the _model view" do
-      assert_match /div_for\(post\) do /, @generator.gen_partial_str(@app.goals["post"])
+      assert_match /div_for\(post\) do /, @generator.gen_string("_model", @app.goals["post"])
       #assert_match /render :partial => 'comments\/comment', :object => @comment/, @generator.gen_partial_str(@app.goals["post"])
     end
     
     should "produce a valid string for the _model_small view" do
-      assert_match /div_for\(post_small\) do /, @generator.gen_partial_small_str(@app.goals["post"])
+      assert_match /div_for\(post_small\) do /, @generator.gen_string("_model_small", @app.goals["post"])
     end
     
     should "produce a valid string for the _form view" do 
@@ -117,7 +117,8 @@ class TestRailsGenerator < Test::Unit::TestCase
       #assert_match /xzy/, @generator.gen_controller_test_string(Comment)
     end
 
-    should "produce a valid string for the view layout" do
+    should_eventually "produce a valid string for the view layout" do
+      # the layout is presently copied, not generated through ERB.  
       assert_match /<html/, @generator.gen_layout_str
       assert_match /<\/html>/, @generator.gen_layout_str
       assert_match /<\/head>/, @generator.gen_layout_str

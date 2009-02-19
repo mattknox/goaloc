@@ -89,8 +89,8 @@ class Rails < RubyGenerator
   # this does all of the generation for a given goal
   def gen_goal(goal, index = 0)
     gen_migration(goal, index)
-    gen_model(goal)
-    gen_controller(goal)
+    gen_file("/app/models/#{goal.s}.rb", "model", goal)
+    gen_file("/app/controllers/#{goal.p}_controller.rb", "controller", goal)
     gen_view(goal)
     gen_tests(goal)
   end
@@ -138,12 +138,6 @@ class Rails < RubyGenerator
     f.close
   end
   
-  def gen_controller(goal)              # make this a better controller
-    f = File.new("#{app_dir}/app/controllers/#{goal.p}_controller.rb", "w") 
-    f.write(gen_string("controller", goal))
-    f.close
-  end
-  
   def gen_view(goal)
     view_dir = "#{app_dir}/app/views/#{goal.p}/"
     Dir.mkdir view_dir unless File.exists?(view_dir)
@@ -156,11 +150,11 @@ class Rails < RubyGenerator
     end
     
     File.open("#{view_dir}_#{goal.s}.html.erb", "w") do |f|
-      f.write self.gen_partial_str(goal)
+      f.write self.gen_string("_model", goal)
     end
     
     File.open("#{view_dir}_#{goal.s}_small.html.erb", "w") do |f|
-      f.write self.gen_partial_small_str(goal)
+      f.write self.gen_string("_model_small", goal)
     end
     
     f = File.new("#{view_dir}new.html.erb", "w")
@@ -184,14 +178,14 @@ class Rails < RubyGenerator
   def gen_unit_test(goal)
     Dir.mkdir "#{app_dir}/test/unit" unless File.exists? "#{app_dir}/test/unit"
     f = File.new("#{app_dir}/test/unit/#{ goal.s }_test.rb", "w")
-    f.write gen_unit_test_string(goal)
+    f.write gen_string("unit_test", goal)
     f.close
   end
 
   def gen_controller_test(goal)
     Dir.mkdir "#{app_dir}/test/functional" unless File.exists? "#{app_dir}/test/functional"
     f = File.new("#{app_dir}/test/functional/#{ goal.p }_controller_test.rb", "w")
-    f.write gen_controller_test_string(goal)
+    f.write gen_string("controller_test", goal)
     f.close
   end
   
@@ -294,26 +288,6 @@ class Rails < RubyGenerator
       out << "  validates_#{v[:val_type]} :#{v[:field]}\n"
     end
     out <<  "end"
-  end
-
-  # view stuff
-  # TODO:  get some method_missing action going on here, to make it so that I don't have to
-  # have all these boilerplate methods.  Probably it's enough to have a hash of hashes,
-  # keyed on things like "layout", with a name of a file to read and the name of a file to
-  # render to.
-  def gen_layout_str
-    template_str = File.open("#{File.dirname(__FILE__)}/rails/application.erb").read
-    ERB.new(template_str).result(binding)
-  end
-  
-  def gen_partial_str(goal)
-    template_str = File.open("#{File.dirname(__FILE__)}/rails/_model.erb").read
-    ERB.new(template_str).result(binding)
-  end
-
-  def gen_partial_small_str(goal)
-    template_str = File.open("#{File.dirname(__FILE__)}/rails/_model_small.erb").read
-    ERB.new(template_str).result(binding)
   end
 
   def gen_edit_str(goal)
