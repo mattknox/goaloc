@@ -4,8 +4,6 @@ class Merb < Generator
   cattr_accessor :merb_models
   self.merb_models = []
 
-  NAMES_PATHS = { "model" => lambda { |goal| "#{app_name}/app/models/#{goal.s}.rb" }}
-  
   module MerbModel
     def merb_symname
       '@' + self.s
@@ -49,8 +47,7 @@ class Merb < Generator
     str.capitalize
   end
   
-  # gonna get Foy to help with this.
-  def gen_app # this is just heinous.  Maybe get rid of it?
+  def gen_app 
     `#{gen_app_string}`
   end
 

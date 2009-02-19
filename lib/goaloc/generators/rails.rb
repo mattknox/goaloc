@@ -3,11 +3,6 @@ require "fileutils"
 
 # TODO: seperate out the actionview parts, in prep for Rails3
 class Rails < RubyGenerator
-  # NAMES_PATHS is a hash of template filename => destination filename pairs
-  # the destination filenmaes need to be lambdas so they can insert the goal
-  # name into destination filename as appropriate.
-  DESTINATION_PATHS = { "model" => lambda { |goal| "#{app_name}/app/models/#{goal.s}.rb"}  }
-  
   # wraps an array of lines in a method call, with a given name, using a given indentation.
   def wrap_method(name, arr, indent_string = "  ")
     indent_string + "def #{name}\n" + arr.map { |s| indent_string + "  " + s }.join("\n") + "\n#{indent_string}end"
