@@ -89,6 +89,10 @@ class Rails < RubyGenerator
   # this does all of the generation for a given goal
   def gen_goal(goal, index = 0)
     gen_migration(goal, index)
+    
+    # TODO: make a thing that returns the innards of the class, preferably organized into
+    # validations, associations, requires/acts_as clauses, class, instance, and private methods.
+    # also add something that tells a goal not to generate any combo of model/view/controller.
     gen_file("/app/models/#{goal.s}.rb", "model", goal)
     gen_file("/app/controllers/#{goal.p}_controller.rb", "controller", goal)
     gen_view(goal)
@@ -273,21 +277,6 @@ class Rails < RubyGenerator
     if app.routes.length == 1
       "  map.root :controller => '#{app.routes.first.to_a.first}'"
     end
-  end
-
-  # TODO: make a thing that returns the innards of the class, preferably organized into
-  # validations, associations, requires/acts_as clauses, class, instance, and private methods.
-  # also add something that tells a goal not to generate any combo of model/view/controller.
-  def gen_model_str(goal)
-    out = ""
-    out << "class #{goal.cs} < ActiveRecord::Base\n"   # TODO:  make this restrict access to attributes that shouldn't be accessible
-    goal.associations.each do |k, v|
-      out <<  "  #{ArModel.association_string(k,v)}\n"
-    end
-    goal.validations.each do |v|
-      out << "  validates_#{v[:val_type]} :#{v[:field]}\n"
-    end
-    out <<  "end"
   end
 
   def gen_edit_str(goal)
