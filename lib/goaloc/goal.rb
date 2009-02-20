@@ -11,7 +11,8 @@
 class Goal
   attr_reader :name
   attr_accessor :associations, :validations, :fields, :options, :routes, :foreign_keys
-
+  # probably needs an attribute that tells what actions it supports in the controller. 
+  
   def initialize(name, route = nil)
     @name = name.underscore.singularize   
     self.associations = HashWithIndifferentAccess.new
