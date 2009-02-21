@@ -7,3 +7,6 @@
 * many minor enhancement:
   * added tests
   * changed readme, etc.
+
+== 0.4.7 2009-2-19
+* massive refactoring, reduced the LOC count substantially.
