@@ -219,12 +219,4 @@ class Rails < RubyGenerator
       "  map.root :controller => '#{app.routes.first.to_a.first}'"
     end
   end
-
-  def field_string(name, type)
-    case type
-    when "text" then "    <%= f.text_area :#{name} %" + ">"
-    when "foreign_key" then "    <%= f.select :#{name}, #{name[0..-4].camelize}.find(:all).map { |x| ['#{name}' + x.id.to_s, x.id]} %>"
-    else "    <%= f.text_field :#{name} %" + ">"
-    end
-  end
 end

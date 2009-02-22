@@ -3,7 +3,7 @@
 <% goal.fields.each do |k, v| %>
   <div>
     <%= "    <%= f.label :#{k} %%>" %>
-    <%= generator.field_string(k, v) %>
+    <%= ActionViewGen.field_string(k, v) %>
   </div>
 <% end %>
 
@@ -11,7 +11,7 @@
 <% goal.foreign_keys.reject {|x, v| keys_in_path.member?(x) }.each do |key, value| %>
   <div>
     <%= "    <%= f.label :#{key[0..-4]} %%>" %>
-    <%= generator.field_string(key, "foreign_key") %>
+    <%= ActionViewGen.field_string(key, "foreign_key") %>
   </div>
 <% end %>
 
