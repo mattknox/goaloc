@@ -10,6 +10,8 @@ require "goaloc/generators/rails"
 require "goaloc/generators/merb"
 require "goaloc/generators/dm_model"
 require "goaloc/generators/ar_model"
+require "goaloc/generators/action_view_gen"
+require "goaloc/generators/haml_gen"
 
 module Goaloc
 end
