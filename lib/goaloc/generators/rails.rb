@@ -68,7 +68,8 @@ class Rails < RubyGenerator
   # the core method that generates the whole app.  
   def generate
     gen_app
-    gen_routes
+    handle_public_index
+    gen_file("config/routes.rb", "routes")
     @app.goals.values.each_with_index { |goal, i| gen_goal(goal, i) }
     gen_misc
     self
@@ -101,12 +102,8 @@ class Rails < RubyGenerator
     end
   end
   
-  def need_public_index?
-    default_route.blank?
-  end
-  
   def handle_public_index
-    if !need_public_index?
+    if !default_route.blank?
       File.delete("#{app_dir}/public/index.html") rescue nil
     else
       File.open("#{app_dir}/public/index.html", "w") do |f|
@@ -114,13 +111,6 @@ class Rails < RubyGenerator
         app.routes.map { |x| sym = (x.is_a?(Array) ? x.first : x) ; f.write "<div><a href=/#{sym}>#{sym}</a><br/></div>" }
       end
     end    
-  end
-  
-  def gen_routes
-    handle_public_index
-    File.open("#{app_dir}/config/routes.rb", "w") do |f|
-      f.write gen_routes_string
-    end
   end
   
   def gen_view(goal)
@@ -195,14 +185,7 @@ class Rails < RubyGenerator
     nullary_opts = %w{ -f --freeze --force -s --skip -q --quiet -c --svn -g --git }.reject { |x| !opts.has_key?(x) and !opts.has_key?(x.gsub(/-/, ""))}
     "-d #{db} #{rubypath}" + nullary_opts.join(" ")
   end
-    
-  def gen_routes_string
-    "ActionController::Routing::Routes.draw do |map|\n" +
-      default_route.to_s + "\n" +
-      app.routes.map { |x| gen_route(x)}.join("\n") + "\n" + 
-      "end"
-  end
-
+  
   def gen_route(x, var = "map", pad = "  ") # turn a sym or array into a potentially nested route
     if x.is_a? Symbol
       pad + "#{var}.resources :#{x.to_s}"
@@ -214,8 +197,6 @@ class Rails < RubyGenerator
   end
   
   def default_route
-    if app.routes.length == 1
-      "  map.root :controller => '#{app.routes.first.to_a.first}'"
-    end
+    "  map.root :controller => '#{app.routes.first.to_a.first}'" if app.routes.length == 1
   end
 end

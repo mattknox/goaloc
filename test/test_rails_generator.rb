@@ -12,13 +12,9 @@ class TestRailsGenerator < Test::Unit::TestCase
       assert @generator.respond_to?(:generate)
     end
     
-    should "have a method to produce a route string" do
-      assert @generator.respond_to?(:gen_routes_string)
-    end
-    
     should "produce a valid string for generate routes" do
-      assert_match "map.resources :posts", @generator.gen_routes_string
-      assert_match "map.root :controller => 'posts'", @generator.gen_routes_string
+      assert_match "map.resources :posts", @generator.gen_string("routes")
+      assert_match "map.root :controller => 'posts'", @generator.gen_string("routes")
     end
   end
   
@@ -30,9 +26,9 @@ class TestRailsGenerator < Test::Unit::TestCase
     end
 
     should "produce a valid route string" do 
-      assert_match "map.resources :posts do |post|", @generator.gen_routes_string
-      assert_match "post.resources :comments", @generator.gen_routes_string
-      assert_match "map.root :controller => 'posts'", @generator.gen_routes_string
+      assert_match "map.resources :posts do |post|", @generator.gen_string("routes")
+      assert_match "post.resources :comments", @generator.gen_string("routes")
+      assert_match "map.root :controller => 'posts'", @generator.gen_string("routes")
     end
   end
 
@@ -44,10 +40,10 @@ class TestRailsGenerator < Test::Unit::TestCase
     end
 
     should "produce a valid route string" do 
-      assert_match "map.resources :posts do |post|", @generator.gen_routes_string
-      assert_match "map.resources :pictures", @generator.gen_routes_string
-      assert_match "post.resources :comments", @generator.gen_routes_string
-      assert_no_match /map.root :controller => 'posts'/, @generator.gen_routes_string
+      assert_match "map.resources :posts do |post|", @generator.gen_string("routes")
+      assert_match "map.resources :pictures", @generator.gen_string("routes")
+      assert_match "post.resources :comments", @generator.gen_string("routes")
+      assert_no_match /map.root :controller => 'posts'/, @generator.gen_string("routes")
     end
   end
   
@@ -60,7 +56,7 @@ class TestRailsGenerator < Test::Unit::TestCase
     end
 
     should "generate valid routes" do
-      assert_match /map.resources :posts/, @generator.gen_routes_string
+      assert_match /map.resources :posts/, @generator.gen_string("routes")
     end
 
     should "generate correct collection_path" do

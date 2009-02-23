@@ -1,0 +1,6 @@
+ActionController::Routing::Routes.draw do |map|
+  <%= default_route.to_s %>
+  <% app.routes.each do |route| %>
+    <%= generator.gen_route(route) %>
+  <% end %>
+end
