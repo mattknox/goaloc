@@ -1,7 +1,6 @@
 require "erb"
 require "fileutils"
 
-# TODO: seperate out the actionview parts, in prep for Rails3
 class Rails < RubyGenerator
   # wraps an array of lines in a method call, with a given name, using a given indentation.
   def wrap_method(name, arr, indent_string = "  ")
