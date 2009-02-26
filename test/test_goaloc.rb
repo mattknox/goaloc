@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/test_helper'
+require File.dirname(__FILE__) + '/../lib/goaloc.rb'
 
 class TestGoaloc < Test::Unit::TestCase
   context "the core goaloc class" do
@@ -8,10 +9,5 @@ class TestGoaloc < Test::Unit::TestCase
       Object.send(:reset)
       assert_not_equal old_app, @app
     end
-  end
-
-  should "route things " do
-#    assert !!route
-#    assert_match /post/, Object.send(:showlog)
   end
 end
