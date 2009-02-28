@@ -3,6 +3,6 @@ class Server
   # this should use rack to actually serve the files, probably via mongrel or something.
 end
 app = proc do |env|
-  [200, { 'Content-Type' => 'text/html' }, 'no pepper plz!']
+  [200, { 'Content-Type' => 'text/html' }, "no content yet"]
 end
 run app
