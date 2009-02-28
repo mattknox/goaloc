@@ -37,3 +37,7 @@ Feature: Server
     When I DELETE to "/posts/1"
     Then I should be redirected to an html page
 
+  Scenario: Nested Index Page
+    Given a populated nested app
+    When I GET the "/posts/1/comments" page
+    Then I should see an html page
