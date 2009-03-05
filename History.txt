@@ -14,3 +14,5 @@
 == 0.4.8 2009-3-3
 * showed dave how to work in git
 
+== 0.4.9 2009-3-3
+* dave trying to change something
