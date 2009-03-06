@@ -5,7 +5,8 @@ describe App do
     @app = App.new
   end
 
-  it "should do stuff" do
-    @app.should respond_to :route    
+  it "should route things" do
+    @app.should respond_to :route
+    @app.goals.length.should == 0
   end
 end
