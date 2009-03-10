@@ -15,5 +15,9 @@ describe App do
 
   it "should allow adding attrs to models" do
     @app.should respond_to :add_attrs
+    @app.route [:posts, :comments]
+    @app.goals[:post].fields.length.should == 0
+    @app.add_attrs :posts => "title:string body:text"
+    @app.goals[:post].should satisfy { |arg| arg.fields[:body] == "text" }
   end
 end
