@@ -55,3 +55,7 @@ end
 def models(*args)
   args.map { |x| @app.fetch_or_create_goal(x) }
 end
+
+def serve(*args)
+  raise "not yet implemented"
+end
