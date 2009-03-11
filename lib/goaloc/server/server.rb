@@ -5,5 +5,5 @@ class Server
   @app = proc do |env|
     [200, { 'Content-Type' => 'text/html' }, "no content yet"]
   end
-  Rack::Handler::WEBrick.run app, :Port => 2000
+  Rack::Handler::WEBrick.run app, :Port => 9292
 end

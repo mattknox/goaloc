@@ -125,3 +125,5 @@ all of these should check to see if the file already exists and is ask before th
 (putting new things in a file without asking is ok)
 
 Need to make polymorphic assocs, and probably to make routes into a hash.  
+
+might want to display an object graph, possibly as a javascript FDG
