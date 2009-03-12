@@ -18,48 +18,15 @@ class Server
 end
 
 
+# this is the output of env.inspect
+# {"HTTP_HOST"=>"localhost:9292", "HTTP_ACCEPT"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", "SERVER_NAME"=>"localhost", "REQUEST_PATH"=>"/", "rack.url_scheme"=>"http", "HTTP_KEEP_ALIVE"=>"300", "HTTP_USER_AGENT"=>"Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.0.7) Gecko/2009021906 Firefox/3.0.7", "REMOTE_HOST"=>"localhost", "rack.errors"=>#<IO:0x2ddc0>, "HTTP_ACCEPT_LANGUAGE"=>"en-us,en;q=0.5", "SERVER_PROTOCOL"=>"HTTP/1.1", "rack.version"=>[0, 1], "rack.run_once"=>false, "SERVER_SOFTWARE"=>"WEBrick/1.3.1 (Ruby/1.8.7/2008-08-11)", "REMOTE_ADDR"=>"::1", "PATH_INFO"=>"/foo/2/bar/4/baz", "SCRIPT_NAME"=>"", "HTTP_VERSION"=>"HTTP/1.1", "rack.multithread"=>true, "HTTP_COOKIE"=>"_post_session=BAh7CzoQc2NvcmVrZWVwZXIiEHNjb3Jla2VlcGVyOhBoYXNfYWRkcmVzcyIJdHJ1ZToMY3NyZl9pZCIlNTk1Y2E1NjYwZTZiNWZiYzczYzMzMWE4NDliYWFmY2I6DHVzZXJfaWRpBiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNoSGFzaHsGOgtub3RpY2UiJVRhcmdldCB3YXMgc3VjY2Vzc2Z1bGx5IGNyZWF0ZWQuBjoKQHVzZWR7BjsKVDoRc3BlY2lhbHR5X2lkaQ0%3D--6358f81f2e2a534b426af083530545f69fe3f8d2; _untitled-985439_session=BAh7ByIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7ADoMY3NyZl9pZCIlNDBiMzdmOGFhMjM1ZDUyNDk2%0AMWVlOWUwMmZiZmI0ZDM%3D--d4890e6e83abf3cc4e43033cf2dd951d4793e7c2; _goaloc_generated_app_session=BAh7CDoQX2NzcmZfdG9rZW4iMVZvdzBDVTUvWkg1TWhMOGJHYmxhOCtrVDlUbWFrUEwrZzU5cDN1OXAxZ1U9Og9zZXNzaW9uX2lkIiVjM2Y2YjBiZTE2NGM5ODU5Y2M0NjEwMjlhOWYzNGFlYiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNoSGFzaHsGOgtub3RpY2UiJkNvbW1lbnQgd2FzIHN1Y2Nlc3NmdWxseSBjcmVhdGVkLgY6CkB1c2VkewY7CFQ%3D--27820f97b3be0252804cfb00b08e02e82e6a4bb6", "rack.multiprocess"=>false, "REQUEST_URI"=>"http://localhost:9292/foo/2/bar/4/baz", "HTTP_ACCEPT_CHARSET"=>"ISO-8859-1,utf-8;q=0.7,*;q=0.7", "SERVER_PORT"=>"9292", "REQUEST_METHOD"=>"GET", "rack.input"=>#<StringIO:0x1976fd4>, "HTTP_ACCEPT_ENCODING"=>"gzip,deflate", "HTTP_CONNECTION"=>"keep-alive", "QUERY_STRING"=>"", "GATEWAY_INTERFACE"=>"CGI/1.1"}
+# this is the line of output from rack
+# localhost - - [12/Mar/2009:13:46:54 EDT] "GET /foo/2/bar/4/baz HTTP/1.1" 200 21
+
 
 ################################################################################
-# this is the original merb pastie, from which I will loot code to make goaloc
-# serve itself.
-
-# #!/usr/local/bin/ruby
-# require 'rubygems'
-# require 'mongrel'
-
-# # Add the request handler directory to the load path.
-# # Files in the 'app/controllers' dir will be mapped against the first segment
-# # of a URL
-# $LOAD_PATH.unshift( File.join( File.dirname( __FILE__ ) , 'app/controllers' ) )
-
-# PORT = 4000
-
-#  # If true, controller source files are 'load'ed rather than 'require'd
-# # so you can tweak code and reload a page.
-# ALLOW_RELOADING = true 
-
-# class String
-#   def import
-#     ALLOW_RELOADING ? load(  self  + '.rb' ) : require(  self )
-#   end
-
-#   def controller_class_name
-#     self.capitalize
-#   end
-# end
-
-# class MerberHandler < Mongrel::HttpHandler
-
-#   def instantiate_controller(controller_name)
-#     controller_name.import
-#     begin
-#       return Object.const_get( controller_name.controller_class_name ).new
-#     rescue Exception
-#       # If life is sad, then print the error and re-raise the exception:
-#       warn "Error getting instance of '#{controller_name.controller_class_name}': #{$!}"
-#       raise $!
-#     end
-#   end
+# this is a hacked up version of the original merb pastie, from which I will
+# loot code to make goaloc serve itself.
 
 #   # Grab the request URL and break it up to get the parts that map to the 
 #   # code request.  There's a simple assumption that the first part defines a
