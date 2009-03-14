@@ -31,22 +31,6 @@ end
 # this is a hacked up version of the original merb pastie, from which I will
 # loot code to make goaloc serve itself.
 
-#   # Grab the request URL and break it up to get the parts that map to the 
-#   # code request.  There's a simple assumption that the first part defines a
-#   # class holding the desired  code.
-#   def handle(request)
-#     path = request.params["PATH_INFO"]
-#     puts request.inspect
-#     puts '='*50
-#     # Might want to consider returning a default object if we have a bare URL.
-#     return [nil, nil, nil ] if path =~ /^\/$/
-#     c, m, args = path.to_s.gsub( /^\//, '' ).split( '/' , 3)
-#     args = args.to_s.strip.empty? ? nil : args.split( '/' )
-#     # STDERR.puts( "handler_details  returning #{h}, #{m}, #{args.inspect} ")
-#     # Return an array with our object instance, the method name, and any args.
-#     [ instantiate_controller(c), m, args ]
-#   end
-
 #   def process(request, response)
 #     response.start(200) do |head,out|
 #       head["Content-Type"] = "text/html"
