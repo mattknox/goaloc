@@ -25,37 +25,3 @@ end
 
 # this is the line of output from rack
 # localhost - - [12/Mar/2009:13:46:54 EDT] "GET /foo/2/bar/4/baz HTTP/1.1" 200 21
-
-
-################################################################################
-# this is a hacked up version of the original merb pastie, from which I will
-# loot code to make goaloc serve itself.
-
-#   def process(request, response)
-#     response.start(200) do |head,out|
-#       head["Content-Type"] = "text/html"
-#       begin
-#         # Looks at the URL and breaks it up into 
-#         # chunks that  map to a class, a method call,
-#         # and arguments.
-#         # Basically, 
-#         #   /foo/bar/baz/baz
-#         # ends up becoming
-#         #   Foo.new.bar( baz, baz )
-#         controller, method, args = handle(request)
-
-#         if controller
-#           # No allowance for default methods.  
-#           # Worth considering, maybe default to 'index' or 'to_s' 
-#           out << (  args ?  controller.send( method, *args ) : 
-#                             controller.send( method ) )
-#         else
-#           out << "Error: no merb controller found for this url."
-#         end
-#       rescue Exception
-#         out << "Error! #{$!}"
-#       end
-#     end
-#   end
-
-# end
