@@ -8,7 +8,7 @@ class Server
   end
 
   def handle(http_verb, path)
-    "#{http_verb}: #{path}"
+    "#{http_verb}: #{path} resolves to controller: #{} action: #{}"
   end
 
   def respond(content, status_code = 200, headers = { 'Content-Type' => 'text/html' })
