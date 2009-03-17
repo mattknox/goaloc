@@ -135,3 +135,43 @@ new things to handle:  application generators (create for rails a file like this
 rails newapp -m http://www.railsboost.com/917.rb
 
 and then call rails myapp -m http://www.railsboost.com/917.rb
+
+
+
+
+more new stuff from the blog in 15 mins with rails2:
+
+link_to_unless_current
+render :partial => @post
+render :partial => @posts
+render @post ?? <= does this work?
+
+format.atom
+(in index.atom.builder)
+atom_feed do |feed|
+  feed.title("blah")
+  feed.updated(@posts.first.created_at)
+  
+  @posts.each do |post|
+    feed.entry(post) do |entry|
+      entry.title(post.title)
+      entry.content(post.body, :type => "html")
+      entry.author { |author| author.name("matt knox")}
+    end
+  end
+end
+
+in <head>
+auto_discovery_link_tag :atom, formatted_posts_path(:atom)
+
+authenticate_or_request_with_http_basic do |name, password|
+  name == "foo" && password == "bar"
+end
+
+time_ago_in_words(Time.now)
+
+in rjs:
+page.insert_html <position>, <target>, <content>
+page[@comment].visual_effect :highlight
+page[:new_comment].reset
+
