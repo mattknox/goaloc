@@ -127,3 +127,11 @@ all of these should check to see if the file already exists and is ask before th
 Need to make polymorphic assocs, and probably to make routes into a hash.  
 
 might want to display an object graph, possibly as a javascript FDG
+
+
+
+
+new things to handle:  application generators (create for rails a file like thisone:
+rails newapp -m http://www.railsboost.com/917.rb
+
+and then call rails myapp -m http://www.railsboost.com/917.rb
