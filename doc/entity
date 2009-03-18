@@ -175,3 +175,15 @@ page.insert_html <position>, <target>, <content>
 page[@comment].visual_effect :highlight
 page[:new_comment].reset
 
+
+example app:
+I entered this:
+route [:users, :profiles, :ratings, :follows, :submissions, :comments], [:submissions, :comments, :ratings]
+add_attrs :ratings => "ratable_id:integer ratable_type:string score:integer", :follow => "followed_id:integer submissions:boolean upvotes:boolean", :submission => "url:string title:string score:float", :comments => "body:text"
+and then had to edit in the polymorphic assocs, etc.
+
+I wanted to enter this:
+route [:users, :profile, :ratings, {:class => :user, :through => :follows}, :submissions, :comments], [:submissions, {:class => :rating, :poly => :ratable}, [:comments, {:class => :rating, :poly => :ratable}]]
+add_attrs :ratings => "score:integer", :follow => "followed_id:integer submissions:boolean upvotes:boolean", :submission => "url:string title:string score:float", :comments => "body:text"
+
+unbelievably, I can't generate links to things at the moment in goaloc.  Need to factor that.  

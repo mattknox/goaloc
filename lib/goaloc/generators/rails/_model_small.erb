@@ -1,5 +1,4 @@
 <%% div_for(<%= goal.s %>_small) do %>
-  <%%= link_to_unless_current "<%= goal.s %>-#{<%= goal.s %>_small.to_param}", <%= goal.s %>_small  %>
 <% goal.fields.each do |k, v| %>
   <div>
     <span><%= k %>:</span>
