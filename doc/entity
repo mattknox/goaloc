@@ -187,3 +187,5 @@ route [:users, :profile, :ratings, {:class => :user, :through => :follows}, :sub
 add_attrs :ratings => "score:integer", :follow => "followed_id:integer submissions:boolean upvotes:boolean", :submission => "url:string title:string score:float", :comments => "body:text"
 
 unbelievably, I can't generate links to things at the moment in goaloc.  Need to factor that.  
+
+Should I approach this as a framework, or as a code generator for rails?  the first seems more interesting.  
