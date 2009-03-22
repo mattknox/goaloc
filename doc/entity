@@ -188,4 +188,4 @@ add_attrs :ratings => "score:integer", :follow => "followed_id:integer submissio
 
 unbelievably, I can't generate links to things at the moment in goaloc.  Need to factor that.  
 
-Should I approach this as a framework, or as a code generator for rails?  the first seems more interesting.  
+Should I approach this as a framework, or as a code generator for rails?  the first seems more interesting.  Perhaps I should make it possible to compile down to a bunch of rack instances that communicate over http, similar to django's rack-equivalent.
