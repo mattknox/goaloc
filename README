@@ -21,6 +21,8 @@ it should:
 -write backend for haml
 -write a merb target
 -write an erlyweb target
+-write a django target
+-sinatra/compojure/furnace?
 -support singular resources
 -write the plugin architecture
 -extend goals such that they can be told not to make a controller, or view, or model.
