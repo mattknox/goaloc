@@ -190,4 +190,4 @@ unbelievably, I can't generate links to things at the moment in goaloc.  Need to
 
 Should I approach this as a framework, or as a code generator for rails?  the first seems more interesting.  Perhaps I should make it possible to compile down to a bunch of rack instances that communicate over http, similar to django's rack-equivalent.  (pinax)
 
-Possibly should retarget this at lisp, for better codegen, if I'm going to do it as an honest-to-god framework.
+Possibly should retarget this at lisp, for better codegen, if I'm going to do it as an honest-to-god framework.  Alternatively, I could do it again in ruby, or even refactor it from its current state.  
