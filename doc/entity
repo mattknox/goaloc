@@ -89,7 +89,8 @@ CoC is a great idea.  What is the minimum that I could possibly write to get the
 
 hello-world(something that generates a page that says 'hello world')
 unauth'd blog(just 2 models, standard REST actions)
-auth'd blog(users, posts, comments)
+auth'd blog(users, posts, comments) (assuming the presence of an authentication module)
+lemmr (posts, comments, ratings on both, asymmetric friendships, login, per-user feeds on different sites)
 
 I think the hello-world one is:
 defresp "/" "hello"
@@ -97,11 +98,11 @@ defresp "/" "hello"
 (defresp / "hello")
 
 
-the blog one is:
+the blog is:
 route [:posts, :comments]
 add_attrs { :posts => "body:text title:string", :comments => "body:text" }
 
-(route ('posts 'comments))
+(route (posts comments))
 (add_attrs { 'posts => "body:text title:string", 'comments => "body:text" })
 
 the auth'd blog is
@@ -193,3 +194,6 @@ Should I approach this as a framework, or as a code generator for rails?  the fi
 Possibly should retarget this at lisp, for better codegen, if I'm going to do it as an honest-to-god framework.  Alternatively, I could do it again in ruby, or even refactor it from its current state.
 
 If I do a framework, should it be continuation-passing and REST, or just REST?
+
+
+
