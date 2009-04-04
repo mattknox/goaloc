@@ -120,6 +120,8 @@ lemmr is:
 There should be a console in which one can start a repl, with a live server attached, so one can flip back and forth effortlessly.
 
 
+a web framework should probably distinguish between requests for which server-side state is necessary, and requests for which it is not.  
+
 need a code generation framework.  It must be capable of the following:
 -copy file or dir from one place to another
 -render an ERB file with some vars set and put that someplace
