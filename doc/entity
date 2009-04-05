@@ -203,3 +203,11 @@ If I do a framework, should it be continuation-passing and REST, or just REST?
 
 
 
+
+
+Order of operations:
+-handler for HTTP requests (probably rack is good enough)
+-router
+-templating language (haml/erb might do here, but macros might be nice)
+-deserialization code for forms data microformat.
+-form builder
