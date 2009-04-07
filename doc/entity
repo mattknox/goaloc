@@ -212,3 +212,4 @@ Order of operations:
 -router
 -form builder
 -deserialization code for forms data microformat.
+-hooks in controllers
