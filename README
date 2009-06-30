@@ -34,6 +34,9 @@ it should:
 -shoulda will now support rspec, so maybe I should generate RSpec/shoulda and Test::Unit/shoulda?
 -need to rename/split/join models.
 -steal the rails code generator framework, or make my own.  
+-need to think about how to make apps built in the framework scale smoothly (probably by making the db layer agnostic about doc/relational dbs)
+-is it easy to make continuous deploy if you start early enough?  Very interesting question.
+-is it easy to bake in A/B testing?
 
 ==DONE:
 -include jquery for js
