@@ -39,7 +39,7 @@ it should:
 -is it easy to bake in A/B testing?
 -need to think also about the the CMS dilemma- http://aaronlongwell.com/2009/06/the-ruby-on-rails-cms-dilemma.html  rails is great for apps, bad for sites.  Modules seem to solve this fairly well.  
 -need to build in app visibility (some kind of stats dashboard, perhaps?)  This could well be a module/goal that one mixes in as needed.  
-
+-need to port to rails 2.3
 
 ==DONE:
 -include jquery for js
