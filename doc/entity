@@ -91,6 +91,8 @@ hello-world(something that generates a page that says 'hello world')
 unauth'd blog(just 2 models, standard REST actions)
 auth'd blog(users, posts, comments) (assuming the presence of an authentication module)
 lemmr (posts, comments, ratings on both, asymmetric friendships, login, per-user feeds on different sites)
+twitter at trivial scale
+twitter at moderate scale
 
 I think the hello-world one is:
 defresp "/" "hello"
@@ -213,3 +215,6 @@ Order of operations:
 -form builder
 -deserialization code for forms data microformat.
 -hooks in controllers
+
+
+
