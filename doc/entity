@@ -94,7 +94,6 @@ lemmr (posts, comments, ratings on both, asymmetric friendships, login, per-user
 twitter at trivial scale - should be easy.
 twitter at moderate scale - should be an easyish refactor on the trivial scale one.
 
-
 I think the hello-world one is:
 defresp "/" "hello"
 
@@ -138,7 +137,7 @@ Need to make polymorphic assocs, and probably to make routes into a hash.
 
 might want to display an object graph, possibly as a javascript FDG
 
-
+need to make HTTP part of the framework, so proper response codes are returned, etc.
 
 
 new things to handle:  application generators (create for rails a file like thisone:
