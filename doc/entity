@@ -94,6 +94,7 @@ lemmr (posts, comments, ratings on both, asymmetric friendships, login, per-user
 twitter at trivial scale - should be easy.
 twitter at moderate scale - should be an easyish refactor on the trivial scale one.
 
+
 I think the hello-world one is:
 defresp "/" "hello"
 
