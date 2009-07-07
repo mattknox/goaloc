@@ -41,6 +41,7 @@ it should:
 -need to build in app visibility (some kind of stats dashboard, perhaps?)  This could well be a module/goal that one mixes in as needed.  
 -need to port to rails 2.3
 
+
 ==DONE:
 -include jquery for js
 -include bluetrip css framework
