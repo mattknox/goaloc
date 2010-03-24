@@ -33,14 +33,16 @@ it should:
 -look at cloudkit: http://getcloudkit.com/  it exposes RESTful json apis really easily
 -shoulda will now support rspec, so maybe I should generate RSpec/shoulda and Test::Unit/shoulda?
 -need to rename/split/join models.
--steal the rails code generator framework, or make my own.  
+-steal the rails code generator framework, or make my own.
 -need to think about how to make apps built in the framework scale smoothly (probably by making the db layer agnostic about doc/relational dbs)
 -is it easy to make continuous deploy if you start early enough?  Very interesting question.
 -is it easy to bake in A/B testing?
--need to think also about the the CMS dilemma- http://aaronlongwell.com/2009/06/the-ruby-on-rails-cms-dilemma.html  rails is great for apps, bad for sites.  Modules seem to solve this fairly well.  
--need to build in app visibility (some kind of stats dashboard, perhaps?)  This could well be a module/goal that one mixes in as needed.  
+-need to think also about the the CMS dilemma- http://aaronlongwell.com/2009/06/the-ruby-on-rails-cms-dilemma.html  rails is great for apps, bad for sites.  Modules seem to solve this fairly well.
+-need to build in app visibility (some kind of stats dashboard, perhaps?)  This could well be a module/goal that one mixes in as needed.
 -need to port to rails 2.3
-
+-might want a module that does click-tracking or something.
+-need the module system
+-need to rethink in light of Avi Bryant's claim that rails/seaside are legacy.
 
 ==DONE:
 -include jquery for js
@@ -68,7 +70,7 @@ People keep joking that I should just be able to say "goaloc blog" and get an ap
 
 route [:users, blog, photogallery]
 
-could make a blog that is accessible through the user object.  Each goal-generating function could come with a bunch of options, like setting authentication, etc.  
+could make a blog that is accessible through the user object.  Each goal-generating function could come with a bunch of options, like setting authentication, etc.
 
 This would allow people to make individual web components, possibly including views.
 
@@ -76,7 +78,7 @@ This almost suggests a need for a gem-like system for "goals" (might need a bett
 
 need to be able to specify that things belong to the current user, and to specify that there must be a current user in scope for some set of routes.
 
-So the blog should be 
+So the blog should be
 route [authenticated_user, [:posts, :comments]]
 ...
 
