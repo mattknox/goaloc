@@ -97,6 +97,7 @@ render :partial => 'status', :collection => Status.get(Timeline.for_user_id(@use
 
 the latter demos less nicely, in that it is longer, but because you are not now reaching from the user object through the timeline to some statuses, but rather reaching some statuses by a method on the Status class, you end up with three nicely seperable services (User, Status and Timeline), which can then be changed relatively easily.
 
+marcel had similar input, and suggested that strongly encouraging a service decomposition upfront is the most important thing.  Need to consider the app I'd want to write for the initial twitter prototype and also for the current state of the app.
 
 == REQUIREMENTS:
 
