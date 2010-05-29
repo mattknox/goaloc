@@ -22,7 +22,7 @@ functional
 a coverage metric (how hard do you want this covered?)
 
 
-An app has a collection of such entities, and also 
+An app has a collection of such entities, and also
 routes
 plugins
 gems
@@ -36,15 +36,15 @@ I should be able to indicate to the app that it will always have an instance of 
 
 so, eg., when you install restful_auth, it can tell the app that there is a user available under current_user
 
-actually, current_user makes sense in an app-from the point of view of any given controller, there will always be exactly one current user, so that should be visible in the framework and available to anyone.  
+actually, current_user makes sense in an app-from the point of view of any given controller, there will always be exactly one current user, so that should be visible in the framework and available to anyone.
 
-also, need to cope with roles, probably.  
+also, need to cope with roles, probably.
 
 I should make a migration_order accessor, so people can define the order in which migrations happen.  This would also, coincidentally, allow me to get rid of the Kernel.sleep(1) hack.
 
-It might be interesting, as a process note, to develop goaloc in two parts:  a front end which is mostly about poking objects and modifying their state (at which ruby excels) and another part that is all about code generation (at which ruby is OK and lisp is unbeatable).  The interface between the two might be reasonably easy to express in thrift.  
+It might be interesting, as a process note, to develop goaloc in two parts:  a front end which is mostly about poking objects and modifying their state (at which ruby excels) and another part that is all about code generation (at which ruby is OK and lisp is unbeatable).  The interface between the two might be reasonably easy to express in thrift.
 
-Need a name for the thing that you generate when you do 
+Need a name for the thing that you generate when you do
 
 route :posts
 
@@ -71,7 +71,7 @@ BDD the code generator
     partials
 
 
-Questions:  
+Questions:
 do I need to define classes?  Might it suffice to define instances, and perhaps bind appropriately-named constants to them?
 how do I define a blog such that it only has the create method on comments routed, and not the others?
 how hard is it to serve it directly?  (need to add rack handler)
@@ -122,7 +122,7 @@ lemmr is:
 There should be a console in which one can start a repl, with a live server attached, so one can flip back and forth effortlessly.
 
 
-a web framework should probably distinguish between requests for which server-side state is necessary, and requests for which it is not.  
+a web framework should probably distinguish between requests for which server-side state is necessary, and requests for which it is not.
 
 need a code generation framework.  It must be capable of the following:
 -copy file or dir from one place to another
@@ -133,7 +133,7 @@ need a code generation framework.  It must be capable of the following:
 all of these should check to see if the file already exists and is ask before throwing any content away
 (putting new things in a file without asking is ok)
 
-Need to make polymorphic assocs, and probably to make routes into a hash.  
+Need to make polymorphic assocs, and probably to make routes into a hash.
 
 might want to display an object graph, possibly as a javascript FDG
 
@@ -160,7 +160,7 @@ format.atom
 atom_feed do |feed|
   feed.title("blah")
   feed.updated(@posts.first.created_at)
-  
+
   @posts.each do |post|
     feed.entry(post) do |entry|
       entry.title(post.title)
@@ -194,8 +194,6 @@ and then had to edit in the polymorphic assocs, etc.
 I wanted to enter this:
 route [:users, :profile, :ratings, {:class => :user, :through => :follows}, :submissions, :comments], [:submissions, {:class => :rating, :poly => :ratable}, [:comments, {:class => :rating, :poly => :ratable}]]
 add_attrs :ratings => "score:integer", :follow => "followed_id:integer submissions:boolean upvotes:boolean", :submission => "url:string title:string score:float", :comments => "body:text"
-
-unbelievably, I can't generate links to things at the moment in goaloc.  Need to factor that.  
 
 Should I approach this as a framework, or as a code generator for rails?  the first seems more interesting.  Perhaps I should make it possible to compile down to a bunch of rack instances that communicate over http, similar to django's rack-equivalent.  (pinax)
 
