@@ -215,4 +215,26 @@ Order of operations:
 -hooks in controllers
 
 
+what code would I want to wrie to specify twitter?
+requirements:
+users can tweet
+all tweets by a user are that user's user_timeline
+users can follow each other
+the union of the user timelines of all the people you follow is your home timeline.
+
+Prototype code:
+rails:
+script/generate scaffold user ...
+script/generate scaffold status ...
+User.has_many :statuses
+User.has_many :followed_users, :through => :following
+
+def home_timeline
+  user.followed_users.map { |u| u.statuses }.flatten.sort
+end
+
+
+goaloc:
+route [:users, :statuses, [:users, :through => :following]]
+User.instance.home_timeline = { |user| user.followed_users.map { |u| u.statuses }.flatten.sort }
 
