@@ -215,6 +215,25 @@ Order of operations:
 -hooks in controllers
 
 
+
+Talked with @rael about what a framework would need to encourage good scaling practices in the same way that rails encourages MVC and rest.  His answer:
+
+instead of the current rails idiom of:
+@user = User.find(params[:user_id])
+render :partial => 'status', :collection => @user.timeline.statuses
+
+the code should be like this:
+
+@user = User.find(params[:user_id])
+render :partial => 'status', :collection => Status.get(Timeline.for_user_id(@user.id).ids)
+
+the latter demos less nicely, in that it is longer, but because you are not now reaching from the user object through the timeline to some statuses, but rather reaching some statuses by a method on the Status class, you end up with three nicely seperable services (User, Status and Timeline), which can then be changed relatively easily.
+
+marcel had similar input, and suggested that strongly encouraging a service decomposition upfront is the most important thing.  Need to consider the app I'd want to write for the initial twitter prototype and also for the current state of the app.  Marcel also noted that having ActiveModel split from ActiveRecord might help in this regard, in that people might write ActiveService, which could be implemented as a network service with an API similar to ActiveRecord.
+
+
+
+
 what code would I want to wrie to specify twitter?
 requirements:
 users can tweet
@@ -238,3 +257,11 @@ goaloc:
 route [:users, :statuses, [:users, :through => :following]]
 User.instance.home_timeline = { |user| user.followed_users.map { |u| u.statuses }.flatten.sort }
 
+
+Production code for home timeline:
+rails:
+def User.home_timeline
+
+end
+
+goaloc:
