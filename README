@@ -65,22 +65,6 @@ route [:causes, { :class => :users, :through => :memberships }, :tasks ]
 
 will set up causes has many users through memberships
 
-Possible rewrite:
-People keep joking that I should just be able to say "goaloc blog" and get an app.  Is that actually a bad idea?  I'm not sure.  It seems like it would be a great idea to be able to say, for instance, that at any given point, you should be able to include an entire app rooted at the spot in the routes you currently occupy.  Something like this:
-
-route [:users, blog, photogallery]
-
-could make a blog that is accessible through the user object.  Each goal-generating function could come with a bunch of options, like setting authentication, etc.
-
-This would allow people to make individual web components, possibly including views.
-
-This almost suggests a need for a gem-like system for "goals" (might need a better name for it and for the project as a whole), and really points up the importance of making this servable on its own-it would be great to be able to toss in a component, look at the resulting app, and then change it.
-
-need to be able to specify that things belong to the current user, and to specify that there must be a current user in scope for some set of routes.
-
-So the blog should be
-route [authenticated_user, [:posts, :comments]]
-...
 == REQUIREMENTS:
 
 shoulda to run tests, possibly ruby2ruby in the future.
