@@ -239,14 +239,14 @@ requirements:
 users can tweet
 all tweets by a user are that user's user_timeline
 users can follow each other
-the union of the user timelines of all the people you follow is your home timeline.
+the union of the user timelines of all the people a user follows is that user's home_timeline
 
 Prototype code:
 rails:
 script/generate scaffold user ...
 script/generate scaffold status ...
 User.has_many :statuses
-User.has_many :followed_users, :through => :following
+User.has_many :followed_users, :through => :following, :class => User
 
 def home_timeline
   user.followed_users.map { |u| u.statuses }.flatten.sort
@@ -255,6 +255,7 @@ end
 
 goaloc:
 route [:users, :statuses, [:users, :through => :following]]
+add_attrs ....
 User.instance.home_timeline = { |user| user.followed_users.map { |u| u.statuses }.flatten.sort }
 
 
