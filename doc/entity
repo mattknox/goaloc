@@ -261,12 +261,12 @@ User.instance.home_timeline = { |user| user.followed_users.map { |u| u.statuses 
 
 Production code for home timeline:
 rails:
-def User.home_timeline
-
+def User.home_timeline_statuses(user_id)
+  Status.get(Timeline.for_user_id(user_id))
 end
 
 goaloc:
-
+User.class.home_timeline_statuses = { |user_id| Status.get(Timeline.for_user_id(user_id)) }
 
 
 Possible rewrite:
