@@ -260,13 +260,10 @@ User.instance.home_timeline = { |user| user.followed_users.map { |u| u.statuses 
 
 
 Production code for home timeline:
-rails:
 def User.home_timeline_statuses(user_id)
   Status.get(Timeline.for_user_id(user_id))
 end
 
-goaloc:
-User.class.home_timeline_statuses = { |user_id| Status.get(Timeline.for_user_id(user_id)) }
 
 
 Possible rewrite:
@@ -284,3 +281,6 @@ need to be able to specify that things belong to the current user, and to specif
 
 So the blog should be
 route [authenticated_user, [:posts, :comments]]
+
+
+controllers should just define filters and only redefine actions if they need something other than the defaults.
