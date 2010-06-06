@@ -239,14 +239,14 @@ requirements:
 users can tweet
 all tweets by a user are that user's user_timeline
 users can follow each other
-the union of the user timelines of all the people you follow is your home timeline.
+the union of the user timelines of all the people a user follows is that user's home_timeline
 
 Prototype code:
 rails:
 script/generate scaffold user ...
 script/generate scaffold status ...
 User.has_many :statuses
-User.has_many :followed_users, :through => :following
+User.has_many :followed_users, :through => :following, :class => User
 
 def home_timeline
   user.followed_users.map { |u| u.statuses }.flatten.sort
@@ -255,16 +255,14 @@ end
 
 goaloc:
 route [:users, :statuses, [:users, :through => :following]]
+add_attrs ....
 User.instance.home_timeline = { |user| user.followed_users.map { |u| u.statuses }.flatten.sort }
 
 
 Production code for home timeline:
-rails:
-def User.home_timeline
-
+def User.home_timeline_statuses(user_id)
+  Status.get(Timeline.for_user_id(user_id))
 end
-
-goaloc:
 
 
 
@@ -284,7 +282,7 @@ need to be able to specify that things belong to the current user, and to specif
 So the blog should be
 route [authenticated_user, [:posts, :comments]]
 
-
+controllers should just define filters and only redefine actions if they need something other than the defaults.
 
 
 need to write a few small rails3 apps, then update for rails3, extract what I can.
