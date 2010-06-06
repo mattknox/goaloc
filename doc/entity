@@ -283,3 +283,8 @@ need to be able to specify that things belong to the current user, and to specif
 
 So the blog should be
 route [authenticated_user, [:posts, :comments]]
+
+
+
+
+need to write a few small rails3 apps, then update for rails3, extract what I can.
