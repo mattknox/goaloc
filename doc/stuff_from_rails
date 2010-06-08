@@ -1,7 +1,7 @@
 This is the part of the rails source base (looted from /opt/local/lib/ruby/gems/1.8/gems/rails-2.2.2/lib/rails_generator/lookup.rb )
 that handles going out to look for generators in rubygems.  I will need to do something like this so that people can write goals for
 goaloc.  But not yet.  At first I'll just build them in.  I might want to rip off the code generator from rails, also, or perhaps
-build my own.  
+build my own.
 
 
     class AbstractGemSource < Source
@@ -52,3 +52,6 @@ build my own.
         end
     end
 
+
+
+this is likely to be totally deprecated by the rails3 changes
