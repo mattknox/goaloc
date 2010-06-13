@@ -285,4 +285,4 @@ route [authenticated_user, [:posts, :comments]]
 controllers should just define filters and only redefine actions if they need something other than the defaults.
 
 
-need to write a few small rails3 apps, then update for rails3, extract what I can.
+need to write a few small rails3 apps, then update for rails3, extract what I can.  Probably need to seperate the front and back ends.
