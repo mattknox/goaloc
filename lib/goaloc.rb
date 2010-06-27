@@ -1,7 +1,7 @@
 $:.unshift(File.dirname(__FILE__)) unless $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
 require "rubygems"
-require "activesupport"
+require "active_support"
 require "goaloc/app"
 require "goaloc/goal"
 require "goaloc/generators/generator"
@@ -25,13 +25,13 @@ def generate(*args)
   @app.generator(*args).generate
 end
 
-# this returns a freshly made generator for the app.  
+# this returns a freshly made generator for the app.
 def generator
   @app.generator
 end
 
 # this is the primary interface to goaloc.  It allows one to route nested arrays of symbols, generating
-# goals, routes, etc., as it goes.  
+# goals, routes, etc., as it goes.
 def route(*args)
   @app.log << "route #{args.inspect[1..-2]}"
   @app.route(*args)
