@@ -47,4 +47,13 @@ class Generator
       f.write gen_string(name, *args)
     end
   end
+
+  def put_file(path, content)
+    fullpath = "#{app_dir}/#{path}"
+    dir = fullpath.split("/")[0..-2].join("/")
+    FileUtils.mkdir_p dir unless File.exists? dir
+    File.open("#{fullpath}", "w") do |f|
+      f.write content
+    end
+  end
 end
