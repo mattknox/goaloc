@@ -286,3 +286,4 @@ controllers should just define filters and only redefine actions if they need so
 
 
 need to write a few small rails3 apps, then update for rails3, extract what I can.  Probably need to seperate the front and back ends of goaloc, such that I can build different backends.  Need to backend at least to node.js, and possibly other stuff like cappucino.
+
