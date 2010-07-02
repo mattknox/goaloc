@@ -32,7 +32,7 @@ class App
   # implies that you'll want a model Post.  More interestingly,
   #   route [:posts, :comments, :wiki]
   # implies that there must be Post, Comment, and Wiki models, and that a Post has many comments and
-  # has one wiki.  
+  # has one wiki.
   def route(*args)
     if valid_routeset?(args)
       self.routes += args.map { |elt| route_elt(elt, []) }
@@ -50,37 +50,37 @@ class App
     if x.is_a? Goal
       x
     else
-      self.goals[x.to_s.singularize.underscore] 
-    end    
+      self.goals[x.to_s.singularize.underscore]
+    end
   end
 
   def create_goal(x)
     name = x.to_s.singularize.underscore
     self.goals[name] ||= Goal.new(name) # dynamic var would be nice here.
   end
-  
+
   # add_attrs takes in a hash of symbol => string pairs, and attaches to the goal named by the key the
   # attributes named in the string.  For example:
   #   add_attrs :posts => "body:text title:string", :ratings => "score:integer"
-  # adds an integer field named score to Rating, a text field called body to Post, and a string field 
+  # adds an integer field named score to Rating, a text field called body to Post, and a string field
   # called title to Post.
   def add_attrs(h)
     h.map {  |k, v| self.goals[k.to_s.singularize].add_attrs v rescue nil }
   end
 
   # Returns a generator for the given target output format.  Currently Rails and Merb are supported.
-  def generator(target = Rails)  
+  def generator(target = Rails)
     generator = Generator.build(self, target)
   end
 
-  #gets a generator and calls the generate method on it. 
+  #gets a generator and calls the generate method on it.
   def generate(*args)
     generator(*args).generate
   end
 
   # generate a log of the commands that goaloc would have to recieve to reach its current state.
   # this currently double-counts some commands, and might miss others, for instance if one got
-  # a goal object and poked at it's internal state directly. 
+  # a goal object and poked at it's internal state directly.
   def goaloc_log
     gen = []
     out = log.clone
@@ -98,7 +98,7 @@ class App
     end
     out + gen
   end
-  
+
   private
   def route_elt(arg, route_prefix)
     if arg.is_a? Symbol
@@ -134,7 +134,7 @@ class App
     arg.is_a?(Symbol) or
       valid_routeset_array?(arg)
   end
-  
+
   def valid_routeset_array?(arg)
     arg.is_a? Array and
       !arg.empty? and
