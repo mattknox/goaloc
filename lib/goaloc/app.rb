@@ -103,6 +103,8 @@ class App
   def route_elt(arg, route_prefix)
     if arg.is_a? Symbol
       goal_for_sym(arg, route_prefix.clone) and arg
+    elsif arg.is_a? GoalocExtension
+      # handle extensions
     elsif arg.is_a? Array
       base = goal_for_sym(route_elt(arg.first, route_prefix), route_prefix.clone)
       res = [arg.first]

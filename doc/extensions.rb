@@ -16,4 +16,5 @@ end
 class Blog < GoalocExtension
   # fill in here the logic for building a blog up.  Should at minimum
   # attach comments, possibly handle auth, etc..
+
 end
