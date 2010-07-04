@@ -104,7 +104,7 @@ class App
     if arg.is_a? Symbol
       goal_for_sym(arg, route_prefix.clone) and arg
     elsif arg.is_a? GoalocExtension
-      arg.run
+      arg.run(self, route_prefix)
     elsif arg.is_a? Array
       base = goal_for_sym(route_elt(arg.first, route_prefix), route_prefix.clone)
       res = [arg.first]
