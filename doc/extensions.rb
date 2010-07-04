@@ -11,10 +11,13 @@ class GoalocExtension
     yield(self) if block_given?
     self
   end
+
+  def run
+    raise "this method should be overridden by subclasses"
+  end
 end
 
 class Blog < GoalocExtension
   # fill in here the logic for building a blog up.  Should at minimum
   # attach comments, possibly handle auth, etc..
-
 end
