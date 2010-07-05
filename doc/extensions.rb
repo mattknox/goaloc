@@ -20,7 +20,14 @@ end
 class Blog < GoalocExtension
   # fill in here the logic for building a blog up.  Should at minimum
   # attach comments, possibly handle auth, etc..
+
+  def initialize(author = :User, commentor = :User)
+    @author = author
+    @commentor = commentor
+  end
+
   def run(app, route_prefix)
     app.route_elt([:post, :comment], route_prefix)
+    app.add_attrs :post => "title:string body:text", :comment => "body:text"
   end
 end
