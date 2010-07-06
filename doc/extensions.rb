@@ -29,5 +29,7 @@ class Blog < GoalocExtension
   def run(app, route_prefix)
     app.route_elt([:post, :comment], route_prefix)
     app.add_attrs :post => "title:string body:text", :comment => "body:text"
+    Post.belongs_to @author
+    Comment.belongs_to @commentor
   end
 end
