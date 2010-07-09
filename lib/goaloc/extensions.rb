@@ -21,7 +21,7 @@ class Blog < GoalocExtension
   # fill in here the logic for building a blog up.  Should at minimum
   # attach comments, possibly handle auth, etc..
 
-  def initialize(author = :User, commentor = :User)
+  def initialize(author = :User, commentor = :User, options = { })
     @author = author
     @commentor = commentor
   end
