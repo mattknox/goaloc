@@ -288,3 +288,7 @@ controllers should just define filters and only redefine actions if they need so
 need to write a few small rails3 apps, then update for rails3, extract what I can.  Probably need to seperate the front and back ends of goaloc, such that I can build different backends.  Need to backend at least to node.js, and possibly other stuff like cappucino.
 
 might want to add bcardarella's client-side validations to the rails output of goaloc.
+
+currently I conflate db tables, models, routes and controllers.  How do I break that up, and perhaps more importantly, how do I add the idea of services, which will initially be internal services that do method calls internally, and eventually become network services on seperate hardware?
+
+need to think about the node.js backend needed for this.
