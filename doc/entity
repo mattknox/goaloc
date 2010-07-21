@@ -140,7 +140,7 @@ might want to display an object graph, possibly as a javascript FDG
 need to make HTTP part of the framework, so proper response codes are returned, etc.
 
 
-new things to handle:  application generators (create for rails a file like thisone:
+new things to handle:  application generators (create for rails a file like this one:
 rails newapp -m http://www.railsboost.com/917.rb
 
 and then call rails myapp -m http://www.railsboost.com/917.rb
