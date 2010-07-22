@@ -292,3 +292,5 @@ might want to add bcardarella's client-side validations to the rails output of g
 currently I conflate db tables, models, routes and controllers.  How do I break that up, and perhaps more importantly, how do I add the idea of services, which will initially be internal services that do method calls internally, and eventually become network services on seperate hardware?
 
 need to think about the node.js backend needed for this.
+
+Dan Gackle raised a good and interesting point: frameworks are best when they are extracted from a successful app, as opposed to from a blank slate.
