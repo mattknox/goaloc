@@ -294,3 +294,6 @@ currently I conflate db tables, models, routes and controllers.  How do I break 
 need to think about the node.js backend needed for this.
 
 Dan Gackle raised a good and interesting point: frameworks are best when they are extracted from a successful app, as opposed to from a blank slate.
+
+
+need to read up on froc and FRP in general when thinking about UIs in js.  also consider jwacs
