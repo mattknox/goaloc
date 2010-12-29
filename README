@@ -43,7 +43,7 @@ it should:
 -might want a module that does click-tracking or something.
 -need the module system
 -need to rethink in light of Avi Bryant's claim that rails/seaside are legacy.
-
+  -in particular, it should be possible to sketch code in the browser and eventually dump out the results to be compiled to rails/etc.
 
 ==DONE:
 -include jquery for js
