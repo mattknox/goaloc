@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <title>
+      front page for goaloc.js
+    </title>
+    <script src="http://code.jquery.com/jquery-1.4.4.js"></script>
+    </script>
+  </head>
+  <body id="repl0">
+    <p>
+      <h3>js goaloc</h3>
+      <div id="log">
+      </div>
+      <form>
+        <input id="repl">
+        </input>
+      </form>
+    </p>
+    <script>
+      $('#repl').keypress(function(event) {
+      if(event.which == "13") {
+        alert(this.value);
+      }
+      });
+      $('#repl').click(function() {
+      $('#repl').keypress();
+      });
+    </script>
+  </body>
+</html>
