@@ -297,3 +297,6 @@ Dan Gackle raised a good and interesting point: frameworks are best when they ar
 
 
 need to read up on froc and FRP in general when thinking about UIs in js.  also consider jwacs
+
+
+Would be nice to be able to fluidly extract services to other languages.
