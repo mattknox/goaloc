@@ -302,3 +302,5 @@ need to read up on froc and FRP in general when thinking about UIs in js.  also 
 Would be nice to be able to fluidly extract services to other languages.
 
 Need to write a live-served version with sinatra.
+
+Hum-sproutcore looks very interesting for this: could be both the implementation language and the target language.
