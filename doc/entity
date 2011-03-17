@@ -303,4 +303,5 @@ Would be nice to be able to fluidly extract services to other languages.
 
 Need to write a live-served version with sinatra.
 
-Hum-sproutcore looks very interesting for this: could be both the implementation language and the target language.
+sproutcore looks very interesting for this: could be both the implementation language and a target language.
+backbone and sinatra are also reasonable backends.
