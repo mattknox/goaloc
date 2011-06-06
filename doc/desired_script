@@ -24,7 +24,7 @@ defresp "/" "hello"
 (defop hello req (pr "hello world"))
 (asv)
 
-arc challenge:
+arc challenge:  Not sure that I actually want to support this.  It seems like a possible antipattern to do seaside/arc-style stateful app servers.
 
 (defop said req
   (aform [w/link (pr "you said: " (arg _ "foo"))
