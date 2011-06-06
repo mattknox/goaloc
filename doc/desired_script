@@ -32,7 +32,7 @@ arc challenge:
     (input "foo")
     (submit)))
 
-the blog is:
+the unauthed blog is:
 route [:posts, :comments]
 add_attrs { :posts => "body:text title:string", :comments => "body:text" }
 
