@@ -40,8 +40,11 @@ add_attrs { :posts => "body:text title:string", :comments => "body:text" }
 (add_attrs { 'posts => "body:text title:string", 'comments => "body:text" })
 
 the auth'd blog is
-route [authenticated_user(:route => true), [:posts, comments]]
+route [authenticated_user, [:posts, comments]]
 add_attrs { 'posts => "body:text title:string", 'comments => "body:text" }
 
 (route ((authenticated_user {'route => t}) ('posts 'comments)))
 (add_attrs { 'posts => "body:text title:string", 'comments => "body:text" })
+
+lemmr is:
+route [ authenticated_user, { :through => :following, :class => :user }, [:posts, :ratings, [:comments, :ratings]]]
