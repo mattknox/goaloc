@@ -13,6 +13,7 @@
 *unauth'd blog(just 2 models, standard REST actions)
 *auth'd blog(users, posts, comments) (assuming the presence of an authentication module)
 *lemmr (posts, comments, ratings on both, asymmetric friendships, login, per-user feeds on different sites)
+*todo app a la sproutcore todo example.
 *twitter at trivial scale - should be easy.
 *twitter at moderate scale - should be an easyish refactor on the trivial scale one.
 
