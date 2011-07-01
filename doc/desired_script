@@ -1,4 +1,11 @@
 *hello-world(something that generates a page that says 'hello world')
+*todo app a la sproutcore todo example.
+*unauth'd blog(just 2 models, standard REST actions)
+*auth'd blog(users, posts, comments) (assuming the presence of an authentication module)
+*lemmr (posts, comments, ratings on both, asymmetric friendships, login, per-user feeds on different sites)
+*twitter at trivial scale - should be easy.
+*twitter at moderate scale - should be an easyish refactor on the trivial scale one.
+--maybe--
 *arc challenge(from: http://www.paulgraham.com/arcchallenge.html )
    Write a program that causes the url said
    (e.g. http://localhost:port/said) to produce a page with an input
@@ -10,12 +17,14 @@
    typed. I.e. the value entered in the input field must not be passed
    in the url, or it would be possible to change the behavior of the
    final page by editing the url.
-*unauth'd blog(just 2 models, standard REST actions)
-*auth'd blog(users, posts, comments) (assuming the presence of an authentication module)
-*lemmr (posts, comments, ratings on both, asymmetric friendships, login, per-user feeds on different sites)
-*todo app a la sproutcore todo example.
-*twitter at trivial scale - should be easy.
-*twitter at moderate scale - should be an easyish refactor on the trivial scale one.
+Not sure that I actually want to support this.  Seaside/arc-style stateful app servers aren't interesting.
+The code in arc is:
+(defop said req
+  (aform [w/link (pr "you said: " (arg _ "foo"))
+           (pr "click here")]
+    (input "foo")
+    (submit)))
+
 
 I think the hello-world one is:
 defresp "/" "hello"
@@ -24,14 +33,6 @@ defresp "/" "hello"
 
 (defop hello req (pr "hello world"))
 (asv)
-
-arc challenge:  Not sure that I actually want to support this.  Seaside/arc-style stateful app servers aren't interesting.
-
-(defop said req
-  (aform [w/link (pr "you said: " (arg _ "foo"))
-           (pr "click here")]
-    (input "foo")
-    (submit)))
 
 the unauthed blog is:
 route [:posts, :comments]
