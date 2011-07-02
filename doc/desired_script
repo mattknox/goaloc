@@ -34,6 +34,10 @@ defresp "/" "hello"
 (defop hello req (pr "hello world"))
 (asv)
 
+todo is:
+route [:tasks]
+add_attrs {:tasks => "name:string is_done:bool"}
+
 the unauthed blog is:
 route [:posts, :comments]
 add_attrs { :posts => "body:text title:string", :comments => "body:text" }
