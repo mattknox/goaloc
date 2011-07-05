@@ -1,4 +1,4 @@
-a goaloc entity needs to be able to encapsulate roughly what a merb slice does:  the model, view, and controller parts of an application.
+a goaloc entity needs to be able to encapsulate roughly what a merb slice does:  the model, view, and controller parts of a chunk of an application, which might make sense as an application in its own right.
 
 it needs:
 
