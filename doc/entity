@@ -30,7 +30,7 @@ configuration
 
 
 how does this play with javascript?  maybe better than rails.
-how does this do continuation-based apps?
+how does this do continuation-based apps? (probably not at all)
 
 I should be able to indicate to the app that it will always have an instance of a given class, accessible by a given method_name
 
