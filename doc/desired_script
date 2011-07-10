@@ -35,7 +35,7 @@ defresp "/" "hello"
 (asv)
 
 todo is:
-route [:tasks]
+route [:tasks]  or with auth:  route [authenticated_user, :tasks]
 add_attrs {:tasks => "name:string is_done:bool"}
 
 (route tasks)
