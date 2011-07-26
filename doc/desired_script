@@ -5,6 +5,7 @@
 *lemmr (posts, comments, ratings on both, asymmetric friendships, login, per-user feeds on different sites)
 *twitter at trivial scale - should be easy.
 *twitter at moderate scale - should be an easyish refactor on the trivial scale one.
+
 --maybe--
 *arc challenge(from: http://www.paulgraham.com/arcchallenge.html )
    Write a program that causes the url said
@@ -60,4 +61,4 @@ route [ authenticated_user, { :through => :following, :class => :user }, [:posts
 add_attrs {:posts => "body:text title:string", :comments => "body:text", :ratings => "score:int user:references"}
 
 twitter is:
-route [authenticated_user, { :through => :following, :class => :user }, [:statuses, :favorites]]
+route [:user, :statuses], [authenticated_user, { :through => :following, :class => :user }, [:statuses, :favorites]]
