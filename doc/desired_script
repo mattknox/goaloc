@@ -61,4 +61,4 @@ route [ authenticated_user, { :through => :following, :class => :user }, [:posts
 add_attrs {:posts => "body:text title:string", :comments => "body:text", :ratings => "score:int user:references"}
 
 twitter is:
-route [:user, :statuses], [authenticated_user, { :through => :following, :class => :user }, [:statuses, :favorites]]
+route [:user, :statuses, { :through => :following, :class => :user }], [authenticated_user, { :through => :following, :class => :user }, [:statuses, :favorites]]
