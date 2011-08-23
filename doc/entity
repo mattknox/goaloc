@@ -306,3 +306,6 @@ Need to write a live-served version with sinatra.
 sproutcore looks very interesting for this: could be both the implementation language and a target language.
 backbone and sinatra are also reasonable targets, as is sproutcore.
 many apps need to have iphone, email, and sms components, not sure how to address that.
+
+
+possibly integrate a web editor: ideally one could edit the goaloc schema, see the change, make edits, save, and end up with the appropriate generated app.
