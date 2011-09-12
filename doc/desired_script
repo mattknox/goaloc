@@ -63,3 +63,5 @@ add_attrs {:posts => "body:text title:string", :comments => "body:text", :rating
 twitter is:
 route [:user, :statuses, { :through => :following, :class => :user }], [authenticated_user, { :through => :following, :class => :user }, [:statuses, :favorites]]
 add_attrs {:posts => "body:text"}
+
+an example change from low to moderate scale would be to define a home_timeline method and make that talk to a network service that would handle status caches, etc..  It seems like it should be possible to scaffold thrift services in much the same way restful resources are.
