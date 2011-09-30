@@ -313,3 +313,4 @@ possibly integrate a web editor: ideally one could edit the goaloc schema, see t
 possibly look at opa http://opalang.org/ for ideas.  It's a rewrite of the entire webdev stack in a single language, based on ocaml.  Similarly to picolisp, it's a db/language/etc all in one.
 
 need to think about sending SMS/email, and whether I want to have goaloc do that too.  Maybe not.
+also look at play! framework for java.
