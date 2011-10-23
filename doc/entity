@@ -314,3 +314,4 @@ possibly look at opa http://opalang.org/ for ideas.  It's a rewrite of the entir
 
 need to think about sending SMS/email, and whether I want to have goaloc do that too.  If I can come up with a nice abstraction, then yes.
 also look at play! framework for java.
+@jj's framework renee is pretty interesting for presenting a nested resource backend, and it is particularly amenable to generating controller code.
