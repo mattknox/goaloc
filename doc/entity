@@ -316,4 +316,4 @@ need to think about sending SMS/email, and whether I want to have goaloc do that
 also look at play! framework for java.
 @jj's framework renee is pretty interesting for presenting a nested resource backend, and it is particularly amenable to generating controller code very DRYly, given that /posts/1, /posts/1/comments and /posts/1/comments/6 would all share the code for finding post 1
 
-Should think about what datastores goaloc should compile to, and also what it should use in interactive development mode.
+Should think about what datastores goaloc should compile to( probably anything rails/whatever talks to), and also what it should use in interactive development mode.
