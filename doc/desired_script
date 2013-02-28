@@ -1,3 +1,4 @@
+example apps I want to be able to build quickly:
 *hello-world(something that generates a page that says 'hello world')
 *todo app a la sproutcore todo example.
 *unauth'd blog(just 2 models, standard REST actions)
@@ -18,7 +19,7 @@
    typed. I.e. the value entered in the input field must not be passed
    in the url, or it would be possible to change the behavior of the
    final page by editing the url.
-Not sure that I actually want to support this.  Seaside/arc-style stateful app servers aren't interesting.
+Not sure that I actually want to support this.  Seaside/arc-style stateful app servers aren't that widely applicable.
 The code in arc is:
 (defop said req
   (aform [w/link (pr "you said: " (arg _ "foo"))
@@ -28,7 +29,11 @@ The code in arc is:
 
 
 I think the hello-world one is:
-defresp "/" "hello"
+get "/" "hello" or
+get "/" { "hello" } or
+get "/" do
+  "hello"
+end
 
 (defresp / "hello")
 
