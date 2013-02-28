@@ -1,13 +1,13 @@
 require 'rake'
 require 'rake/testtask'
-require 'rake/rdoctask'
+#require 'rake/rdoctask'
 require 'rcov/rcovtask'
-require 'cucumber/rake/task'
+#require 'cucumber/rake/task'
 # require 'metric_fu'
 
-Cucumber::Rake::Task.new(:features) do |t|
-  t.cucumber_opts = "--format pretty"
-end
+# Cucumber::Rake::Task.new(:features) do |t|
+#   t.cucumber_opts = "--format pretty"
+# end
 
 begin
   require 'jeweler'
@@ -31,13 +31,13 @@ Rake::TestTask.new do |t|
   t.verbose = false
 end
 
-Rake::RDocTask.new do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'Jeweler'
-  rdoc.options << '--line-numbers' << '--inline-source'
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
+# Rake::RDocTask.new do |rdoc|
+#   rdoc.rdoc_dir = 'rdoc'
+#   rdoc.title    = 'Jeweler'
+#   rdoc.options << '--line-numbers' << '--inline-source'
+#   rdoc.rdoc_files.include('README*')
+#   rdoc.rdoc_files.include('lib/**/*.rb')
+# end
 
 Rcov::RcovTask.new do |t|
   t.libs << "test"
