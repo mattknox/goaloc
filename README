@@ -72,7 +72,7 @@ shoulda to run tests, possibly ruby2ruby in the future.
 
 == INSTALL:
 
-sudo gem install -s http://gems.github.com mattknox-goaloc
+gem install mattknox-goaloc
 
 == LICENSE:
 
