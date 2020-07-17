@@ -165,8 +165,8 @@ class Rails < RubyGenerator
   def gen_misc # here we put in the layout, the goaloc log, and libraries (blueprint CSS, jquery)
     put_file("#{app_dir}/app/views/layouts/application.html.erb", ERB.new(File.open("#{File.dirname(__FILE__)}/rails/application.erb").read).result(binding))
     put_file("#{app_dir}/doc/goaloc_spec",  app.goaloc_log.join("\n"))
-    FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/bluetrip", "#{app_dir}/public/stylesheets")
-    FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/jquery-1.2.6.min.js", "#{app_dir}/public/javascripts")
+    FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/bluetrip", "#{app_dir}/public/stylesheets") rescue nil
+    FileUtils.cp_r("#{File.dirname(__FILE__)}/resources/jquery-1.2.6.min.js", "#{app_dir}/public/javascripts") rescue nil
     FileUtils.mkdir_p("#{app_dir}/test/")
     FileUtils.cp("#{File.dirname(__FILE__)}/resources/test_helper.rb", "#{app_dir}/test/")
   end

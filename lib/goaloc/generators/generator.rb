@@ -17,7 +17,7 @@ class Generator
 
   # this builds an app for the target platform
   def Generator.build(app, target, opts = { })
-    if Generator.subclasses.member?(target.to_s)
+    if Generator.subclasses.member?(target)
       target.new(app, opts)
     else
       raise RuntimeError

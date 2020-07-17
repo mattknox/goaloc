@@ -1,7 +1,7 @@
 require 'rake'
 require 'rake/testtask'
 #require 'rake/rdoctask'
-require 'rcov/rcovtask'
+#require 'rcov/rcovtask'
 #require 'cucumber/rake/task'
 # require 'metric_fu'
 
@@ -39,9 +39,9 @@ end
 #   rdoc.rdoc_files.include('lib/**/*.rb')
 # end
 
-Rcov::RcovTask.new do |t|
-  t.libs << "test"
-  t.verbose = true
-end
+# Rcov::RcovTask.new do |t|
+#   t.libs << "test"
+#   t.verbose = true
+# end
 
-task :default => :rcov
+#task :default => :rcov
